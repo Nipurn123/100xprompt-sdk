@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@100xprompt/sdk",
+  "version": "0.1.90",
+  "private": false,
+  "type": "module",
+  "license": "UNLICENSED",
+  "description": "TypeScript SDK for 100XPrompt — a fully-typed client plus server/TUI launchers for the open source AI coding agent.",
+  "keywords": [
+    "100xprompt",
+    "ai",
+    "agent",
+    "coding-agent",
+    "llm",
+    "sdk",
+    "client",
+    "typescript",
+    "mcp"
+  ],
+  "homepage": "https://100xprompt.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nipurn123/100xprompt-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nipurn123/100xprompt-sdk/issues"
+  },
+  "author": "100XPrompt",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "./script/build.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "openapi.json"
+  ],
+  "devDependencies": {
+    "@hey-api/openapi-ts": "0.88.1",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.13.9",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "directory": "dist"
+  }
+}

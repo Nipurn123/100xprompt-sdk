@@ -1,0 +1,5811 @@
+export type ClientOptions = {
+    baseUrl: `${string}://${string}` | (string & {});
+};
+/**
+ * Deprecated: no consumer reads this event. It reports that the feature-flag payload was re-fetched and carries only a source label and a count, not the flags themselves. No replacement — flag values are resolved per call. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventFlagRefreshed = {
+    type: 'flag.refreshed';
+    properties: {
+        source: string;
+        count: number;
+    };
+};
+export type EventInstallationUpdated = {
+    type: 'installation.updated';
+    properties: {
+        version: string;
+    };
+};
+export type EventInstallationUpdateAvailable = {
+    type: 'installation.update-available';
+    properties: {
+        version: string;
+        command?: string;
+    };
+};
+export type Project = {
+    id: string;
+    worktree: string;
+    vcs?: 'git';
+    name?: string;
+    icon?: {
+        url?: string;
+        color?: string;
+    };
+    time: {
+        created: number;
+        updated: number;
+        initialized?: number;
+    };
+    sandboxes: Array<string>;
+    approvedExternalIncludes?: Array<string>;
+};
+/**
+ * Deprecated: no consumer reads this event. Read project state with the `project.current` / `project.list` SDK methods instead; the fields that actually change during a session (the VCS branch) have their own event, `vcs.branch.updated`. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventProjectUpdated = {
+    type: 'project.updated';
+    properties: Project;
+};
+/**
+ * Deprecated: no consumer reads this event. It was added for a managed-config consent dialog that was never built, so today the policy change is applied and the event is dropped. No replacement — read the managed config directly if you need to detect a policy change. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventConfigManagedPolicyChanged = {
+    type: 'config.managed.policy_changed';
+    properties: {
+        url: string;
+        changedKeys: Array<string>;
+        hash: string;
+    };
+};
+export type EventFileWatcherUpdated = {
+    type: 'file.watcher.updated';
+    properties: {
+        file: string;
+        event: 'add' | 'change' | 'unlink';
+    };
+};
+export type EventConfigChanged = {
+    type: 'config.changed';
+    properties: {
+        file: string;
+        source: string;
+    };
+};
+export type QuestionOption = {
+    /**
+     * Display text (1-5 words, concise)
+     */
+    label: string;
+    /**
+     * Explanation of choice
+     */
+    description: string;
+};
+export type QuestionInfo = {
+    /**
+     * Complete question
+     */
+    question: string;
+    /**
+     * Very short label shown as a tab/chip (about 12 chars; longer is truncated). Examples: "Auth method", "Library", "Approach".
+     */
+    header: string;
+    /**
+     * Available choices (2-4, distinct; do NOT include an 'Other' option — it is added automatically)
+     */
+    options: Array<QuestionOption>;
+    /**
+     * Allow selecting multiple choices (phrase the question accordingly)
+     */
+    multiple?: boolean;
+};
+export type QuestionRequest = {
+    id: string;
+    sessionID: string;
+    /**
+     * Questions to ask
+     */
+    questions: Array<QuestionInfo>;
+    tool?: {
+        messageID: string;
+        callID: string;
+    };
+};
+export type EventQuestionAsked = {
+    type: 'question.asked';
+    properties: QuestionRequest;
+};
+export type QuestionAnswer = Array<string>;
+export type EventQuestionReplied = {
+    type: 'question.replied';
+    properties: {
+        sessionID: string;
+        requestID: string;
+        answers: Array<QuestionAnswer>;
+    };
+};
+export type EventQuestionRejected = {
+    type: 'question.rejected';
+    properties: {
+        sessionID: string;
+        requestID: string;
+    };
+};
+export type SessionStatus = {
+    type: 'idle';
+} | {
+    type: 'retry';
+    attempt: number;
+    message: string;
+    next: number;
+} | {
+    type: 'busy';
+};
+export type EventSessionStatus = {
+    type: 'session.status';
+    properties: {
+        sessionID: string;
+        status: SessionStatus;
+    };
+};
+export type EventSessionIdle = {
+    type: 'session.idle';
+    properties: {
+        sessionID: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It is memory-v2 telemetry, not a supported integration point — counts and timings are also written to the `memory` service log. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventMemoryExtractionCompleted = {
+    type: 'memory.extraction.completed';
+    properties: {
+        sessionID: string;
+        facts: number;
+        topics: number;
+        skipped: boolean;
+        ms: number;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It is memory-v2 telemetry, not a supported integration point — counts and timings are also written to the `memory` service log. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventMemoryConsolidationCompleted = {
+    type: 'memory.consolidation.completed';
+    properties: {
+        factsBefore: number;
+        factsAfter: number;
+        topicsDeleted: number;
+        topicsWritten: number;
+        ms: number;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It is memory-v2 telemetry, not a supported integration point — counts and timings are also written to the `memory` service log. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventMemoryRecallCompleted = {
+    type: 'memory.recall.completed';
+    properties: {
+        sessionID: string;
+        candidates: number;
+        selected: number;
+        dedupeExcluded: number;
+        ms: number;
+    };
+};
+export type PermissionRequest = {
+    id: string;
+    sessionID: string;
+    permission: string;
+    patterns: Array<string>;
+    metadata: {
+        [key: string]: unknown;
+    };
+    always: Array<string>;
+    tool?: {
+        messageID: string;
+        callID: string;
+    };
+};
+export type EventPermissionAsked = {
+    type: 'permission.asked';
+    properties: PermissionRequest;
+};
+export type EventPermissionReplied = {
+    type: 'permission.replied';
+    properties: {
+        sessionID: string;
+        requestID: string;
+        reply: 'once' | 'always' | 'reject';
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It fires on an MCP `notifications/tools/list_changed` and on config reload, and only carries a server name — the cache is already invalidated by the time it is published, so re-reading the tool list is enough. Note `mcp.status.changed` is NOT a drop-in replacement: it tracks connection state, not tool-list changes. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventMcpToolsChanged = {
+    type: 'mcp.tools.changed';
+    properties: {
+        server: string;
+    };
+};
+export type McpStatusConnected = {
+    status: 'connected';
+};
+export type McpStatusDisabled = {
+    status: 'disabled';
+};
+export type McpStatusFailed = {
+    status: 'failed';
+    error: string;
+};
+export type McpStatusNeedsAuth = {
+    status: 'needs_auth';
+};
+export type McpStatusNeedsApproval = {
+    status: 'needs_approval';
+};
+export type McpStatusNeedsClientRegistration = {
+    status: 'needs_client_registration';
+    error: string;
+};
+export type McpStatusPending = {
+    status: 'pending';
+    attempt: number;
+};
+export type McpStatus = McpStatusConnected | McpStatusDisabled | McpStatusFailed | McpStatusNeedsAuth | McpStatusNeedsApproval | McpStatusNeedsClientRegistration | McpStatusPending;
+export type EventMcpStatusChanged = {
+    type: 'mcp.status.changed';
+    properties: {
+        status: {
+            [key: string]: McpStatus;
+        };
+    };
+};
+/**
+ * Deprecated: no consumer reads this event, and there is no HTTP route or SDK method behind it — schedules are managed only through the `schedule` tool. A fired schedule surfaces as an ordinary session (`session.created`, then `session.idle` when it finishes). Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventScheduleCreated = {
+    type: 'schedule.created';
+    properties: {
+        info: {
+            id: string;
+            title: string;
+            prompt: string;
+            /**
+             * project directory this task runs in
+             */
+            directory: string;
+            agent?: string;
+            spec: {
+                type: 'once';
+                /**
+                 * epoch ms to run once
+                 */
+                at: number;
+            } | {
+                type: 'every';
+                /**
+                 * interval in ms
+                 */
+                ms: number;
+            } | {
+                type: 'cron';
+                /**
+                 * 5-field cron expression
+                 */
+                expr: string;
+            };
+            enabled: boolean;
+            createdAt: number;
+            lastRun?: number;
+            nextRun: number | null;
+            runCount: number;
+            lastError?: string;
+        };
+    };
+};
+/**
+ * Deprecated: no consumer reads this event, and there is no HTTP route or SDK method behind it — schedules are managed only through the `schedule` tool. A fired schedule surfaces as an ordinary session (`session.created`, then `session.idle` when it finishes). Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventScheduleUpdated = {
+    type: 'schedule.updated';
+    properties: {
+        info: {
+            id: string;
+            title: string;
+            prompt: string;
+            /**
+             * project directory this task runs in
+             */
+            directory: string;
+            agent?: string;
+            spec: {
+                type: 'once';
+                /**
+                 * epoch ms to run once
+                 */
+                at: number;
+            } | {
+                type: 'every';
+                /**
+                 * interval in ms
+                 */
+                ms: number;
+            } | {
+                type: 'cron';
+                /**
+                 * 5-field cron expression
+                 */
+                expr: string;
+            };
+            enabled: boolean;
+            createdAt: number;
+            lastRun?: number;
+            nextRun: number | null;
+            runCount: number;
+            lastError?: string;
+        };
+    };
+};
+/**
+ * Deprecated: no consumer reads this event, and there is no HTTP route or SDK method behind it — schedules are managed only through the `schedule` tool. A fired schedule surfaces as an ordinary session (`session.created`, then `session.idle` when it finishes). Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventScheduleRemoved = {
+    type: 'schedule.removed';
+    properties: {
+        id: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event, and there is no HTTP route or SDK method behind it — schedules are managed only through the `schedule` tool. A fired schedule surfaces as an ordinary session (`session.created`, then `session.idle` when it finishes). Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventScheduleFired = {
+    type: 'schedule.fired';
+    properties: {
+        id: string;
+        sessionID: string;
+    };
+};
+export type EventLspClientDiagnostics = {
+    type: 'lsp.client.diagnostics';
+    properties: {
+        serverID: string;
+        path: string;
+    };
+};
+export type EventLspUpdated = {
+    type: 'lsp.updated';
+    properties: {
+        [key: string]: unknown;
+    };
+};
+export type FileDiff = {
+    file: string;
+    before: string;
+    after: string;
+    additions: number;
+    deletions: number;
+};
+export type UserMessage = {
+    id: string;
+    sessionID: string;
+    role: 'user';
+    time: {
+        created: number;
+    };
+    summary?: {
+        title?: string;
+        body?: string;
+        diffs: Array<FileDiff>;
+    };
+    agent: string;
+    model: {
+        providerID: string;
+        modelID: string;
+    };
+    system?: string;
+    systemOverride?: string;
+    tools?: {
+        [key: string]: boolean;
+    };
+    variant?: string;
+};
+export type ProviderAuthError = {
+    name: 'ProviderAuthError';
+    data: {
+        providerID: string;
+        message: string;
+    };
+};
+export type UnknownError = {
+    name: 'UnknownError';
+    data: {
+        message: string;
+    };
+};
+export type MessageOutputLengthError = {
+    name: 'MessageOutputLengthError';
+    data: {
+        message?: string;
+    };
+};
+export type MessageAbortedError = {
+    name: 'MessageAbortedError';
+    data: {
+        message: string;
+    };
+};
+export type ApiError = {
+    name: 'APIError';
+    data: {
+        message: string;
+        statusCode?: number;
+        isRetryable: boolean;
+        responseHeaders?: {
+            [key: string]: string;
+        };
+        responseBody?: string;
+        metadata?: {
+            [key: string]: string;
+        };
+    };
+};
+export type AssistantMessage = {
+    id: string;
+    sessionID: string;
+    role: 'assistant';
+    time: {
+        created: number;
+        completed?: number;
+    };
+    error?: ProviderAuthError | UnknownError | MessageOutputLengthError | MessageAbortedError | ApiError;
+    parentID: string;
+    modelID: string;
+    providerID: string;
+    mode: string;
+    agent: string;
+    path: {
+        cwd: string;
+        root: string;
+    };
+    summary?: boolean;
+    cost: number;
+    tokens: {
+        input: number;
+        output: number;
+        reasoning: number;
+        cache: {
+            read: number;
+            write: number;
+        };
+    };
+    finish?: string;
+};
+export type Message = UserMessage | AssistantMessage;
+export type EventMessageUpdated = {
+    type: 'message.updated';
+    properties: {
+        info: Message;
+    };
+};
+export type EventMessageRemoved = {
+    type: 'message.removed';
+    properties: {
+        sessionID: string;
+        messageID: string;
+    };
+};
+export type TextPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'text';
+    text: string;
+    synthetic?: boolean;
+    ignored?: boolean;
+    time?: {
+        start: number;
+        end?: number;
+    };
+    metadata?: {
+        [key: string]: unknown;
+    };
+};
+export type ReasoningPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'reasoning';
+    text: string;
+    metadata?: {
+        [key: string]: unknown;
+    };
+    time: {
+        start: number;
+        end?: number;
+    };
+};
+export type FilePartSourceText = {
+    value: string;
+    start: number;
+    end: number;
+};
+export type FileSource = {
+    text: FilePartSourceText;
+    type: 'file';
+    path: string;
+};
+export type Range = {
+    start: {
+        line: number;
+        character: number;
+    };
+    end: {
+        line: number;
+        character: number;
+    };
+};
+export type SymbolSource = {
+    text: FilePartSourceText;
+    type: 'symbol';
+    path: string;
+    range: Range;
+    name: string;
+    kind: number;
+};
+export type ResourceSource = {
+    text: FilePartSourceText;
+    type: 'resource';
+    clientName: string;
+    uri: string;
+};
+export type FilePartSource = FileSource | SymbolSource | ResourceSource;
+export type FilePart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'file';
+    mime: string;
+    filename?: string;
+    url: string;
+    source?: FilePartSource;
+};
+export type ToolStatePending = {
+    status: 'pending';
+    input: {
+        [key: string]: unknown;
+    };
+    raw: string;
+};
+export type ToolStateRunning = {
+    status: 'running';
+    input: {
+        [key: string]: unknown;
+    };
+    title?: string;
+    metadata?: {
+        [key: string]: unknown;
+    };
+    time: {
+        start: number;
+    };
+};
+export type ToolStateCompleted = {
+    status: 'completed';
+    input: {
+        [key: string]: unknown;
+    };
+    output: string;
+    title: string;
+    metadata: {
+        [key: string]: unknown;
+    };
+    time: {
+        start: number;
+        end: number;
+        compacted?: number;
+        inputCompacted?: number;
+    };
+    attachments?: Array<FilePart>;
+};
+export type ToolStateError = {
+    status: 'error';
+    input: {
+        [key: string]: unknown;
+    };
+    error: string;
+    metadata?: {
+        [key: string]: unknown;
+    };
+    time: {
+        start: number;
+        end: number;
+    };
+};
+export type ToolState = ToolStatePending | ToolStateRunning | ToolStateCompleted | ToolStateError;
+export type ToolPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'tool';
+    callID: string;
+    tool: string;
+    state: ToolState;
+    metadata?: {
+        [key: string]: unknown;
+    };
+};
+export type StepStartPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'step-start';
+    snapshot?: string;
+};
+export type StepFinishPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'step-finish';
+    reason: string;
+    snapshot?: string;
+    cost: number;
+    tokens: {
+        input: number;
+        output: number;
+        reasoning: number;
+        cache: {
+            read: number;
+            write: number;
+        };
+    };
+};
+export type SnapshotPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'snapshot';
+    snapshot: string;
+};
+export type PatchPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'patch';
+    hash: string;
+    files: Array<string>;
+};
+export type AgentPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'agent';
+    name: string;
+    source?: {
+        value: string;
+        start: number;
+        end: number;
+    };
+};
+export type RetryPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'retry';
+    attempt: number;
+    error: ApiError;
+    time: {
+        created: number;
+    };
+};
+export type CompactionPart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'compaction';
+    auto: boolean;
+    customInstructions?: string;
+};
+export type TombstoneReason = 'compacted' | 'superseded' | 'expired' | 'budget' | 'orphaned' | 'reverted' | 'cleared';
+export type TombstonePart = {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'tombstone';
+    original: string;
+    kind: string;
+    tool?: string;
+    bytes: number;
+    reason: TombstoneReason;
+    retrieval?: string;
+    text: string;
+    time: {
+        created: number;
+    };
+};
+export type Part = TextPart | {
+    id: string;
+    sessionID: string;
+    messageID: string;
+    type: 'subtask';
+    prompt: string;
+    description: string;
+    agent: string;
+    command?: string;
+} | ReasoningPart | FilePart | ToolPart | StepStartPart | StepFinishPart | SnapshotPart | PatchPart | AgentPart | RetryPart | CompactionPart | TombstonePart;
+export type EventMessagePartUpdated = {
+    type: 'message.part.updated';
+    properties: {
+        part: Part;
+        delta?: string;
+    };
+};
+export type EventMessagePartRemoved = {
+    type: 'message.part.removed';
+    properties: {
+        sessionID: string;
+        messageID: string;
+        partID: string;
+    };
+};
+export type Todo = {
+    /**
+     * Brief description of the task
+     */
+    content: string;
+    /**
+     * Present-continuous form of the task for display while in_progress (e.g. 'Running tests' for 'Run tests'). Optional — only needed when a natural present-continuous phrasing differs meaningfully from content.
+     */
+    activeForm?: string;
+    /**
+     * Current status of the task: pending, in_progress, completed, cancelled
+     */
+    status: string;
+    /**
+     * Priority level of the task: high, medium, low
+     */
+    priority: string;
+    /**
+     * Unique identifier for the todo item
+     */
+    id: string;
+    /**
+     * ids of tasks this task blocks (they wait on this one)
+     */
+    blocks?: Array<string>;
+    /**
+     * ids of tasks that must complete before this one can start
+     */
+    blocked_by?: Array<string>;
+};
+export type EventTodoUpdated = {
+    type: 'todo.updated';
+    properties: {
+        sessionID: string;
+        todos: Array<Todo>;
+    };
+};
+export type EventSessionCompacted = {
+    type: 'session.compacted';
+    properties: {
+        sessionID: string;
+        layer: string;
+        tokensBefore?: number;
+        tokensAfter?: number;
+        tokensFreed?: number;
+        durationMs?: number;
+        summarizerInputTokens?: number;
+        summarizerOutputTokens?: number;
+        summarizerCost?: number;
+    };
+};
+export type EventSessionCompactionFailed = {
+    type: 'session.compaction.failed';
+    properties: {
+        sessionID: string;
+        layer: string;
+        error: string;
+        consecutiveFailures: number;
+    };
+};
+export type EventCommandExecuted = {
+    type: 'command.executed';
+    properties: {
+        name: string;
+        sessionID: string;
+        arguments: string;
+        messageID: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. A created thread is observable through the child session it drives (`session.created`) and through `agent.thread.completed` / `agent.thread.error` when it finishes. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentThreadCreated = {
+    type: 'agent.thread.created';
+    properties: {
+        id: string;
+        parentID?: string;
+        nickname: string;
+        role?: string;
+        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        depth: number;
+        created: number;
+        completed?: number;
+        error?: string;
+    };
+};
+export type EventAgentThreadCompleted = {
+    type: 'agent.thread.completed';
+    properties: {
+        id: string;
+        parentID?: string;
+        nickname: string;
+        role?: string;
+        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        depth: number;
+        created: number;
+        completed?: number;
+        error?: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. Interruption is already reported by `session.status` on the interrupted session. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentThreadInterrupted = {
+    type: 'agent.thread.interrupted';
+    properties: {
+        id: string;
+        parentID?: string;
+        nickname: string;
+        role?: string;
+        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        depth: number;
+        created: number;
+        completed?: number;
+        error?: string;
+    };
+};
+export type EventAgentThreadError = {
+    type: 'agent.thread.error';
+    properties: {
+        id: string;
+        parentID?: string;
+        nickname: string;
+        role?: string;
+        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        depth: number;
+        created: number;
+        completed?: number;
+        error?: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. The spawn that hit the limit fails with an error the caller already sees. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentLimitReached = {
+    type: 'agent.limit.reached';
+    properties: {
+        maxThreads: number;
+        activeThreads: number;
+    };
+};
+export type EventTaskCreated = {
+    type: 'task.created';
+    properties: {
+        id: string;
+        sessionID: string;
+        messageID: string;
+        partID: string;
+        command: string;
+        status: 'running' | 'completed' | 'failed' | 'aborted';
+        pid?: number;
+        exitCode?: number;
+        outputFilePath?: string;
+        startTime: number;
+        endTime?: number;
+        isBackground?: boolean;
+        error?: string;
+    };
+};
+export type EventTaskUpdated = {
+    type: 'task.updated';
+    properties: {
+        id: string;
+        sessionID: string;
+        messageID: string;
+        partID: string;
+        command: string;
+        status: 'running' | 'completed' | 'failed' | 'aborted';
+        pid?: number;
+        exitCode?: number;
+        outputFilePath?: string;
+        startTime: number;
+        endTime?: number;
+        isBackground?: boolean;
+        error?: string;
+    };
+};
+export type EventTaskRemoved = {
+    type: 'task.removed';
+    properties: {
+        id: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It only signals which running task the tool call is currently attached to, carries nothing but an id, and is not published alongside a `task.updated`, so it cannot be reconstructed from the task list. No replacement — it is going away. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventTaskActivated = {
+    type: 'task.activated';
+    properties: {
+        id: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. `sendToBackground` writes the task first, so the same transition already arrives as a `task.updated` with `isBackground: true` — watch that instead. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventTaskBackgrounded = {
+    type: 'task.backgrounded';
+    properties: {
+        id: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It only signals which running task the tool call is currently attached to, carries nothing but an id, and is not published alongside a `task.updated`, so it cannot be reconstructed from the task list. No replacement — it is going away. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventTaskDeactivated = {
+    type: 'task.deactivated';
+    properties: {
+        id: string;
+    };
+};
+export type Workitem = {
+    /**
+     * Unique work-item id (tsk_…)
+     */
+    id: string;
+    /**
+     * A brief title for the work item
+     */
+    subject: string;
+    /**
+     * What needs to be done
+     */
+    description: string;
+    /**
+     * Present-continuous form shown while in_progress (e.g. 'Running tests')
+     */
+    activeForm?: string;
+    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+    /**
+     * Session id of the agent that claimed this item
+     */
+    owner?: string;
+    /**
+     * ids of items this item blocks (they wait on this one)
+     */
+    blocks: Array<string>;
+    /**
+     * ids of items that must complete before this one can start
+     */
+    blocked_by: Array<string>;
+    /**
+     * Arbitrary metadata attached to the item
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    created: number;
+    updated: number;
+};
+export type EventAgentWorkitemUpdated = {
+    type: 'agent.workitem.updated';
+    properties: {
+        items: Array<Workitem>;
+    };
+};
+/**
+ * Deprecated: coordinator-internal telemetry with no consumer. Track dispatched work through the child sessions themselves (`session.created`, `session.status`, `session.idle`) or the `task.*` events. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentCoordinatorEnabled = {
+    type: 'agent.coordinator.enabled';
+    properties: {
+        sessionID: string;
+    };
+};
+/**
+ * Deprecated: coordinator-internal telemetry with no consumer. Track dispatched work through the child sessions themselves (`session.created`, `session.status`, `session.idle`) or the `task.*` events. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentCoordinatorDisabled = {
+    type: 'agent.coordinator.disabled';
+    properties: {
+        sessionID: string;
+    };
+};
+/**
+ * Deprecated: coordinator-internal telemetry with no consumer. Track dispatched work through the child sessions themselves (`session.created`, `session.status`, `session.idle`) or the `task.*` events. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentCoordinatorDispatched = {
+    type: 'agent.coordinator.dispatched';
+    properties: {
+        sessionID: string;
+        taskID: string;
+        workerSessionID?: string;
+        agent?: string;
+        description: string;
+    };
+};
+/**
+ * Deprecated: coordinator-internal telemetry with no consumer. Track dispatched work through the child sessions themselves (`session.created`, `session.status`, `session.idle`) or the `task.*` events. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentCoordinatorDispatchUpdated = {
+    type: 'agent.coordinator.dispatch_updated';
+    properties: {
+        sessionID: string;
+        taskID: string;
+        status: 'running' | 'completed' | 'failed' | 'stopped';
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. The notification queue is an internal hand-off — a queued notification reaches the user as part of the next assistant turn, observable through `message.part.updated`. No direct replacement. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventSessionNotificationQueued = {
+    type: 'session.notification.queued';
+    properties: {
+        sessionID: string;
+        taskID: string;
+        priority: 'now' | 'next' | 'later';
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. The notification queue is an internal hand-off — a queued notification reaches the user as part of the next assistant turn, observable through `message.part.updated`. No direct replacement. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventSessionNotificationDrained = {
+    type: 'session.notification.drained';
+    properties: {
+        sessionID: string;
+        count: number;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It carries a short progress label for a batch of tool calls, and it was always intended for clients rather than the TUI — but nothing has ever consumed it. The same information is derivable from the `message.part.updated` tool parts. Scheduled for removal in the next major unless a consumer is written first; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventSessionToolSummary = {
+    type: 'session.tool_summary';
+    properties: {
+        sessionID: string;
+        summary: string;
+        messageID?: string;
+    };
+};
+export type EventSessionBudgetCompleted = {
+    type: 'session.budget.completed';
+    properties: {
+        sessionID: string;
+        continuationCount: number;
+        pct: number;
+        turnTokens: number;
+        budget: number;
+        diminishingReturns: boolean;
+        durationMs: number;
+    };
+};
+export type EventSessionPromptSuggestion = {
+    type: 'session.prompt_suggestion';
+    properties: {
+        sessionID: string;
+        suggestion: string;
+        variant: 'user_intent' | 'stated_intent';
+    };
+};
+export type EventFileEdited = {
+    type: 'file.edited';
+    properties: {
+        file: string;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. Team membership is state, not a stream — read it back through the `team` tool. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentTeamCreated = {
+    type: 'agent.team.created';
+    properties: {
+        name: string;
+        members: Array<string>;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. Team membership is state, not a stream — read it back through the `team` tool. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventAgentTeamDeleted = {
+    type: 'agent.team.deleted';
+    properties: {
+        name: string;
+    };
+};
+export type PermissionAction = 'allow' | 'deny' | 'ask';
+export type PermissionRule = {
+    permission: string;
+    pattern: string;
+    action: PermissionAction;
+};
+export type PermissionRuleset = Array<PermissionRule>;
+export type PermissionMode = 'default' | 'acceptEdits' | 'plan' | 'auto' | 'bypassPermissions';
+export type Session = {
+    id: string;
+    projectID: string;
+    directory: string;
+    parentID?: string;
+    summary?: {
+        additions: number;
+        deletions: number;
+        files: number;
+        diffs?: Array<FileDiff>;
+    };
+    share?: {
+        url: string;
+    };
+    title: string;
+    version: string;
+    time: {
+        created: number;
+        updated: number;
+        compacting?: number;
+        archived?: number;
+    };
+    cost?: number;
+    permission?: PermissionRuleset;
+    permissionMode?: PermissionMode;
+    contentReplacements?: Array<{
+        kind: 'tool-result' | 'tool-input';
+        toolUseId: string;
+        replacement: string;
+    }>;
+    revert?: {
+        messageID: string;
+        partID?: string;
+        snapshot?: string;
+        diff?: string;
+    };
+};
+export type EventSessionCreated = {
+    type: 'session.created';
+    properties: {
+        info: Session;
+    };
+};
+export type EventSessionUpdated = {
+    type: 'session.updated';
+    properties: {
+        info: Session;
+    };
+};
+export type EventSessionDeleted = {
+    type: 'session.deleted';
+    properties: {
+        info: Session;
+    };
+};
+export type EventSessionDiff = {
+    type: 'session.diff';
+    properties: {
+        sessionID: string;
+        diff: Array<FileDiff>;
+    };
+};
+export type EventSessionError = {
+    type: 'session.error';
+    properties: {
+        sessionID?: string;
+        error?: ProviderAuthError | UnknownError | MessageOutputLengthError | MessageAbortedError | ApiError;
+    };
+};
+export type EventSessionVerificationVerdict = {
+    type: 'session.verification_verdict';
+    properties: {
+        sessionID: string;
+        verdict: 'pass' | 'fail';
+        source?: string;
+    };
+};
+export type EventVcsBranchUpdated = {
+    type: 'vcs.branch.updated';
+    properties: {
+        branch?: string;
+    };
+};
+export type EventTuiPromptAppend = {
+    type: 'tui.prompt.append';
+    properties: {
+        text: string;
+    };
+};
+export type EventTuiCommandExecute = {
+    type: 'tui.command.execute';
+    properties: {
+        command: 'session.list' | 'session.new' | 'session.share' | 'session.interrupt' | 'session.compact' | 'session.page.up' | 'session.page.down' | 'session.half.page.up' | 'session.half.page.down' | 'session.first' | 'session.last' | 'prompt.clear' | 'prompt.submit' | 'agent.cycle' | string;
+    };
+};
+export type EventTuiToastShow = {
+    type: 'tui.toast.show';
+    properties: {
+        title?: string;
+        message: string;
+        variant: 'info' | 'success' | 'warning' | 'error';
+        /**
+         * Duration in milliseconds
+         */
+        duration?: number;
+    };
+};
+export type EventTuiSessionSelect = {
+    type: 'tui.session.select';
+    properties: {
+        /**
+         * Session ID to navigate to
+         */
+        sessionID: string;
+    };
+};
+export type Pty = {
+    id: string;
+    title: string;
+    command: string;
+    args: Array<string>;
+    cwd: string;
+    status: 'running' | 'exited';
+    pid: number;
+};
+/**
+ * Deprecated: no consumer reads this event — the PTY WebSocket at `GET /pty/{ptyID}/connect` reports session lifecycle to the only client that has ever used it. Poll `GET /pty` for the session list. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventPtyCreated = {
+    type: 'pty.created';
+    properties: {
+        info: Pty;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event — the PTY WebSocket at `GET /pty/{ptyID}/connect` reports session lifecycle to the only client that has ever used it. Poll `GET /pty` for the session list. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventPtyUpdated = {
+    type: 'pty.updated';
+    properties: {
+        info: Pty;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event — the PTY WebSocket at `GET /pty/{ptyID}/connect` reports session lifecycle to the only client that has ever used it. Poll `GET /pty` for the session list. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventPtyExited = {
+    type: 'pty.exited';
+    properties: {
+        id: string;
+        exitCode: number;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event — the PTY WebSocket at `GET /pty/{ptyID}/connect` reports session lifecycle to the only client that has ever used it. Poll `GET /pty` for the session list. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventPtyDeleted = {
+    type: 'pty.deleted';
+    properties: {
+        id: string;
+    };
+};
+export type EventServerConnected = {
+    type: 'server.connected';
+    properties: {
+        [key: string]: unknown;
+    };
+};
+export type EventServerInstanceDisposed = {
+    type: 'server.instance.disposed';
+    properties: {
+        [key: string]: unknown;
+    };
+};
+/**
+ * Deprecated: no consumer reads this event. It is emitted once on `POST /global/dispose`, which itself has no caller in this repo, and it carries no payload. Per-instance disposal is reported by `server.instance.disposed`, which is consumed and is not going away. Scheduled for removal in the next major; still emitted until then.
+ *
+ * @deprecated
+ */
+export type EventGlobalDisposed = {
+    type: 'global.disposed';
+    properties: {
+        [key: string]: unknown;
+    };
+};
+export type EventSwarmMessageReceived = {
+    type: 'swarm.message.received';
+    properties: {
+        id: string;
+        from: string;
+        to: string;
+        type: string;
+        payload?: unknown;
+        time: number;
+    };
+};
+export type EventSwarmMailboxMessage = {
+    type: 'swarm.mailbox.message';
+    properties: {
+        id: string;
+        from: string;
+        to: string;
+        type: string;
+        payload?: unknown;
+        time: number;
+    };
+};
+export type Event = EventFlagRefreshed | EventInstallationUpdated | EventInstallationUpdateAvailable | EventProjectUpdated | EventConfigManagedPolicyChanged | EventFileWatcherUpdated | EventConfigChanged | EventQuestionAsked | EventQuestionReplied | EventQuestionRejected | EventSessionStatus | EventSessionIdle | EventMemoryExtractionCompleted | EventMemoryConsolidationCompleted | EventMemoryRecallCompleted | EventPermissionAsked | EventPermissionReplied | EventMcpToolsChanged | EventMcpStatusChanged | EventScheduleCreated | EventScheduleUpdated | EventScheduleRemoved | EventScheduleFired | EventLspClientDiagnostics | EventLspUpdated | EventMessageUpdated | EventMessageRemoved | EventMessagePartUpdated | EventMessagePartRemoved | EventTodoUpdated | EventSessionCompacted | EventSessionCompactionFailed | EventCommandExecuted | EventAgentThreadCreated | EventAgentThreadCompleted | EventAgentThreadInterrupted | EventAgentThreadError | EventAgentLimitReached | EventTaskCreated | EventTaskUpdated | EventTaskRemoved | EventTaskActivated | EventTaskBackgrounded | EventTaskDeactivated | EventAgentWorkitemUpdated | EventAgentCoordinatorEnabled | EventAgentCoordinatorDisabled | EventAgentCoordinatorDispatched | EventAgentCoordinatorDispatchUpdated | EventSessionNotificationQueued | EventSessionNotificationDrained | EventSessionToolSummary | EventSessionBudgetCompleted | EventSessionPromptSuggestion | EventFileEdited | EventAgentTeamCreated | EventAgentTeamDeleted | EventSessionCreated | EventSessionUpdated | EventSessionDeleted | EventSessionDiff | EventSessionError | EventSessionVerificationVerdict | EventVcsBranchUpdated | EventTuiPromptAppend | EventTuiCommandExecute | EventTuiToastShow | EventTuiSessionSelect | EventPtyCreated | EventPtyUpdated | EventPtyExited | EventPtyDeleted | EventServerConnected | EventServerInstanceDisposed | EventGlobalDisposed | EventSwarmMessageReceived | EventSwarmMailboxMessage;
+export type GlobalEvent = {
+    directory: string;
+    payload: Event;
+};
+export type BadRequestError = {
+    data: unknown;
+    errors: Array<{
+        [key: string]: unknown;
+    }>;
+    success: false;
+};
+export type NotFoundError = {
+    name: 'NotFoundError';
+    data: {
+        message: string;
+    };
+};
+export type InstalledPlugin = {
+    name: string;
+    version?: string;
+    description?: string;
+    author?: string;
+    root: string;
+    enabled: boolean;
+    source?: string;
+    components: {
+        [key: string]: number;
+    };
+};
+export type DiscoverPlugin = {
+    name: string;
+    source: string;
+    description?: string;
+    version?: string;
+    author?: string;
+    installs?: number;
+    marketplace: string;
+    marketplaceSpec: string;
+};
+export type PluginError = {
+    dir: string;
+    reason: string;
+};
+export type PluginReloadResult = {
+    plugins: number;
+    commands: number;
+    agents: number;
+    skills: number;
+    hooks: number;
+    mcp: number;
+    lsp: number;
+};
+export type PluginInstallResult = {
+    name: string;
+    version?: string;
+};
+export type TrustStatus = {
+    trusted: boolean;
+    directory: string;
+    home: boolean;
+    hasMcpJson: boolean;
+    hasProjectConfig: boolean;
+};
+export type RemoteBridgeEnrollment = {
+    token: string;
+    deviceID: string;
+    protocol: number;
+    path: string;
+    expiresAt: number;
+};
+export type RemoteBridgeDevice = {
+    id: string;
+    name?: string;
+    createdAt: number;
+    lastSeenAt?: number;
+    revokedAt?: number;
+};
+/**
+ * Remap keyboard shortcuts. Every action listed here has a default; only the ones you set are overridden. Use <leader> to build on the leader key, separate alternatives with commas to bind several chords to one action, and set "none" to leave an action unbound.
+ */
+export type KeybindsConfig = {
+    /**
+     * Prefix key that opens a two-key chord. Press it, then the second key within 2 seconds; every `<leader>…` binding below is built on it.
+     */
+    leader?: string;
+    /**
+     * Quit 100xprompt. In the prompt it only quits when the input is empty — with text typed, ctrl+c hits `input_clear` first and just clears it. Inside a dialog or a permission prompt this key cancels instead of quitting.
+     */
+    app_exit?: string;
+    /**
+     * Open the current prompt in $EDITOR. Whatever you save comes back into the prompt, and @file/@agent mentions are re-anchored to wherever their text ended up.
+     */
+    editor_open?: string;
+    /**
+     * Open the theme picker.
+     */
+    theme_list?: string;
+    /**
+     * Show or hide the scrollbar alongside the session transcript.
+     */
+    scrollbar_toggle?: string;
+    /**
+     * Accepted for compatibility but currently inert — nothing in the TUI reads this binding. Background tasks are reached from the command palette ("Background tasks").
+     */
+    task_background?: string;
+    /**
+     * Accepted for compatibility but currently inert — this build has no username display to toggle and nothing reads this binding.
+     */
+    username_toggle?: string;
+    /**
+     * Open the status panel: version, providers, connected MCP servers and the active directories.
+     */
+    status_view?: string;
+    /**
+     * Export the transcript as Markdown. Asks what to include, writes the file into the current directory and opens it in $EDITOR; edits you make there are saved back to the file.
+     */
+    session_export?: string;
+    /**
+     * Start a new session, carrying anything already typed in the prompt across to it.
+     */
+    session_new?: string;
+    /**
+     * Open the session switcher.
+     */
+    session_list?: string;
+    /**
+     * Open the message timeline and jump to any earlier point in the session.
+     */
+    session_timeline?: string;
+    /**
+     * Pick an earlier message and branch a new session from it, leaving this one intact.
+     */
+    session_fork?: string;
+    /**
+     * Rename the current session.
+     */
+    session_rename?: string;
+    /**
+     * Publish a share link for this session and copy it to the clipboard. Hidden when `share` is set to "disabled".
+     */
+    session_share?: string;
+    /**
+     * Revoke this session's share link.
+     */
+    session_unshare?: string;
+    /**
+     * Abort the turn in flight. Only active while the session is busy; in shell (!) mode it leaves shell mode instead.
+     */
+    session_interrupt?: string;
+    /**
+     * Summarize the session so far and carry on from the summary, reclaiming context. Needs a provider connected.
+     */
+    session_compact?: string;
+    /**
+     * Scroll the transcript up by half a viewport. (The name is inherited; the step really is half a screen, and `messages_half_page_up` is a quarter.)
+     */
+    messages_page_up?: string;
+    /**
+     * Scroll the transcript down by half a viewport. (The name is inherited; the step really is half a screen, and `messages_half_page_down` is a quarter.)
+     */
+    messages_page_down?: string;
+    /**
+     * Scroll the transcript up by a quarter of a viewport — half the step `messages_page_up` takes.
+     */
+    messages_half_page_up?: string;
+    /**
+     * Scroll the transcript down by a quarter of a viewport — half the step `messages_page_down` takes.
+     */
+    messages_half_page_down?: string;
+    /**
+     * Jump to the top of the transcript.
+     */
+    messages_first?: string;
+    /**
+     * Jump to the bottom of the transcript.
+     */
+    messages_last?: string;
+    /**
+     * Scroll to the next message boundary.
+     */
+    messages_next?: string;
+    /**
+     * Scroll to the previous message boundary.
+     */
+    messages_previous?: string;
+    /**
+     * Jump to the most recent message you actually typed, skipping synthetic and hidden text.
+     */
+    messages_last_user?: string;
+    /**
+     * Copy the last assistant message to the clipboard, also emitting OSC 52 so it works over SSH and inside tmux.
+     */
+    messages_copy?: string;
+    /**
+     * Roll the session back to before your previous message and restore that message's text and attachments into the prompt. Aborts the turn in flight first.
+     */
+    messages_undo?: string;
+    /**
+     * Step forward again after an undo, restoring the next message. Only available while a message is reverted.
+     */
+    messages_redo?: string;
+    /**
+     * Collapse or expand fenced code blocks in the transcript. Shares its default with `tips_toggle`, which is only live on the home screen, so the two never collide.
+     */
+    messages_toggle_conceal?: string;
+    /**
+     * Rate the last Auto-routed response as good (👍). Does nothing if the last response was not Auto-routed.
+     */
+    feedback_up?: string;
+    /**
+     * Rate the last Auto-routed response as bad (👎). Does nothing if the last response was not Auto-routed.
+     */
+    feedback_down?: string;
+    /**
+     * Show or hide the expanded output underneath each tool call.
+     */
+    tool_details?: string;
+    /**
+     * Open the model picker.
+     */
+    model_list?: string;
+    /**
+     * Switch to the next model in your recently-used list without opening the picker.
+     */
+    model_cycle_recent?: string;
+    /**
+     * Switch to the previous model in your recently-used list without opening the picker.
+     */
+    model_cycle_recent_reverse?: string;
+    /**
+     * Switch to the next favourited model. Warns if you have not starred any.
+     */
+    model_cycle_favorite?: string;
+    /**
+     * Switch to the previous favourited model. Warns if you have not starred any.
+     */
+    model_cycle_favorite_reverse?: string;
+    /**
+     * Open the command palette — every action in one searchable list.
+     */
+    command_list?: string;
+    /**
+     * Open the agent picker.
+     */
+    agent_list?: string;
+    /**
+     * Switch to the next agent.
+     */
+    agent_cycle?: string;
+    /**
+     * Switch to the previous agent.
+     */
+    agent_cycle_reverse?: string;
+    /**
+     * Cycle the session's permission mode: default → acceptEdits → auto → plan → back to default.
+     */
+    permission_mode_cycle?: string;
+    /**
+     * Cycle the model's thinking / reasoning-effort level: model default → each level the model offers → back to default. Does nothing on models with no levels.
+     */
+    variant_cycle?: string;
+    /**
+     * Clear the prompt. Only fires while there is text; on an empty prompt the same default falls through to `app_exit`.
+     */
+    input_clear?: string;
+    /**
+     * Paste the system clipboard into the prompt. An image on the clipboard is attached as a file part instead of pasted as text.
+     */
+    input_paste?: string;
+    /**
+     * Send the prompt.
+     */
+    input_submit?: string;
+    /**
+     * Insert a line break without sending.
+     */
+    input_newline?: string;
+    /**
+     * Move the cursor one character left.
+     */
+    input_move_left?: string;
+    /**
+     * Move the cursor one character right.
+     */
+    input_move_right?: string;
+    /**
+     * Move the cursor up one wrapped row.
+     */
+    input_move_up?: string;
+    /**
+     * Move the cursor down one wrapped row.
+     */
+    input_move_down?: string;
+    /**
+     * Inert. The prompt editor has no selection model, and unlike the other `input_select_*` keys this one is not wired to a cursor move either.
+     */
+    input_select_left?: string;
+    /**
+     * Inert. The prompt editor has no selection model, and unlike the other `input_select_*` keys this one is not wired to a cursor move either.
+     */
+    input_select_right?: string;
+    /**
+     * Moves the cursor up one wrapped row. The prompt editor has no selection model, so nothing is highlighted.
+     */
+    input_select_up?: string;
+    /**
+     * Moves the cursor down one wrapped row. The prompt editor has no selection model, so nothing is highlighted.
+     */
+    input_select_down?: string;
+    /**
+     * Move the cursor to the start of the current line.
+     */
+    input_line_home?: string;
+    /**
+     * Move the cursor to the end of the current line.
+     */
+    input_line_end?: string;
+    /**
+     * Moves the cursor to the start of the line — identical to `input_line_home`. The prompt editor has no selection model.
+     */
+    input_select_line_home?: string;
+    /**
+     * Moves the cursor to the end of the line — identical to `input_line_end`. The prompt editor has no selection model.
+     */
+    input_select_line_end?: string;
+    /**
+     * Move the cursor to the start of the current line. Identical to `input_line_home` today: this movement works on real lines, not wrapped rows.
+     */
+    input_visual_line_home?: string;
+    /**
+     * Move the cursor to the end of the current line. Identical to `input_line_end` today: this movement works on real lines, not wrapped rows.
+     */
+    input_visual_line_end?: string;
+    /**
+     * Moves the cursor to the start of the line — identical to `input_line_home`. No selection model, and no wrapped-row behaviour either.
+     */
+    input_select_visual_line_home?: string;
+    /**
+     * Moves the cursor to the end of the line — identical to `input_line_end`. No selection model, and no wrapped-row behaviour either.
+     */
+    input_select_visual_line_end?: string;
+    /**
+     * Move the cursor to the very start of the prompt.
+     */
+    input_buffer_home?: string;
+    /**
+     * Move the cursor to the very end of the prompt.
+     */
+    input_buffer_end?: string;
+    /**
+     * Moves the cursor to the very start of the prompt — identical to `input_buffer_home`. The prompt editor has no selection model.
+     */
+    input_select_buffer_home?: string;
+    /**
+     * Moves the cursor to the very end of the prompt — identical to `input_buffer_end`. The prompt editor has no selection model.
+     */
+    input_select_buffer_end?: string;
+    /**
+     * Delete from the cursor to the end of the line — the same edit as `input_delete_to_line_end`, despite the name. The whole line is not removed.
+     */
+    input_delete_line?: string;
+    /**
+     * Delete from the cursor to the end of the line.
+     */
+    input_delete_to_line_end?: string;
+    /**
+     * Delete from the start of the line up to the cursor.
+     */
+    input_delete_to_line_start?: string;
+    /**
+     * Delete the character before the cursor.
+     */
+    input_backspace?: string;
+    /**
+     * Delete the character after the cursor.
+     */
+    input_delete?: string;
+    /**
+     * Undo the last edit to the prompt text. This is the prompt's own edit history — to undo a sent message use `messages_undo`.
+     */
+    input_undo?: string;
+    /**
+     * Redo an edit to the prompt text undone by `input_undo`.
+     */
+    input_redo?: string;
+    /**
+     * Move the cursor one word right.
+     */
+    input_word_forward?: string;
+    /**
+     * Move the cursor one word left.
+     */
+    input_word_backward?: string;
+    /**
+     * Moves the cursor one word right — identical to `input_word_forward`. The prompt editor has no selection model.
+     */
+    input_select_word_forward?: string;
+    /**
+     * Moves the cursor one word left — identical to `input_word_backward`. The prompt editor has no selection model.
+     */
+    input_select_word_backward?: string;
+    /**
+     * Delete from the cursor forward to the end of the word.
+     */
+    input_delete_word_forward?: string;
+    /**
+     * Delete from the cursor back to the start of the word.
+     */
+    input_delete_word_backward?: string;
+    /**
+     * Recall the previous prompt you submitted. Only fires when the cursor is already at the very start of the prompt, so it never fights with cursor movement.
+     */
+    history_previous?: string;
+    /**
+     * Recall the next prompt in history. Only fires when the cursor is already at the very end of the prompt, so it never fights with cursor movement.
+     */
+    history_next?: string;
+    /**
+     * Move to the next sub-session spawned by this one.
+     */
+    session_child_cycle?: string;
+    /**
+     * Move to the previous sub-session spawned by this one.
+     */
+    session_child_cycle_reverse?: string;
+    /**
+     * Go back up to the session that spawned this one.
+     */
+    session_parent?: string;
+    /**
+     * Suspend to the shell (SIGTSTP). Bring it back with `fg` and the UI redraws.
+     */
+    terminal_suspend?: string;
+    /**
+     * Turn terminal window-title updates on or off. The choice is remembered between runs.
+     */
+    terminal_title_toggle?: string;
+    /**
+     * Show or hide the tips block on the home screen. Only bound on the home screen — inside a session the same default runs `messages_toggle_conceal`.
+     */
+    tips_toggle?: string;
+    /**
+     * Show or hide the companion sprite in the session view. The choice is remembered between runs.
+     */
+    sprites_toggle?: string;
+};
+/**
+ * Lowest severity written to the log file. DEBUG is the most detailed and ERROR the least.
+ */
+export type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
+/**
+ * Where the HTTP server binds and who may talk to it. Applies to `100xprompt serve` and anything else that starts the server.
+ */
+export type ServerConfig = {
+    /**
+     * Port the HTTP server binds to. Leave unset to try 4096 first and fall back to any free port. `--port` on the command line wins over this.
+     */
+    port?: number;
+    /**
+     * Address the HTTP server binds to. Defaults to 127.0.0.1, or 0.0.0.0 when `mdns` is on and no hostname is set here. `--hostname` on the command line wins over this.
+     */
+    hostname?: string;
+    /**
+     * Advertise the server over mDNS/Bonjour so other machines on the LAN can find it. Skipped with a warning if the server is bound to loopback, since nothing off-box could reach it anyway.
+     */
+    mdns?: boolean;
+    /**
+     * Extra origins allowed to call the HTTP server, matched exactly. localhost, 127.0.0.1, tauri://localhost and *.100xprompt.com/.ai are already allowed. Any `--cors` values are added to this list rather than replacing it.
+     */
+    cors?: Array<string>;
+};
+export type PermissionActionConfig = 'ask' | 'allow' | 'deny';
+export type PermissionObjectConfig = {
+    [key: string]: PermissionActionConfig;
+};
+export type PermissionRuleConfig = PermissionActionConfig | PermissionObjectConfig;
+/**
+ * What may run without asking. Each tool maps to allow (run silently), ask (prompt first) or deny (refuse outright); bash and edit can also take per-pattern rules so, say, `git status` is allowed while `git push` still prompts.
+ */
+export type PermissionConfig = {
+    __originalKeys?: Array<string>;
+    read?: PermissionRuleConfig;
+    edit?: PermissionRuleConfig;
+    glob?: PermissionRuleConfig;
+    grep?: PermissionRuleConfig;
+    list?: PermissionRuleConfig;
+    bash?: PermissionRuleConfig;
+    task?: PermissionRuleConfig;
+    external_directory?: PermissionRuleConfig;
+    todowrite?: PermissionActionConfig;
+    todoread?: PermissionActionConfig;
+    question?: PermissionActionConfig;
+    webfetch?: PermissionActionConfig;
+    websearch?: PermissionActionConfig;
+    codesearch?: PermissionActionConfig;
+    lsp?: PermissionRuleConfig;
+    doom_loop?: PermissionActionConfig;
+    /**
+     * Extra directories agents may operate in beyond the workspace root. Org policy can pin these as an immutable directory boundary.
+     */
+    additionalDirectories?: Array<string>;
+    /**
+     * Policy-pinned workspace root. Highest-precedence directory boundary; overrides the env var.
+     */
+    workspaceRoot?: string;
+    [key: string]: PermissionRuleConfig | Array<string> | PermissionActionConfig | Array<string> | string | undefined;
+} | PermissionActionConfig;
+export type AgentConfig = {
+    model?: string;
+    temperature?: number;
+    top_p?: number;
+    prompt?: string;
+    /**
+     * Superseded by `permission`. Kept working by translation: true becomes an allow rule and false a deny rule for that tool name, with write/edit/patch/multiedit all collapsing onto the single `edit` permission. Anything set in `permission` overrides the result, so prefer that.
+     */
+    tools?: {
+        [key: string]: boolean;
+    };
+    disable?: boolean;
+    /**
+     * Description of when to use the agent
+     */
+    description?: string;
+    mode?: 'subagent' | 'primary' | 'all';
+    /**
+     * Hide this subagent from the @ autocomplete menu (default: false, only applies to mode: subagent)
+     */
+    hidden?: boolean;
+    /**
+     * Use a slim system prompt when this agent runs as a spawned subagent: skips memory, mode prompts, and the full environment block (default: true for task-spawned subagents; set false to opt out)
+     */
+    slim?: boolean;
+    options?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Hex color code for the agent (e.g., #FF5733)
+     */
+    color?: string;
+    /**
+     * Maximum number of agentic iterations before forcing text-only response
+     */
+    steps?: number;
+    /**
+     * @deprecated Use 'steps' field instead.
+     */
+    maxSteps?: number;
+    permission?: PermissionConfig;
+    [key: string]: unknown | string | number | {
+        [key: string]: boolean;
+    } | boolean | 'subagent' | 'primary' | 'all' | {
+        [key: string]: unknown;
+    } | string | number | PermissionConfig | undefined;
+};
+export type ProviderConfig = {
+    api?: string;
+    name?: string;
+    env?: Array<string>;
+    id?: string;
+    npm?: string;
+    models?: {
+        [key: string]: {
+            id?: string;
+            name?: string;
+            family?: string;
+            release_date?: string;
+            attachment?: boolean;
+            reasoning?: boolean;
+            temperature?: boolean;
+            tool_call?: boolean;
+            interleaved?: true | {
+                field: 'reasoning_content' | 'reasoning_details';
+            };
+            cost?: {
+                input: number;
+                output: number;
+                cache_read?: number;
+                cache_write?: number;
+                context_over_200k?: {
+                    input: number;
+                    output: number;
+                    cache_read?: number;
+                    cache_write?: number;
+                };
+            };
+            limit?: {
+                context: number;
+                output: number;
+            };
+            modalities?: {
+                input: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
+                output: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
+            };
+            experimental?: boolean;
+            status?: 'alpha' | 'beta' | 'deprecated';
+            options?: {
+                [key: string]: unknown;
+            };
+            headers?: {
+                [key: string]: string;
+            };
+            provider?: {
+                npm: string;
+            };
+            /**
+             * Variant-specific configuration
+             */
+            variants?: {
+                [key: string]: {
+                    /**
+                     * Disable this variant for the model
+                     */
+                    disabled?: boolean;
+                    [key: string]: unknown | boolean | undefined;
+                };
+            };
+        };
+    };
+    whitelist?: Array<string>;
+    blacklist?: Array<string>;
+    options?: {
+        apiKey?: string;
+        baseURL?: string;
+        /**
+         * GitHub Enterprise URL for copilot authentication
+         */
+        enterpriseUrl?: string;
+        /**
+         * Enable promptCacheKey for this provider (default false)
+         */
+        setCacheKey?: boolean;
+        /**
+         * Timeout in milliseconds for requests to this provider. Default is 300000 (5 minutes). Set to false to disable timeout.
+         */
+        timeout?: number | false;
+        [key: string]: unknown | string | boolean | number | false | undefined;
+    };
+};
+export type McpLocalConfig = {
+    /**
+     * Type of MCP server connection
+     */
+    type: 'local';
+    /**
+     * Command and arguments to run the MCP server
+     */
+    command: Array<string>;
+    /**
+     * Environment variables to set when running the MCP server
+     */
+    environment?: {
+        [key: string]: string;
+    };
+    /**
+     * Enable or disable the MCP server on startup
+     */
+    enabled?: boolean;
+    /**
+     * Timeout in ms for fetching tools from the MCP server. Defaults to 5000 (5 seconds) if not specified.
+     */
+    timeout?: number;
+};
+export type McpOAuthConfig = {
+    /**
+     * OAuth client ID. If not provided, dynamic client registration (RFC 7591) will be attempted.
+     */
+    clientId?: string;
+    /**
+     * OAuth client secret (if required by the authorization server)
+     */
+    clientSecret?: string;
+    /**
+     * OAuth scopes to request during authorization
+     */
+    scope?: string;
+};
+export type McpRemoteConfig = {
+    /**
+     * Type of MCP server connection
+     */
+    type: 'remote';
+    /**
+     * URL of the remote MCP server
+     */
+    url: string;
+    /**
+     * Enable or disable the MCP server on startup
+     */
+    enabled?: boolean;
+    /**
+     * Headers to send with the request
+     */
+    headers?: {
+        [key: string]: string;
+    };
+    /**
+     * OAuth authentication configuration for the MCP server. Set to false to disable OAuth auto-detection.
+     */
+    oauth?: McpOAuthConfig | false;
+    /**
+     * Timeout in ms for fetching tools from the MCP server. Defaults to 5000 (5 seconds) if not specified.
+     */
+    timeout?: number;
+};
+/**
+ * No longer has any effect. The terminal UI sizes itself to the window and has no alternative layouts; the key is still accepted so older config files keep validating.
+ *
+ * @deprecated
+ */
+export type LayoutConfig = 'auto' | 'stretch';
+/**
+ * Permission mode new sessions start in. --permission-mode and mid-session toggles still override it.
+ */
+export type PermissionModeConfig = 'default' | 'acceptEdits' | 'plan' | 'auto' | 'bypassPermissions';
+/**
+ * Claude Code-style structured permissions: allow/deny/ask rule strings plus defaultMode and disableBypassPermissionsMode. Merged with `permission` (structured rules take precedence). See https://100xprompt.com/docs/permissions
+ */
+export type PermissionsConfig = {
+    /**
+     * CC-style allow rules, e.g. "Bash(git status:*)", "Edit"
+     */
+    allow?: Array<string>;
+    /**
+     * CC-style deny rules — deny always wins over allow for a tool
+     */
+    deny?: Array<string>;
+    /**
+     * CC-style ask rules — force a prompt even when another rule allows
+     */
+    ask?: Array<string>;
+    defaultMode?: PermissionModeConfig;
+    /**
+     * When "disable", removes bypassPermissions from the settable modes for this project.
+     */
+    disableBypassPermissionsMode?: 'disable';
+};
+export type Config = {
+    /**
+     * URL of the schema this file is validated against. Set it to https://proxy.100xprompt.com/config.json to get completion and inline documentation in your editor.
+     */
+    $schema?: string;
+    /**
+     * Colour theme for the terminal UI. Accepts any built-in theme name or one defined in a themes/ directory. Omit to follow the terminal's own palette.
+     */
+    theme?: string;
+    keybinds?: KeybindsConfig;
+    logLevel?: LogLevel;
+    /**
+     * Enable the OS command sandbox (seatbelt on macOS, bwrap on Linux). Default: OFF on macOS, ON elsewhere. Set true to opt in on macOS, false to opt out anywhere.
+     */
+    sandbox?: boolean;
+    /**
+     * Skip the bash permission prompt for commands the sandbox actually contains, since the kernel is already enforcing the boundary. Default: ON wherever the sandbox is active. Commands that can exfiltrate data (curl, ssh, rsync…), dangerous commands, and denied/plan-mode commands always still prompt. Set false to always prompt.
+     */
+    sandboxAutoApprove?: boolean;
+    /**
+     * Which sandbox backend confines untrusted bash commands. Default: seatbelt on macOS, landlock on Linux (unset = platform default, unchanged behavior). "microvm" runs each command in a VM-isolated environment with its own kernel — detected via HUNDREDXPROMPT_MICROVM_RUNNER or a `msb` (microsandbox), `docker`, `podman`, or apple `container` CLI on PATH (image: HUNDREDXPROMPT_MICROVM_IMAGE, default alpine). If no runner is present it degrades gracefully to the platform sandbox. "seatbelt"/"landlock" pin that backend (honored only on the matching OS); "none" disables the sandbox like sandbox: false.
+     */
+    sandboxBackend?: 'microvm' | 'seatbelt' | 'landlock' | 'none';
+    /**
+     * Behaviour of the terminal UI itself — scrolling feel and how diffs are laid out.
+     */
+    tui?: {
+        /**
+         * Rows moved per mouse-wheel notch in the transcript. Default 3. Ignored when `scroll_acceleration.enabled` is true, which replaces the fixed step entirely.
+         */
+        scroll_speed?: number;
+        /**
+         * Momentum scrolling for the transcript, in place of a fixed rows-per-notch step. Overrides `scroll_speed` when enabled.
+         */
+        scroll_acceleration?: {
+            /**
+             * Turn on the acceleration curve. Flick the wheel and the transcript keeps travelling; a slow scroll stays precise.
+             */
+            enabled: boolean;
+        };
+        /**
+         * How file diffs are laid out. "auto" (the default) shows them side by side once the terminal is wider than 120 columns and stacks them below that; "stacked" always keeps the single-column unified view.
+         */
+        diff_style?: 'auto' | 'stacked';
+    };
+    server?: ServerConfig;
+    /**
+     * Custom slash commands, keyed by the name you type after '/'. See https://100xprompt.com/docs/commands
+     */
+    command?: {
+        [key: string]: {
+            template: string;
+            description?: string;
+            agent?: string;
+            model?: string;
+            subtask?: boolean;
+            plugin?: string;
+            'allowed-tools'?: string | Array<string>;
+            'argument-hint'?: string;
+            aliases?: Array<string>;
+        };
+    };
+    /**
+     * Which paths the file watcher pays attention to while a session is open.
+     */
+    watcher?: {
+        /**
+         * Extra glob patterns to ignore, on top of .gitignore and the built-in exclusions.
+         */
+        ignore?: Array<string>;
+    };
+    /**
+     * Plugins to load, each either an npm package (optionally @version, defaulting to latest) or a file:// path to a local module. Loaded in addition to the built-in plugins.
+     */
+    plugin?: Array<string>;
+    /**
+     * Lifecycle hooks (command, prompt, agent, http) keyed by event: PreToolUse, PostToolUse, PostToolUseFailure, UserPromptSubmit, PermissionRequest, SessionStart, SessionEnd, Stop, PreCompact, PostCompact, and more
+     */
+    hooks?: {
+        [key: string]: Array<{
+            /**
+             * Regex matched against the tool name (PreToolUse/PostToolUse only)
+             */
+            matcher?: string;
+            hooks: Array<{
+                /**
+                 * Shell hook (default type)
+                 */
+                type?: 'command';
+                /**
+                 * Shell command. Receives the event JSON on stdin
+                 */
+                command: string;
+                /**
+                 * Timeout in seconds (default 60)
+                 */
+                timeout?: number;
+            } | {
+                /**
+                 * Single non-streaming LLM validation call
+                 */
+                type: 'prompt';
+                /**
+                 * Validation instructions for the model
+                 */
+                prompt?: string;
+                /**
+                 * Model as provider/model (defaults to the small model)
+                 */
+                model?: string;
+                /**
+                 * Timeout in seconds (default 60)
+                 */
+                timeout?: number;
+            } | {
+                /**
+                 * Read-only verifier subagent
+                 */
+                type: 'agent';
+                /**
+                 * Verification instructions for the subagent
+                 */
+                prompt?: string;
+                /**
+                 * Agent definition to run (default: general)
+                 */
+                agent?: string;
+                /**
+                 * Model as provider/model
+                 */
+                model?: string;
+                /**
+                 * Max tool turns (capped at 50)
+                 */
+                maxTurns?: number;
+                /**
+                 * Timeout in seconds (default 300)
+                 */
+                timeout?: number;
+            } | {
+                /**
+                 * Webhook (SSRF-guarded; private addresses refused)
+                 */
+                type: 'http';
+                /**
+                 * Webhook URL (http/https)
+                 */
+                url: string;
+                /**
+                 * HTTP method (default POST)
+                 */
+                method?: 'POST' | 'PUT';
+                /**
+                 * Extra headers; ${ENV_VAR} is interpolated
+                 */
+                headers?: {
+                    [key: string]: string;
+                };
+                /**
+                 * Timeout in seconds (default 30)
+                 */
+                timeout?: number;
+            }>;
+        }>;
+    };
+    /**
+     * Adversarial verification gate — require a read-only verifier subagent verdict before completion reporting on significant changes
+     */
+    verification?: {
+        /**
+         * Enable the adversarial verification gate: significant turns (threshold+ files modified) cannot mark the final todo completed until a verification subagent has issued VERDICT: PASS/FAIL/PARTIAL. Default false
+         */
+        enabled?: boolean;
+        /**
+         * Distinct files modified in a turn before verification is required. Default 3
+         */
+        threshold?: number;
+        /**
+         * Subagent spawned to verify the work (default: verifier)
+         */
+        agent?: string;
+    };
+    /**
+     * Kairos mode — Claude Code-style background pacing (tick loop + model-controlled sleep) with terminal-focus-aware autonomy
+     */
+    kairos?: {
+        /**
+         * Enable the /kairos TUI command: a background tick loop where the model paces itself with the sleep tool and calibrates autonomy to terminal focus. Default true; set false to disable
+         */
+        enabled?: boolean;
+        /**
+         * Seconds to wait before the next tick when the model didn't call sleep. Default 60
+         */
+        default_sleep?: number;
+    };
+    /**
+     * Enable Vim keybindings in the TUI prompt input
+     */
+    vim?: boolean;
+    /**
+     * Show an end-of-turn recap (Crunched for … + a one-line summary of what changed). Default on.
+     */
+    recap?: boolean;
+    /**
+     * Active output style (built-in: explanatory, learning, concise; or a custom output-styles*.md name)
+     */
+    output_style?: string;
+    /**
+     * Defer MCP tool schemas behind a `tool_search` tool to save context. Deferred by default when more than 8 MCP tools are available; set false to disable, true to always defer, or a number to use a custom threshold
+     */
+    tool_search?: boolean | number;
+    /**
+     * Whether to record a restorable snapshot of the working tree before edits, which is what makes reverting a turn possible. On by default; set false to skip it entirely.
+     */
+    snapshot?: boolean;
+    /**
+     * Who can be given a link to a session. 'manual' (the default) shares only when you ask for it; 'auto' publishes every new session as it starts; 'disabled' refuses to share at all and hides the share command.
+     */
+    share?: 'manual' | 'auto' | 'disabled';
+    /**
+     * Superseded by `share`. Setting this to true is rewritten to `share: "auto"` when the config loads, and only when `share` is not set — so if you set both, `share` wins. Nothing else reads this key.
+     */
+    autoshare?: boolean;
+    /**
+     * What to do when a newer release exists: true installs it in the background, 'notify' only mentions it and leaves the upgrade to you, false stops checking altogether.
+     */
+    autoupdate?: boolean | 'notify';
+    /**
+     * Provider ids to leave out even though credentials for them were found. Use this to stop a provider you have keys for from being offered.
+     */
+    disabled_providers?: Array<string>;
+    /**
+     * Provider ids to allow, as an exclusive list: once this is set, every provider not named here is ignored regardless of available credentials.
+     */
+    enabled_providers?: Array<string>;
+    /**
+     * The model each new session starts on, written as provider/model — for example anthropic/claude-sonnet-4-5 or 100xprompt/pro. Leave unset to use the best model your credentials allow.
+     */
+    model?: string;
+    /**
+     * Model to retry with, as provider/model, when the primary one is rate-limited, overloaded, or otherwise refusing work. Pick something on a different provider so a single outage cannot take out both.
+     */
+    fallback_model?: string;
+    /**
+     * Cheaper model, as provider/model, for the small side-jobs that run alongside a conversation: session titles, summaries and similar. Never used for your actual turns.
+     */
+    small_model?: string;
+    /**
+     * Stronger model consulted by the /second-opinion command, in the format of provider/model. Defaults to the strongest available model
+     */
+    advisor_model?: string;
+    /**
+     * Stronger model to use when the session is in plan mode (e.g. 'anthropic/claude-opus-4-5'). When set and the session permission mode is 'plan', requests use this model instead of the session's normal model. Supports provider/model format or a short alias (e.g. 'opus').
+     */
+    plan_model?: string;
+    /**
+     * Long-term memory system configuration
+     */
+    memory?: {
+        /**
+         * Master switch for the memory system: extraction, consolidation, recall, and context injection. Default true
+         */
+        enabled?: boolean;
+        /**
+         * Turn-end automatic memory extraction via the side-model. Default true
+         */
+        extraction?: boolean;
+        /**
+         * Periodic automatic memory consolidation (auto-dream) job. Default true
+         */
+        consolidation?: boolean;
+        /**
+         * Per-message query-relevant memory recall via the side-model. Default true
+         */
+        recall?: boolean;
+        /**
+         * Override the side-model used for memory extraction/consolidation/recall, in the format of provider/model
+         */
+        model?: string;
+        /**
+         * Shared / team memory backend (Firestore). When a workspace id and GCP credentials are configured, memory is shared across the team with per-record access control; otherwise memory stays local-only.
+         */
+        team?: {
+            /**
+             * Team/workspace id. When set (together with GCP credentials) team memory is enabled: memories can be shared with the workspace and are stored in Firestore under this namespace. Off by default.
+             */
+            workspace?: string;
+            /**
+             * Stable id for the current user within the workspace, used as the memory owner and to filter private memories. Defaults to the OS username when omitted.
+             */
+            user?: string;
+            /**
+             * GCP project id for Firestore. Falls back to the GCP_PROJECT_ID / GOOGLE_CLOUD_PROJECT environment variables when omitted.
+             */
+            project_id?: string;
+            /**
+             * Path to a GCP service-account JSON key file for Firestore, or the JSON itself. Falls back to Application Default Credentials (GOOGLE_APPLICATION_CREDENTIALS) when omitted.
+             */
+            credentials?: string;
+            /**
+             * Root Firestore collection for team memories (default 'team-memories').
+             */
+            collection?: string;
+            /**
+             * Visibility applied to new memories written while team mode is on (default 'private'). Reads always merge the user's private memories with team-visible ones.
+             */
+            default_visibility?: 'private' | 'team';
+        };
+    };
+    /**
+     * Default agent to use when none is specified. Must be a primary agent. Falls back to 'build' if not set or if the specified agent is invalid.
+     */
+    default_agent?: string;
+    /**
+     * Name shown against your messages in the transcript. Defaults to your operating-system username.
+     */
+    username?: string;
+    /**
+     * Superseded by `agent`. Each entry here is merged into `agent` as a primary agent when the config loads, so existing files keep working — but new configuration belongs under `agent`, which is the only place subagents can be defined.
+     */
+    mode?: {
+        build?: AgentConfig;
+        plan?: AgentConfig;
+        [key: string]: AgentConfig | undefined;
+    };
+    /**
+     * Define or adjust agents, keyed by agent name. The built-ins (build, plan, general, explore and the specialised title/summary/compaction ones) can be reconfigured here, and any other name creates a new agent. See https://100xprompt.com/docs/agent
+     */
+    agent?: {
+        plan?: AgentConfig;
+        build?: AgentConfig;
+        general?: AgentConfig;
+        explore?: AgentConfig;
+        title?: AgentConfig;
+        summary?: AgentConfig;
+        compaction?: AgentConfig;
+        [key: string]: AgentConfig | undefined;
+    };
+    /**
+     * Add providers or change ones already known, keyed by provider id. Use it to point at a self-hosted or OpenAI-compatible endpoint, supply base URLs and headers, or correct the cost and context limits of an individual model.
+     */
+    provider?: {
+        [key: string]: ProviderConfig;
+    };
+    /**
+     * MCP servers to connect to, keyed by the name their tools are prefixed with. An entry is either a full server definition (a local command to spawn, or a remote URL) or just `{ "enabled": false }` to switch off one declared elsewhere.
+     */
+    mcp?: {
+        [key: string]: McpLocalConfig | McpRemoteConfig | {
+            enabled: boolean;
+        };
+    };
+    /**
+     * Automatically approve every MCP server declared in the project's committed .mcp.json. Security: leave off so untrusted repo servers require explicit opt-in.
+     */
+    enableAllProjectMcpServers?: boolean;
+    /**
+     * Names of project .mcp.json MCP servers approved to connect (Claude Code parity)
+     */
+    enabledMcpjsonServers?: Array<string>;
+    /**
+     * Names of project .mcp.json MCP servers rejected — they never connect (Claude Code parity)
+     */
+    disabledMcpjsonServers?: Array<string>;
+    /**
+     * Code formatters run after a file is edited, keyed by formatter name. Override the command or file extensions of a built-in, add your own, disable one with `disabled: true`, or set this whole field to false to format nothing.
+     */
+    formatter?: false | {
+        [key: string]: {
+            disabled?: boolean;
+            command?: Array<string>;
+            environment?: {
+                [key: string]: string;
+            };
+            extensions?: Array<string>;
+        };
+    };
+    /**
+     * Language servers used for diagnostics and symbol lookup, keyed by server id. Override a built-in's command, add a server of your own (`extensions` is required for those), disable one with `disabled: true`, or set this whole field to false to run no language servers.
+     */
+    lsp?: false | {
+        [key: string]: {
+            disabled: true;
+        } | {
+            command: Array<string>;
+            extensions?: Array<string>;
+            disabled?: boolean;
+            env?: {
+                [key: string]: string;
+            };
+            initialization?: {
+                [key: string]: unknown;
+            };
+        };
+    };
+    /**
+     * Extra files whose contents are prepended to the system prompt, as paths or glob patterns relative to the project root. These are read in addition to the AGENTS.md files found automatically, not instead of them.
+     */
+    instructions?: Array<string>;
+    layout?: LayoutConfig;
+    permission?: PermissionConfig;
+    permissions?: PermissionsConfig;
+    /**
+     * Superseded by `permission`. Kept working by translation: true becomes an allow rule and false a deny rule for that tool name, with write/edit/patch/multiedit all collapsing onto the single `edit` permission. Anything set in `permission` overrides the result, so prefer that.
+     */
+    tools?: {
+        [key: string]: boolean;
+    };
+    /**
+     * Settings for an organisation-hosted deployment.
+     */
+    enterprise?: {
+        /**
+         * Base URL of your organisation's 100xprompt deployment, used to fetch managed configuration.
+         */
+        url?: string;
+    };
+    compaction?: {
+        auto?: {
+            enabled?: boolean;
+            compactionThresholdPct?: number;
+            compactionThreshold?: number;
+            tailPreserveTurns?: number;
+            summaryMaxTokens?: number;
+            rehydrateFileCount?: number;
+        };
+        micro?: {
+            enabled?: boolean;
+            maxToolResultTokens?: number;
+            hotTailCount?: number;
+            coldStorageBudgetTokens?: number;
+            pruneEligibleMinTokens?: number;
+            coldPreviewTokens?: number;
+        };
+    };
+    /**
+     * Prompt-cache tuning for Anthropic-family models
+     */
+    cache?: {
+        /**
+         * Prompt-cache lifetime for Anthropic-family models. "1h" (default) keeps the cached prefix alive across long pauses — writes cost 2x base but the prefix is reused instead of re-written every turn, a net win for long interactive/agentic sessions. "5m" writes cheapest (1.25x base input). No effect on non-Anthropic providers.
+         */
+        ttl?: '5m' | '1h';
+    };
+    experimental?: {
+        /**
+         * Out-of-band permission approval. Requires HUNDREDXPROMPT_CHANNEL_RELAY=1 and the HMAC key in HUNDREDXPROMPT_CHANNEL_SECRET. There is deliberately no `secret` field here: this file is project-committed, and a committed approval key is a backdoor.
+         */
+        channel?: {
+            /**
+             * Responder identities (chat/user ids) permitted to approve or deny a relayed permission prompt. Empty authorizes nobody.
+             */
+            allow?: Array<string>;
+            telegram?: {
+                token: string;
+                chatID: string;
+            };
+            /**
+             * Approval deadline in ms; on expiry the relay denies. Default 600000.
+             */
+            timeoutMs?: number;
+            /**
+             * 'deny' (default) fails closed when no channel accepted the prompt; 'degrade' falls back to the local dialog. Neither can produce an allow.
+             */
+            unreachable?: 'deny' | 'degrade';
+        };
+        hook?: {
+            file_edited?: {
+                [key: string]: Array<{
+                    command: Array<string>;
+                    environment?: {
+                        [key: string]: string;
+                    };
+                }>;
+            };
+            session_completed?: Array<{
+                command: Array<string>;
+                environment?: {
+                    [key: string]: string;
+                };
+            }>;
+        };
+        /**
+         * Number of retries for chat completions on failure
+         */
+        chatMaxRetries?: number;
+        disable_paste_summary?: boolean;
+        /**
+         * Self-evolving skills (offline, validation-gated). Disabled by default.
+         */
+        skillEvolve?: {
+            /**
+             * Automatically run validation-gated skill evolution on a daily throttle. Default FALSE (manual only — run `100xprompt skills evolve <name>` yourself). Set true to let 100xprompt self-improve your skills in the background, always behind the validation gate (a skill is only changed if it measurably improves on your recent sessions).
+             */
+            enabled?: boolean;
+            /**
+             * Restrict auto-evolution to these skill names. Empty/omitted evolves every discovered skill. Manual `skills evolve <name>` is unaffected by this list.
+             */
+            skills?: Array<string>;
+            /**
+             * Model (provider/model) that proposes skill edits. Defaults to a strong cheap teacher.
+             */
+            optimizerModel?: string;
+            /**
+             * Gate comparison metric. 'hard' (default) = binary failure-mode coverage; 'soft' = partial-credit (sensitive to incremental edits); 'mixed' = weighted blend of both (see mixedWeight).
+             */
+            gateMetric?: 'hard' | 'soft' | 'mixed';
+            /**
+             * For gateMetric 'mixed': weight given to soft coverage in [0,1]. Default 0.5.
+             */
+            mixedWeight?: number;
+            /**
+             * Autonomous learning-rate: scale the per-pass edit budget up/down from recent gate outcomes instead of a fixed budget. Default false (fixed budget).
+             */
+            autonomousLr?: boolean;
+            /**
+             * Epoch-level slow update: maintain a protected long-horizon guidance section in the skill that step edits can't touch. Default false.
+             */
+            slowUpdate?: boolean;
+            /**
+             * Dream rollouts + associative recall (synthetic augmentation for sparse data). Default off.
+             */
+            dream?: {
+                /**
+                 * Synthesize this many contrastive variations per real replay item when held-out data is thin. >1 enables dream augmentation.
+                 */
+                rollouts?: number;
+                /**
+                 * Associative recall: pull the K most task-similar past items into tonight's replay set. >0 enables recall.
+                 */
+                recallK?: number;
+            };
+        };
+        /**
+         * Suggested next prompt after each turn (experimental, side-model). Disabled by default.
+         */
+        promptSuggestion?: {
+            /**
+             * After each turn ends, a cheap side-model reads the recent conversation and proposes a suggested next prompt in the TUI input footer (accept to fill the input, ignore to dismiss). Default FALSE — fully inert when off: no model call, no render. Interactive CLI only; never fires for SDK/headless/subagent sessions.
+             */
+            enabled?: boolean;
+            /**
+             * Suggestion prompt variant. 'user_intent' (default) predicts what the user would naturally type next; 'stated_intent' currently shares the same prompt.
+             */
+            variant?: 'user_intent' | 'stated_intent';
+        };
+        /**
+         * Enable the batch tool
+         */
+        batch_tool?: boolean;
+        /**
+         * Run the plugin host in a supervised child process (the VS Code extension-host model): plugins execute out-of-process over JSON-RPC stdio, so a crashing plugin cannot take the agent down and a hung plugin hook is killed and the child restarted (bounded by a restart budget; on exhaustion plugins degrade to unavailable while the agent keeps running). Default FALSE — the in-process plugin host is used. Plugin-provided tools and auth are not served in isolated mode.
+         */
+        pluginIsolation?: boolean;
+        /**
+         * Persistent (unattended) transport retry. Disabled by default — strictly additive, interactive behavior unchanged when off.
+         */
+        persistentRetry?: {
+            /**
+             * Unattended/long-running agentic tasks: keep retrying retryable provider failures (429/529/5xx/network) past the interactive ceiling, with capped backoff + heartbeat waits, until maxWaitMs elapses. Default FALSE — interactive sessions stay bounded (fast-fail to the session retry countdown). Background calls still bail on 529; aborts still cancel instantly.
+             */
+            enabled?: boolean;
+            /**
+             * Hard cap on TOTAL time spent in persistent transport retries for one request. Default 7200000 (2h). The request always fails once this elapses — persistent retry never loops forever.
+             */
+            maxWaitMs?: number;
+            /**
+             * Per-attempt backoff ceiling in persistent mode. Default 60000 (60s). Server-directed Retry-After waits are honored in full (clamped to the remaining maxWaitMs budget).
+             */
+            maxDelayMs?: number;
+        };
+        /**
+         * Enable OpenTelemetry spans for AI SDK calls (using the 'experimental_telemetry' flag)
+         */
+        openTelemetry?: boolean;
+        /**
+         * Opt in to the privacy-first audit/telemetry sink. Disabled by default; can be force-disabled via DO_NOT_TRACK or HUNDREDXPROMPT_TELEMETRY_DISABLE.
+         */
+        telemetry?: boolean;
+        /**
+         * Destination URL for telemetry batches. No default — self-hosted / privacy-sensitive by design.
+         */
+        telemetryEndpoint?: string;
+        /**
+         * Optional headers (e.g. auth) sent with every telemetry batch.
+         */
+        telemetryHeaders?: {
+            [key: string]: string;
+        };
+        /**
+         * Telemetry wire format: generic JSON batch ('json') or OTLP-compatible logs ('otlp').
+         */
+        telemetryMode?: 'json' | 'otlp';
+        /**
+         * Global telemetry sampling rate (0..1, default 1 = keep all). Multiplies each sink's own sampleRate to form its effective keep-probability.
+         */
+        telemetrySampleRate?: number;
+        /**
+         * Multi-sink telemetry routing. When set (non-empty), fully replaces the single telemetryEndpoint field; each sink samples, segments (general/privileged) and retries through its own disk queue independently. Config-driven only — remote/fetched killswitches are out of scope.
+         */
+        telemetrySinks?: Array<{
+            /**
+             * Destination URL for this sink's batches. No default — self-hosted / privacy-sensitive.
+             */
+            endpoint: string;
+            /**
+             * Optional headers (e.g. auth) sent with every batch for this sink.
+             */
+            headers?: {
+                [key: string]: string;
+            };
+            /**
+             * Wire format for this sink: generic JSON batch ('json') or OTLP-compatible logs ('otlp').
+             */
+            mode?: 'json' | 'otlp';
+            /**
+             * 'general' (default) receives the sanitized payload with PII-tagged _PROTO_* fields stripped; 'privileged' receives the full payload including _PROTO_* — point only at a trusted first-party store.
+             */
+            access?: 'general' | 'privileged';
+            /**
+             * Per-sink killswitch. Default true; set false to skip this sink entirely (no payload built).
+             */
+            enabled?: boolean;
+            /**
+             * Per-sink sampling rate (0..1, default 1 = keep all).
+             */
+            sampleRate?: number;
+        }>;
+        /**
+         * Tools that should only be available to primary agents.
+         */
+        primary_tools?: Array<string>;
+        /**
+         * Continue the agent loop when a tool call is denied
+         */
+        continue_loop_on_deny?: boolean;
+        /**
+         * Verification-gated stopping: the agent loop cannot end a turn (stop) until a verifier emits a pass verdict (e.g. `bun run typecheck`). Default false — the loop stops as before.
+         */
+        verificationGate?: boolean;
+        /**
+         * Timeout in milliseconds for model context protocol (MCP) requests
+         */
+        mcp_timeout?: number;
+    };
+    /**
+     * Environment variables injected into the agent's tool environment (e.g. Bash, hooks). Keys and values are plain strings; tools that spawn subprocesses should merge these into their environment.
+     */
+    env?: {
+        [key: string]: string;
+    };
+    /**
+     * Whether to append a Co-Authored-By trailer to git commits. Defaults to true. Set to false to suppress the trailer (e.g. for repositories that enforce clean commit footers).
+     */
+    includeCoAuthoredBy?: boolean;
+    /**
+     * Shell command to execute for custom footer status text. Receives session context as JSON on stdin and its stdout is rendered as trailing text in the TUI footer.
+     */
+    statusline?: string;
+    /**
+     * Ergonomics for git worktrees created by the enter_worktree tool
+     */
+    worktree?: {
+        /**
+         * Cone-mode sparse-checkout paths. When non-empty, new worktrees check out only these paths instead of the full tree — cheap to branch from a huge repo. Leave unset for a normal full checkout.
+         */
+        sparsePaths?: Array<string>;
+        /**
+         * Directories (e.g. ['node_modules', '.venv']) to symlink from a new worktree back to the main repo, avoiding a costly reinstall. Skipped when the source is missing or the target already exists.
+         */
+        symlinkDirectories?: Array<string>;
+    };
+};
+export type ToolIds = Array<string>;
+export type ToolListItem = {
+    id: string;
+    description: string;
+    parameters: unknown;
+};
+export type ToolList = Array<ToolListItem>;
+export type Path = {
+    home: string;
+    state: string;
+    config: string;
+    worktree: string;
+    directory: string;
+};
+export type Worktree = {
+    name: string;
+    branch: string;
+    directory: string;
+};
+export type WorktreeCreateInput = {
+    name?: string;
+    startCommand?: string;
+    repo?: string;
+};
+export type VcsInfo = {
+    branch: string;
+};
+export type TextPartInput = {
+    id?: string;
+    type: 'text';
+    text: string;
+    synthetic?: boolean;
+    ignored?: boolean;
+    time?: {
+        start: number;
+        end?: number;
+    };
+    metadata?: {
+        [key: string]: unknown;
+    };
+};
+export type FilePartInput = {
+    id?: string;
+    type: 'file';
+    mime: string;
+    filename?: string;
+    url: string;
+    source?: FilePartSource;
+};
+export type AgentPartInput = {
+    id?: string;
+    type: 'agent';
+    name: string;
+    source?: {
+        value: string;
+        start: number;
+        end: number;
+    };
+};
+export type SubtaskPartInput = {
+    id?: string;
+    type: 'subtask';
+    prompt: string;
+    description: string;
+    agent: string;
+    command?: string;
+};
+export type RevertFilePreview = {
+    file: string;
+    action: 'restore' | 'delete' | 'none';
+    additions: number;
+    deletions: number;
+    dirty: boolean;
+};
+export type RevertPreview = {
+    files: Array<RevertFilePreview>;
+    dirty: boolean;
+};
+export type Command = {
+    name: string;
+    description?: string;
+    agent?: string;
+    model?: string;
+    mcp?: boolean;
+    skill?: boolean;
+    plugin?: string;
+    allowedTools?: Array<string>;
+    argumentHint?: string;
+    aliases?: Array<string>;
+    template: string;
+    subtask?: boolean;
+    hints: Array<string>;
+};
+export type Model = {
+    id: string;
+    providerID: string;
+    api: {
+        id: string;
+        url: string;
+        npm: string;
+    };
+    name: string;
+    family?: string;
+    capabilities: {
+        temperature: boolean;
+        reasoning: boolean;
+        attachment: boolean;
+        toolcall: boolean;
+        input: {
+            text: boolean;
+            audio: boolean;
+            image: boolean;
+            video: boolean;
+            pdf: boolean;
+        };
+        output: {
+            text: boolean;
+            audio: boolean;
+            image: boolean;
+            video: boolean;
+            pdf: boolean;
+        };
+        interleaved: boolean | {
+            field: 'reasoning_content' | 'reasoning_details';
+        };
+    };
+    cost: {
+        input: number;
+        output: number;
+        cache: {
+            read: number;
+            write: number;
+        };
+        experimentalOver200K?: {
+            input: number;
+            output: number;
+            cache: {
+                read: number;
+                write: number;
+            };
+        };
+    };
+    limit: {
+        context: number;
+        output: number;
+    };
+    status: 'alpha' | 'beta' | 'deprecated' | 'active';
+    options: {
+        [key: string]: unknown;
+    };
+    headers: {
+        [key: string]: string;
+    };
+    release_date: string;
+    variants?: {
+        [key: string]: {
+            [key: string]: unknown;
+        };
+    };
+};
+export type Provider = {
+    id: string;
+    name: string;
+    source: 'env' | 'config' | 'custom' | 'api';
+    env: Array<string>;
+    key?: string;
+    options: {
+        [key: string]: unknown;
+    };
+    models: {
+        [key: string]: Model;
+    };
+};
+export type ProviderAuthMethod = {
+    type: 'oauth' | 'api';
+    label: string;
+};
+export type ProviderAuthAuthorization = {
+    url: string;
+    method: 'auto' | 'code';
+    instructions: string;
+};
+export type Symbol = {
+    name: string;
+    kind: number;
+    location: {
+        uri: string;
+        range: Range;
+    };
+};
+export type FileNode = {
+    name: string;
+    path: string;
+    absolute: string;
+    type: 'file' | 'directory';
+    ignored: boolean;
+};
+export type FileContent = {
+    type: 'text';
+    content: string;
+    diff?: string;
+    patch?: {
+        oldFileName: string;
+        newFileName: string;
+        oldHeader?: string;
+        newHeader?: string;
+        hunks: Array<{
+            oldStart: number;
+            oldLines: number;
+            newStart: number;
+            newLines: number;
+            lines: Array<string>;
+        }>;
+        index?: string;
+    };
+    encoding?: 'base64';
+    mimeType?: string;
+};
+export type File = {
+    path: string;
+    added: number;
+    removed: number;
+    status: 'added' | 'deleted' | 'modified';
+};
+export type Agent = {
+    name: string;
+    description?: string;
+    mode: 'subagent' | 'primary' | 'all';
+    native?: boolean;
+    hidden?: boolean;
+    slim?: boolean;
+    topP?: number;
+    temperature?: number;
+    color?: string;
+    permission: PermissionRuleset;
+    model?: {
+        modelID: string;
+        providerID: string;
+    };
+    prompt?: string;
+    options: {
+        [key: string]: unknown;
+    };
+    steps?: number;
+};
+export type McpResource = {
+    name: string;
+    uri: string;
+    description?: string;
+    mimeType?: string;
+    client: string;
+};
+export type LspStatus = {
+    id: string;
+    name: string;
+    root: string;
+    status: 'connected' | 'error';
+};
+export type FormatterStatus = {
+    name: string;
+    extensions: Array<string>;
+    enabled: boolean;
+};
+export type OAuth = {
+    type: 'oauth';
+    refresh: string;
+    access: string;
+    expires: number;
+    accountId?: string;
+    enterpriseUrl?: string;
+};
+export type ApiAuth = {
+    type: 'api';
+    key: string;
+};
+export type WellKnownAuth = {
+    type: 'wellknown';
+    key: string;
+    token: string;
+};
+export type Auth = OAuth | ApiAuth | WellKnownAuth;
+export type GlobalHealthData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/global/health';
+};
+export type GlobalHealthResponses = {
+    /**
+     * Health information
+     */
+    200: {
+        healthy: true;
+        version: string;
+    };
+};
+export type GlobalHealthResponse = GlobalHealthResponses[keyof GlobalHealthResponses];
+export type GlobalEventData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/global/event';
+};
+export type GlobalEventResponses = {
+    /**
+     * Event stream
+     */
+    200: GlobalEvent;
+};
+export type GlobalEventResponse = GlobalEventResponses[keyof GlobalEventResponses];
+export type GlobalDisposeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/global/dispose';
+};
+export type GlobalDisposeResponses = {
+    /**
+     * Global disposed
+     */
+    200: boolean;
+};
+export type GlobalDisposeResponse = GlobalDisposeResponses[keyof GlobalDisposeResponses];
+export type ProjectListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/project';
+};
+export type ProjectListResponses = {
+    /**
+     * List of projects
+     */
+    200: Array<Project>;
+};
+export type ProjectListResponse = ProjectListResponses[keyof ProjectListResponses];
+export type ProjectCurrentData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/project/current';
+};
+export type ProjectCurrentResponses = {
+    /**
+     * Current project information
+     */
+    200: Project;
+};
+export type ProjectCurrentResponse = ProjectCurrentResponses[keyof ProjectCurrentResponses];
+export type ProjectUpdateData = {
+    body?: {
+        name?: string;
+        icon?: {
+            url?: string;
+            color?: string;
+        };
+    };
+    path: {
+        projectID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/project/{projectID}';
+};
+export type ProjectUpdateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type ProjectUpdateError = ProjectUpdateErrors[keyof ProjectUpdateErrors];
+export type ProjectUpdateResponses = {
+    /**
+     * Updated project information
+     */
+    200: Project;
+};
+export type ProjectUpdateResponse = ProjectUpdateResponses[keyof ProjectUpdateResponses];
+export type PluginInstalledData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/installed';
+};
+export type PluginInstalledResponses = {
+    /**
+     * OK
+     */
+    200: Array<InstalledPlugin>;
+};
+export type PluginInstalledResponse = PluginInstalledResponses[keyof PluginInstalledResponses];
+export type PluginDiscoverData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/discover';
+};
+export type PluginDiscoverResponses = {
+    /**
+     * OK
+     */
+    200: Array<DiscoverPlugin>;
+};
+export type PluginDiscoverResponse = PluginDiscoverResponses[keyof PluginDiscoverResponses];
+export type PluginMarketplacesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/marketplaces';
+};
+export type PluginMarketplacesResponses = {
+    /**
+     * OK
+     */
+    200: Array<string>;
+};
+export type PluginMarketplacesResponse = PluginMarketplacesResponses[keyof PluginMarketplacesResponses];
+export type PluginErrorsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/errors';
+};
+export type PluginErrorsResponses = {
+    /**
+     * OK
+     */
+    200: Array<PluginError>;
+};
+export type PluginErrorsResponse = PluginErrorsResponses[keyof PluginErrorsResponses];
+export type PluginReloadData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/reload';
+};
+export type PluginReloadResponses = {
+    /**
+     * OK
+     */
+    200: PluginReloadResult;
+};
+export type PluginReloadResponse = PluginReloadResponses[keyof PluginReloadResponses];
+export type PluginInstallData = {
+    body?: {
+        source: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/install';
+};
+export type PluginInstallErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type PluginInstallError = PluginInstallErrors[keyof PluginInstallErrors];
+export type PluginInstallResponses = {
+    /**
+     * OK
+     */
+    200: PluginInstallResult;
+};
+export type PluginInstallResponse = PluginInstallResponses[keyof PluginInstallResponses];
+export type PluginInstallNamedData = {
+    body?: {
+        name: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/install-named';
+};
+export type PluginInstallNamedErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type PluginInstallNamedError = PluginInstallNamedErrors[keyof PluginInstallNamedErrors];
+export type PluginInstallNamedResponses = {
+    /**
+     * OK
+     */
+    200: PluginInstallResult;
+};
+export type PluginInstallNamedResponse = PluginInstallNamedResponses[keyof PluginInstallNamedResponses];
+export type PluginSetEnabledData = {
+    body?: {
+        name: string;
+        enabled: boolean;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/enable';
+};
+export type PluginSetEnabledResponses = {
+    /**
+     * OK
+     */
+    200: {
+        ok: boolean;
+    };
+};
+export type PluginSetEnabledResponse = PluginSetEnabledResponses[keyof PluginSetEnabledResponses];
+export type PluginRemoveData = {
+    body?: {
+        name: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/remove';
+};
+export type PluginRemoveResponses = {
+    /**
+     * OK
+     */
+    200: {
+        ok: boolean;
+    };
+};
+export type PluginRemoveResponse = PluginRemoveResponses[keyof PluginRemoveResponses];
+export type PluginMarketplaceAddData = {
+    body?: {
+        source: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/marketplace/add';
+};
+export type PluginMarketplaceAddResponses = {
+    /**
+     * OK
+     */
+    200: {
+        ok: boolean;
+    };
+};
+export type PluginMarketplaceAddResponse = PluginMarketplaceAddResponses[keyof PluginMarketplaceAddResponses];
+export type PluginMarketplaceRemoveData = {
+    body?: {
+        source: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/plugin/marketplace/remove';
+};
+export type PluginMarketplaceRemoveResponses = {
+    /**
+     * OK
+     */
+    200: {
+        ok: boolean;
+    };
+};
+export type PluginMarketplaceRemoveResponse = PluginMarketplaceRemoveResponses[keyof PluginMarketplaceRemoveResponses];
+export type TrustStatusData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/trust';
+};
+export type TrustStatusResponses = {
+    /**
+     * OK
+     */
+    200: TrustStatus;
+};
+export type TrustStatusResponse = TrustStatusResponses[keyof TrustStatusResponses];
+export type TrustOnceData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/trust/once';
+};
+export type TrustOnceResponses = {
+    /**
+     * OK
+     */
+    200: TrustStatus;
+};
+export type TrustOnceResponse = TrustOnceResponses[keyof TrustOnceResponses];
+export type TrustAlwaysData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/trust/always';
+};
+export type TrustAlwaysResponses = {
+    /**
+     * OK
+     */
+    200: TrustStatus;
+};
+export type TrustAlwaysResponse = TrustAlwaysResponses[keyof TrustAlwaysResponses];
+export type RemoteBridgeEnrollData = {
+    body?: {
+        device?: {
+            id?: string;
+            name?: string;
+        };
+        sessionID?: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/remote-bridge/enroll';
+};
+export type RemoteBridgeEnrollResponses = {
+    /**
+     * OK
+     */
+    200: RemoteBridgeEnrollment;
+};
+export type RemoteBridgeEnrollResponse = RemoteBridgeEnrollResponses[keyof RemoteBridgeEnrollResponses];
+export type RemoteBridgeDevicesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/remote-bridge/devices';
+};
+export type RemoteBridgeDevicesResponses = {
+    /**
+     * OK
+     */
+    200: Array<RemoteBridgeDevice>;
+};
+export type RemoteBridgeDevicesResponse = RemoteBridgeDevicesResponses[keyof RemoteBridgeDevicesResponses];
+export type RemoteBridgeRevokeData = {
+    body?: never;
+    path: {
+        deviceID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/remote-bridge/devices/{deviceID}/revoke';
+};
+export type RemoteBridgeRevokeResponses = {
+    /**
+     * OK
+     */
+    200: {
+        revoked: boolean;
+    };
+};
+export type RemoteBridgeRevokeResponse = RemoteBridgeRevokeResponses[keyof RemoteBridgeRevokeResponses];
+export type RemoteBridgeConnectData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/remote-bridge/ws';
+};
+export type RemoteBridgeConnectResponses = {
+    /**
+     * OK
+     */
+    200: boolean;
+};
+export type RemoteBridgeConnectResponse = RemoteBridgeConnectResponses[keyof RemoteBridgeConnectResponses];
+export type PtyListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/pty';
+};
+export type PtyListResponses = {
+    /**
+     * List of sessions
+     */
+    200: Array<Pty>;
+};
+export type PtyListResponse = PtyListResponses[keyof PtyListResponses];
+export type PtyCreateData = {
+    body?: {
+        command?: string;
+        args?: Array<string>;
+        cwd?: string;
+        title?: string;
+        env?: {
+            [key: string]: string;
+        };
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/pty';
+};
+export type PtyCreateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type PtyCreateError = PtyCreateErrors[keyof PtyCreateErrors];
+export type PtyCreateResponses = {
+    /**
+     * Created session
+     */
+    200: Pty;
+};
+export type PtyCreateResponse = PtyCreateResponses[keyof PtyCreateResponses];
+export type PtyRemoveData = {
+    body?: never;
+    path: {
+        ptyID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/pty/{ptyID}';
+};
+export type PtyRemoveErrors = {
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PtyRemoveError = PtyRemoveErrors[keyof PtyRemoveErrors];
+export type PtyRemoveResponses = {
+    /**
+     * Session removed
+     */
+    200: boolean;
+};
+export type PtyRemoveResponse = PtyRemoveResponses[keyof PtyRemoveResponses];
+export type PtyGetData = {
+    body?: never;
+    path: {
+        ptyID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/pty/{ptyID}';
+};
+export type PtyGetErrors = {
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PtyGetError = PtyGetErrors[keyof PtyGetErrors];
+export type PtyGetResponses = {
+    /**
+     * Session info
+     */
+    200: Pty;
+};
+export type PtyGetResponse = PtyGetResponses[keyof PtyGetResponses];
+export type PtyUpdateData = {
+    body?: {
+        title?: string;
+        size?: {
+            rows: number;
+            cols: number;
+        };
+    };
+    path: {
+        ptyID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/pty/{ptyID}';
+};
+export type PtyUpdateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type PtyUpdateError = PtyUpdateErrors[keyof PtyUpdateErrors];
+export type PtyUpdateResponses = {
+    /**
+     * Updated session
+     */
+    200: Pty;
+};
+export type PtyUpdateResponse = PtyUpdateResponses[keyof PtyUpdateResponses];
+export type PtyConnectData = {
+    body?: never;
+    path: {
+        ptyID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/pty/{ptyID}/connect';
+};
+export type PtyConnectErrors = {
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PtyConnectError = PtyConnectErrors[keyof PtyConnectErrors];
+export type PtyConnectResponses = {
+    /**
+     * Connected session
+     */
+    200: boolean;
+};
+export type PtyConnectResponse = PtyConnectResponses[keyof PtyConnectResponses];
+export type ConfigGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/config';
+};
+export type ConfigGetResponses = {
+    /**
+     * Get config info
+     */
+    200: Config;
+};
+export type ConfigGetResponse = ConfigGetResponses[keyof ConfigGetResponses];
+export type ConfigUpdateData = {
+    body?: Config;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/config';
+};
+export type ConfigUpdateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type ConfigUpdateError = ConfigUpdateErrors[keyof ConfigUpdateErrors];
+export type ConfigUpdateResponses = {
+    /**
+     * Successfully updated config
+     */
+    200: Config;
+};
+export type ConfigUpdateResponse = ConfigUpdateResponses[keyof ConfigUpdateResponses];
+export type ToolIdsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/experimental/tool/ids';
+};
+export type ToolIdsErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type ToolIdsError = ToolIdsErrors[keyof ToolIdsErrors];
+export type ToolIdsResponses = {
+    /**
+     * Tool IDs
+     */
+    200: ToolIds;
+};
+export type ToolIdsResponse = ToolIdsResponses[keyof ToolIdsResponses];
+export type ToolListData = {
+    body?: never;
+    path?: never;
+    query: {
+        directory?: string;
+        provider: string;
+        model: string;
+    };
+    url: '/experimental/tool';
+};
+export type ToolListErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type ToolListError = ToolListErrors[keyof ToolListErrors];
+export type ToolListResponses = {
+    /**
+     * Tools
+     */
+    200: ToolList;
+};
+export type ToolListResponse = ToolListResponses[keyof ToolListResponses];
+export type InstanceDisposeData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/instance/dispose';
+};
+export type InstanceDisposeResponses = {
+    /**
+     * Instance disposed
+     */
+    200: boolean;
+};
+export type InstanceDisposeResponse = InstanceDisposeResponses[keyof InstanceDisposeResponses];
+export type PathGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/path';
+};
+export type PathGetResponses = {
+    /**
+     * Path
+     */
+    200: Path;
+};
+export type PathGetResponse = PathGetResponses[keyof PathGetResponses];
+export type WorktreeListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/experimental/worktree';
+};
+export type WorktreeListResponses = {
+    /**
+     * List of worktree directories
+     */
+    200: Array<string>;
+};
+export type WorktreeListResponse = WorktreeListResponses[keyof WorktreeListResponses];
+export type WorktreeCreateData = {
+    body?: WorktreeCreateInput;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/experimental/worktree';
+};
+export type WorktreeCreateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type WorktreeCreateError = WorktreeCreateErrors[keyof WorktreeCreateErrors];
+export type WorktreeCreateResponses = {
+    /**
+     * Worktree created
+     */
+    200: Worktree;
+};
+export type WorktreeCreateResponse = WorktreeCreateResponses[keyof WorktreeCreateResponses];
+export type VcsGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/vcs';
+};
+export type VcsGetResponses = {
+    /**
+     * VCS info
+     */
+    200: VcsInfo;
+};
+export type VcsGetResponse = VcsGetResponses[keyof VcsGetResponses];
+export type SessionListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+        /**
+         * Filter sessions updated on or after this timestamp (milliseconds since epoch)
+         */
+        start?: number;
+        /**
+         * Filter sessions by title (case-insensitive)
+         */
+        search?: string;
+        /**
+         * Maximum number of sessions to return
+         */
+        limit?: number;
+        /**
+         * Include archived sessions in results (default false)
+         */
+        include_archived?: boolean;
+        /**
+         * Also search session message content when a search term is provided (default false)
+         */
+        search_content?: boolean;
+    };
+    url: '/session';
+};
+export type SessionListResponses = {
+    /**
+     * List of sessions
+     */
+    200: Array<Session>;
+};
+export type SessionListResponse = SessionListResponses[keyof SessionListResponses];
+export type SessionCreateData = {
+    body?: {
+        id?: string;
+        parentID?: string;
+        title?: string;
+        permission?: PermissionRuleset;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/session';
+};
+export type SessionCreateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type SessionCreateError = SessionCreateErrors[keyof SessionCreateErrors];
+export type SessionCreateResponses = {
+    /**
+     * Successfully created session
+     */
+    200: Session;
+};
+export type SessionCreateResponse = SessionCreateResponses[keyof SessionCreateResponses];
+export type SessionStatusData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/session/status';
+};
+export type SessionStatusErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type SessionStatusError = SessionStatusErrors[keyof SessionStatusErrors];
+export type SessionStatusResponses = {
+    /**
+     * Get session status
+     */
+    200: {
+        [key: string]: SessionStatus;
+    };
+};
+export type SessionStatusResponse = SessionStatusResponses[keyof SessionStatusResponses];
+export type SessionDeleteData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}';
+};
+export type SessionDeleteErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionDeleteError = SessionDeleteErrors[keyof SessionDeleteErrors];
+export type SessionDeleteResponses = {
+    /**
+     * Successfully deleted session
+     */
+    200: boolean;
+};
+export type SessionDeleteResponse = SessionDeleteResponses[keyof SessionDeleteResponses];
+export type SessionGetData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}';
+};
+export type SessionGetErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionGetError = SessionGetErrors[keyof SessionGetErrors];
+export type SessionGetResponses = {
+    /**
+     * Get session
+     */
+    200: Session;
+};
+export type SessionGetResponse = SessionGetResponses[keyof SessionGetResponses];
+export type SessionUpdateData = {
+    body?: {
+        title?: string;
+        time?: {
+            archived?: number;
+        };
+        permissionMode?: PermissionMode;
+    };
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}';
+};
+export type SessionUpdateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionUpdateError = SessionUpdateErrors[keyof SessionUpdateErrors];
+export type SessionUpdateResponses = {
+    /**
+     * Successfully updated session
+     */
+    200: Session;
+};
+export type SessionUpdateResponse = SessionUpdateResponses[keyof SessionUpdateResponses];
+export type SessionChildrenData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/children';
+};
+export type SessionChildrenErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionChildrenError = SessionChildrenErrors[keyof SessionChildrenErrors];
+export type SessionChildrenResponses = {
+    /**
+     * List of children
+     */
+    200: Array<Session>;
+};
+export type SessionChildrenResponse = SessionChildrenResponses[keyof SessionChildrenResponses];
+export type SessionTodoData = {
+    body?: never;
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/todo';
+};
+export type SessionTodoErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionTodoError = SessionTodoErrors[keyof SessionTodoErrors];
+export type SessionTodoResponses = {
+    /**
+     * Todo list
+     */
+    200: Array<Todo>;
+};
+export type SessionTodoResponse = SessionTodoResponses[keyof SessionTodoResponses];
+export type SessionInitData = {
+    body?: {
+        modelID: string;
+        providerID: string;
+        messageID: string;
+    };
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/init';
+};
+export type SessionInitErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionInitError = SessionInitErrors[keyof SessionInitErrors];
+export type SessionInitResponses = {
+    /**
+     * 200
+     */
+    200: boolean;
+};
+export type SessionInitResponse = SessionInitResponses[keyof SessionInitResponses];
+export type SessionForkData = {
+    body?: {
+        messageID?: string;
+    };
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/fork';
+};
+export type SessionForkResponses = {
+    /**
+     * 200
+     */
+    200: Session;
+};
+export type SessionForkResponse = SessionForkResponses[keyof SessionForkResponses];
+export type SessionAbortData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/abort';
+};
+export type SessionAbortErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionAbortError = SessionAbortErrors[keyof SessionAbortErrors];
+export type SessionAbortResponses = {
+    /**
+     * Aborted session
+     */
+    200: boolean;
+};
+export type SessionAbortResponse = SessionAbortResponses[keyof SessionAbortResponses];
+export type SessionUnshareData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/share';
+};
+export type SessionUnshareErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionUnshareError = SessionUnshareErrors[keyof SessionUnshareErrors];
+export type SessionUnshareResponses = {
+    /**
+     * Successfully unshared session
+     */
+    200: Session;
+};
+export type SessionUnshareResponse = SessionUnshareResponses[keyof SessionUnshareResponses];
+export type SessionShareData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/share';
+};
+export type SessionShareErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionShareError = SessionShareErrors[keyof SessionShareErrors];
+export type SessionShareResponses = {
+    /**
+     * Successfully shared session
+     */
+    200: Session;
+};
+export type SessionShareResponse = SessionShareResponses[keyof SessionShareResponses];
+export type SessionDiffData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+        messageID?: string;
+    };
+    url: '/session/{sessionID}/diff';
+};
+export type SessionDiffErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionDiffError = SessionDiffErrors[keyof SessionDiffErrors];
+export type SessionDiffResponses = {
+    /**
+     * List of diffs
+     */
+    200: Array<FileDiff>;
+};
+export type SessionDiffResponse = SessionDiffResponses[keyof SessionDiffResponses];
+export type SessionSummarizeData = {
+    body?: {
+        providerID: string;
+        modelID: string;
+        auto?: boolean;
+        /**
+         * Focus instructions for the summarizer (from `/compact <text>`)
+         */
+        customInstructions?: string;
+    };
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/summarize';
+};
+export type SessionSummarizeErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionSummarizeError = SessionSummarizeErrors[keyof SessionSummarizeErrors];
+export type SessionSummarizeResponses = {
+    /**
+     * Summarized session
+     */
+    200: boolean;
+};
+export type SessionSummarizeResponse = SessionSummarizeResponses[keyof SessionSummarizeResponses];
+export type SessionMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+        limit?: number;
+    };
+    url: '/session/{sessionID}/message';
+};
+export type SessionMessagesErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionMessagesError = SessionMessagesErrors[keyof SessionMessagesErrors];
+export type SessionMessagesResponses = {
+    /**
+     * List of messages
+     */
+    200: Array<{
+        info: Message;
+        parts: Array<Part>;
+    }>;
+};
+export type SessionMessagesResponse = SessionMessagesResponses[keyof SessionMessagesResponses];
+export type SessionPromptData = {
+    body?: {
+        messageID?: string;
+        model?: {
+            providerID: string;
+            modelID: string;
+        };
+        agent?: string;
+        noReply?: boolean;
+        /**
+         * @deprecated tools and permissions have been merged, you can set permissions on the session itself now
+         */
+        tools?: {
+            [key: string]: boolean;
+        };
+        system?: string;
+        /**
+         * Replace the session's assembled system prompt for this turn (CC --system-prompt). Wins over `system`.
+         */
+        systemOverride?: string;
+        variant?: string;
+        /**
+         * Run this session in kairos (background tick) mode: registers the sleep tool and the kairos prompt discipline. Sticky until explicitly set to false
+         */
+        kairos?: boolean;
+        /**
+         * Whether the user's terminal is currently focused; drives kairos focus-aware autonomy
+         */
+        terminalFocus?: boolean;
+        parts: Array<TextPartInput | FilePartInput | AgentPartInput | SubtaskPartInput>;
+    };
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/message';
+};
+export type SessionPromptErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionPromptError = SessionPromptErrors[keyof SessionPromptErrors];
+export type SessionPromptResponses = {
+    /**
+     * Created message
+     */
+    200: {
+        info: AssistantMessage;
+        parts: Array<Part>;
+    };
+};
+export type SessionPromptResponse = SessionPromptResponses[keyof SessionPromptResponses];
+export type SessionMessageData = {
+    body?: never;
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+        /**
+         * Message ID
+         */
+        messageID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/message/{messageID}';
+};
+export type SessionMessageErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionMessageError = SessionMessageErrors[keyof SessionMessageErrors];
+export type SessionMessageResponses = {
+    /**
+     * Message
+     */
+    200: {
+        info: Message;
+        parts: Array<Part>;
+    };
+};
+export type SessionMessageResponse = SessionMessageResponses[keyof SessionMessageResponses];
+export type PartDeleteData = {
+    body?: never;
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+        /**
+         * Message ID
+         */
+        messageID: string;
+        /**
+         * Part ID
+         */
+        partID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/message/{messageID}/part/{partID}';
+};
+export type PartDeleteErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PartDeleteError = PartDeleteErrors[keyof PartDeleteErrors];
+export type PartDeleteResponses = {
+    /**
+     * Successfully deleted part
+     */
+    200: boolean;
+};
+export type PartDeleteResponse = PartDeleteResponses[keyof PartDeleteResponses];
+export type PartUpdateData = {
+    body?: Part;
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+        /**
+         * Message ID
+         */
+        messageID: string;
+        /**
+         * Part ID
+         */
+        partID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/message/{messageID}/part/{partID}';
+};
+export type PartUpdateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PartUpdateError = PartUpdateErrors[keyof PartUpdateErrors];
+export type PartUpdateResponses = {
+    /**
+     * Successfully updated part
+     */
+    200: Part;
+};
+export type PartUpdateResponse = PartUpdateResponses[keyof PartUpdateResponses];
+export type SessionPromptAsyncData = {
+    body?: {
+        messageID?: string;
+        model?: {
+            providerID: string;
+            modelID: string;
+        };
+        agent?: string;
+        noReply?: boolean;
+        /**
+         * @deprecated tools and permissions have been merged, you can set permissions on the session itself now
+         */
+        tools?: {
+            [key: string]: boolean;
+        };
+        system?: string;
+        /**
+         * Replace the session's assembled system prompt for this turn (CC --system-prompt). Wins over `system`.
+         */
+        systemOverride?: string;
+        variant?: string;
+        /**
+         * Run this session in kairos (background tick) mode: registers the sleep tool and the kairos prompt discipline. Sticky until explicitly set to false
+         */
+        kairos?: boolean;
+        /**
+         * Whether the user's terminal is currently focused; drives kairos focus-aware autonomy
+         */
+        terminalFocus?: boolean;
+        parts: Array<TextPartInput | FilePartInput | AgentPartInput | SubtaskPartInput>;
+    };
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/prompt_async';
+};
+export type SessionPromptAsyncErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionPromptAsyncError = SessionPromptAsyncErrors[keyof SessionPromptAsyncErrors];
+export type SessionPromptAsyncResponses = {
+    /**
+     * Prompt accepted
+     */
+    204: void;
+};
+export type SessionPromptAsyncResponse = SessionPromptAsyncResponses[keyof SessionPromptAsyncResponses];
+export type SessionCommandData = {
+    body?: {
+        messageID?: string;
+        agent?: string;
+        model?: string;
+        arguments: string;
+        command: string;
+        variant?: string;
+        parts?: Array<{
+            id?: string;
+            type: 'file';
+            mime: string;
+            filename?: string;
+            url: string;
+            source?: FilePartSource;
+        }>;
+    };
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/command';
+};
+export type SessionCommandErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionCommandError = SessionCommandErrors[keyof SessionCommandErrors];
+export type SessionCommandResponses = {
+    /**
+     * Created message
+     */
+    200: {
+        info: AssistantMessage;
+        parts: Array<Part>;
+    };
+};
+export type SessionCommandResponse = SessionCommandResponses[keyof SessionCommandResponses];
+export type SessionShellData = {
+    body?: {
+        agent: string;
+        model?: {
+            providerID: string;
+            modelID: string;
+        };
+        command: string;
+    };
+    path: {
+        /**
+         * Session ID
+         */
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/shell';
+};
+export type SessionShellErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionShellError = SessionShellErrors[keyof SessionShellErrors];
+export type SessionShellResponses = {
+    /**
+     * Created message
+     */
+    200: AssistantMessage;
+};
+export type SessionShellResponse = SessionShellResponses[keyof SessionShellResponses];
+export type SessionRevertData = {
+    body?: {
+        messageID: string;
+        partID?: string;
+        mode?: 'both' | 'conversation' | 'files';
+    };
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/revert';
+};
+export type SessionRevertErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionRevertError = SessionRevertErrors[keyof SessionRevertErrors];
+export type SessionRevertResponses = {
+    /**
+     * Updated session
+     */
+    200: Session;
+};
+export type SessionRevertResponse = SessionRevertResponses[keyof SessionRevertResponses];
+export type SessionRevertPreviewData = {
+    body?: {
+        messageID: string;
+        partID?: string;
+        mode?: 'both' | 'conversation' | 'files';
+    };
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/revert/preview';
+};
+export type SessionRevertPreviewErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionRevertPreviewError = SessionRevertPreviewErrors[keyof SessionRevertPreviewErrors];
+export type SessionRevertPreviewResponses = {
+    /**
+     * Revert preview
+     */
+    200: RevertPreview;
+};
+export type SessionRevertPreviewResponse = SessionRevertPreviewResponses[keyof SessionRevertPreviewResponses];
+export type SessionUnrevertData = {
+    body?: never;
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/unrevert';
+};
+export type SessionUnrevertErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionUnrevertError = SessionUnrevertErrors[keyof SessionUnrevertErrors];
+export type SessionUnrevertResponses = {
+    /**
+     * Updated session
+     */
+    200: Session;
+};
+export type SessionUnrevertResponse = SessionUnrevertResponses[keyof SessionUnrevertResponses];
+export type SessionFeedbackData = {
+    body?: {
+        explicit: 'up' | 'down';
+    };
+    path: {
+        sessionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/feedback';
+};
+export type SessionFeedbackErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type SessionFeedbackError = SessionFeedbackErrors[keyof SessionFeedbackErrors];
+export type SessionFeedbackResponses = {
+    /**
+     * Feedback accepted
+     */
+    200: {
+        ok: boolean;
+        matched: boolean;
+    };
+};
+export type SessionFeedbackResponse = SessionFeedbackResponses[keyof SessionFeedbackResponses];
+export type PermissionRespondData = {
+    body?: {
+        response: 'once' | 'always' | 'reject';
+    };
+    path: {
+        sessionID: string;
+        permissionID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/session/{sessionID}/permissions/{permissionID}';
+};
+export type PermissionRespondErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PermissionRespondError = PermissionRespondErrors[keyof PermissionRespondErrors];
+export type PermissionRespondResponses = {
+    /**
+     * Permission processed successfully
+     */
+    200: boolean;
+};
+export type PermissionRespondResponse = PermissionRespondResponses[keyof PermissionRespondResponses];
+export type PermissionReplyData = {
+    body?: {
+        reply: 'once' | 'always' | 'reject';
+        message?: string;
+    };
+    path: {
+        requestID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/permission/{requestID}/reply';
+};
+export type PermissionReplyErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type PermissionReplyError = PermissionReplyErrors[keyof PermissionReplyErrors];
+export type PermissionReplyResponses = {
+    /**
+     * Permission processed successfully
+     */
+    200: boolean;
+};
+export type PermissionReplyResponse = PermissionReplyResponses[keyof PermissionReplyResponses];
+export type PermissionListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/permission';
+};
+export type PermissionListResponses = {
+    /**
+     * List of pending permissions
+     */
+    200: Array<PermissionRequest>;
+};
+export type PermissionListResponse = PermissionListResponses[keyof PermissionListResponses];
+export type QuestionListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/question';
+};
+export type QuestionListResponses = {
+    /**
+     * List of pending questions
+     */
+    200: Array<QuestionRequest>;
+};
+export type QuestionListResponse = QuestionListResponses[keyof QuestionListResponses];
+export type QuestionReplyData = {
+    body?: {
+        /**
+         * User answers in order of questions (each answer is an array of selected labels)
+         */
+        answers: Array<QuestionAnswer>;
+    };
+    path: {
+        requestID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/question/{requestID}/reply';
+};
+export type QuestionReplyErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type QuestionReplyError = QuestionReplyErrors[keyof QuestionReplyErrors];
+export type QuestionReplyResponses = {
+    /**
+     * Question answered successfully
+     */
+    200: boolean;
+};
+export type QuestionReplyResponse = QuestionReplyResponses[keyof QuestionReplyResponses];
+export type QuestionRejectData = {
+    body?: never;
+    path: {
+        requestID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/question/{requestID}/reject';
+};
+export type QuestionRejectErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type QuestionRejectError = QuestionRejectErrors[keyof QuestionRejectErrors];
+export type QuestionRejectResponses = {
+    /**
+     * Question rejected successfully
+     */
+    200: boolean;
+};
+export type QuestionRejectResponse = QuestionRejectResponses[keyof QuestionRejectResponses];
+export type CommandListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/command';
+};
+export type CommandListResponses = {
+    /**
+     * List of commands
+     */
+    200: Array<Command>;
+};
+export type CommandListResponse = CommandListResponses[keyof CommandListResponses];
+export type ConfigProvidersData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/config/providers';
+};
+export type ConfigProvidersResponses = {
+    /**
+     * List of providers
+     */
+    200: {
+        providers: Array<Provider>;
+        default: {
+            [key: string]: string;
+        };
+    };
+};
+export type ConfigProvidersResponse = ConfigProvidersResponses[keyof ConfigProvidersResponses];
+export type ProviderListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/provider';
+};
+export type ProviderListResponses = {
+    /**
+     * List of providers
+     */
+    200: {
+        all: Array<{
+            api?: string;
+            name: string;
+            env: Array<string>;
+            id: string;
+            npm?: string;
+            models: {
+                [key: string]: {
+                    id: string;
+                    name: string;
+                    family?: string;
+                    release_date: string;
+                    attachment: boolean;
+                    reasoning: boolean;
+                    temperature: boolean;
+                    tool_call: boolean;
+                    interleaved?: true | {
+                        field: 'reasoning_content' | 'reasoning_details';
+                    };
+                    cost?: {
+                        input: number;
+                        output: number;
+                        cache_read?: number;
+                        cache_write?: number;
+                        context_over_200k?: {
+                            input: number;
+                            output: number;
+                            cache_read?: number;
+                            cache_write?: number;
+                        };
+                    };
+                    limit: {
+                        context: number;
+                        output: number;
+                    };
+                    modalities?: {
+                        input: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
+                        output: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
+                    };
+                    experimental?: boolean;
+                    status?: 'alpha' | 'beta' | 'deprecated';
+                    options: {
+                        [key: string]: unknown;
+                    };
+                    headers?: {
+                        [key: string]: string;
+                    };
+                    provider?: {
+                        npm: string;
+                    };
+                    variants?: {
+                        [key: string]: {
+                            [key: string]: unknown;
+                        };
+                    };
+                };
+            };
+        }>;
+        default: {
+            [key: string]: string;
+        };
+        connected: Array<string>;
+    };
+};
+export type ProviderListResponse = ProviderListResponses[keyof ProviderListResponses];
+export type ProviderAuthData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/provider/auth';
+};
+export type ProviderAuthResponses = {
+    /**
+     * Provider auth methods
+     */
+    200: {
+        [key: string]: Array<ProviderAuthMethod>;
+    };
+};
+export type ProviderAuthResponse = ProviderAuthResponses[keyof ProviderAuthResponses];
+export type ProviderOauthAuthorizeData = {
+    body?: {
+        /**
+         * Auth method index
+         */
+        method: number;
+    };
+    path: {
+        /**
+         * Provider ID
+         */
+        providerID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/provider/{providerID}/oauth/authorize';
+};
+export type ProviderOauthAuthorizeErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type ProviderOauthAuthorizeError = ProviderOauthAuthorizeErrors[keyof ProviderOauthAuthorizeErrors];
+export type ProviderOauthAuthorizeResponses = {
+    /**
+     * Authorization URL and method
+     */
+    200: ProviderAuthAuthorization;
+};
+export type ProviderOauthAuthorizeResponse = ProviderOauthAuthorizeResponses[keyof ProviderOauthAuthorizeResponses];
+export type ProviderOauthCallbackData = {
+    body?: {
+        /**
+         * Auth method index
+         */
+        method: number;
+        /**
+         * OAuth authorization code
+         */
+        code?: string;
+    };
+    path: {
+        /**
+         * Provider ID
+         */
+        providerID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/provider/{providerID}/oauth/callback';
+};
+export type ProviderOauthCallbackErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type ProviderOauthCallbackError = ProviderOauthCallbackErrors[keyof ProviderOauthCallbackErrors];
+export type ProviderOauthCallbackResponses = {
+    /**
+     * OAuth callback processed successfully
+     */
+    200: boolean;
+};
+export type ProviderOauthCallbackResponse = ProviderOauthCallbackResponses[keyof ProviderOauthCallbackResponses];
+export type FindTextData = {
+    body?: never;
+    path?: never;
+    query: {
+        directory?: string;
+        pattern: string;
+    };
+    url: '/find';
+};
+export type FindTextResponses = {
+    /**
+     * Matches
+     */
+    200: Array<{
+        path: {
+            text: string;
+        };
+        lines: {
+            text: string;
+        };
+        line_number: number;
+        absolute_offset: number;
+        submatches: Array<{
+            match: {
+                text: string;
+            };
+            start: number;
+            end: number;
+        }>;
+    }>;
+};
+export type FindTextResponse = FindTextResponses[keyof FindTextResponses];
+export type FindFilesData = {
+    body?: never;
+    path?: never;
+    query: {
+        directory?: string;
+        query: string;
+        dirs?: 'true' | 'false';
+        type?: 'file' | 'directory';
+        limit?: number;
+    };
+    url: '/find/file';
+};
+export type FindFilesResponses = {
+    /**
+     * File paths
+     */
+    200: Array<string>;
+};
+export type FindFilesResponse = FindFilesResponses[keyof FindFilesResponses];
+export type FindSymbolsData = {
+    body?: never;
+    path?: never;
+    query: {
+        directory?: string;
+        query: string;
+    };
+    url: '/find/symbol';
+};
+export type FindSymbolsResponses = {
+    /**
+     * Symbols
+     */
+    200: Array<Symbol>;
+};
+export type FindSymbolsResponse = FindSymbolsResponses[keyof FindSymbolsResponses];
+export type FileListData = {
+    body?: never;
+    path?: never;
+    query: {
+        directory?: string;
+        path: string;
+    };
+    url: '/file';
+};
+export type FileListResponses = {
+    /**
+     * Files and directories
+     */
+    200: Array<FileNode>;
+};
+export type FileListResponse = FileListResponses[keyof FileListResponses];
+export type FileReadData = {
+    body?: never;
+    path?: never;
+    query: {
+        directory?: string;
+        path: string;
+    };
+    url: '/file/content';
+};
+export type FileReadResponses = {
+    /**
+     * File content
+     */
+    200: FileContent;
+};
+export type FileReadResponse = FileReadResponses[keyof FileReadResponses];
+export type FileStatusData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/file/status';
+};
+export type FileStatusResponses = {
+    /**
+     * File status
+     */
+    200: Array<File>;
+};
+export type FileStatusResponse = FileStatusResponses[keyof FileStatusResponses];
+export type AppLogData = {
+    body?: {
+        /**
+         * Service name for the log entry
+         */
+        service: string;
+        /**
+         * Log level
+         */
+        level: 'debug' | 'info' | 'error' | 'warn';
+        /**
+         * Log message
+         */
+        message: string;
+        /**
+         * Additional metadata for the log entry
+         */
+        extra?: {
+            [key: string]: unknown;
+        };
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/log';
+};
+export type AppLogErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type AppLogError = AppLogErrors[keyof AppLogErrors];
+export type AppLogResponses = {
+    /**
+     * Log entry written successfully
+     */
+    200: boolean;
+};
+export type AppLogResponse = AppLogResponses[keyof AppLogResponses];
+export type AppAgentsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/agent';
+};
+export type AppAgentsResponses = {
+    /**
+     * List of agents
+     */
+    200: Array<Agent>;
+};
+export type AppAgentsResponse = AppAgentsResponses[keyof AppAgentsResponses];
+export type McpStatusData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp';
+};
+export type McpStatusResponses = {
+    /**
+     * MCP server status
+     */
+    200: {
+        [key: string]: McpStatus;
+    };
+};
+export type McpStatusResponse = McpStatusResponses[keyof McpStatusResponses];
+export type McpAddData = {
+    body?: {
+        name: string;
+        config: McpLocalConfig | McpRemoteConfig;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp';
+};
+export type McpAddErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type McpAddError = McpAddErrors[keyof McpAddErrors];
+export type McpAddResponses = {
+    /**
+     * MCP server added successfully
+     */
+    200: {
+        [key: string]: McpStatus;
+    };
+};
+export type McpAddResponse = McpAddResponses[keyof McpAddResponses];
+export type McpAuthRemoveData = {
+    body?: never;
+    path: {
+        name: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp/{name}/auth';
+};
+export type McpAuthRemoveErrors = {
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type McpAuthRemoveError = McpAuthRemoveErrors[keyof McpAuthRemoveErrors];
+export type McpAuthRemoveResponses = {
+    /**
+     * OAuth credentials removed
+     */
+    200: {
+        success: true;
+    };
+};
+export type McpAuthRemoveResponse = McpAuthRemoveResponses[keyof McpAuthRemoveResponses];
+export type McpAuthStartData = {
+    body?: never;
+    path: {
+        name: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp/{name}/auth';
+};
+export type McpAuthStartErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type McpAuthStartError = McpAuthStartErrors[keyof McpAuthStartErrors];
+export type McpAuthStartResponses = {
+    /**
+     * OAuth flow started
+     */
+    200: {
+        /**
+         * URL to open in browser for authorization
+         */
+        authorizationUrl: string;
+    };
+};
+export type McpAuthStartResponse = McpAuthStartResponses[keyof McpAuthStartResponses];
+export type McpAuthCallbackData = {
+    body?: {
+        /**
+         * Authorization code from OAuth callback
+         */
+        code: string;
+    };
+    path: {
+        name: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp/{name}/auth/callback';
+};
+export type McpAuthCallbackErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type McpAuthCallbackError = McpAuthCallbackErrors[keyof McpAuthCallbackErrors];
+export type McpAuthCallbackResponses = {
+    /**
+     * OAuth authentication completed
+     */
+    200: McpStatus;
+};
+export type McpAuthCallbackResponse = McpAuthCallbackResponses[keyof McpAuthCallbackResponses];
+export type McpAuthAuthenticateData = {
+    body?: never;
+    path: {
+        name: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp/{name}/auth/authenticate';
+};
+export type McpAuthAuthenticateErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type McpAuthAuthenticateError = McpAuthAuthenticateErrors[keyof McpAuthAuthenticateErrors];
+export type McpAuthAuthenticateResponses = {
+    /**
+     * OAuth authentication completed
+     */
+    200: McpStatus;
+};
+export type McpAuthAuthenticateResponse = McpAuthAuthenticateResponses[keyof McpAuthAuthenticateResponses];
+export type McpConnectData = {
+    body?: never;
+    path: {
+        name: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp/{name}/connect';
+};
+export type McpConnectErrors = {
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type McpConnectError = McpConnectErrors[keyof McpConnectErrors];
+export type McpConnectResponses = {
+    /**
+     * MCP server connected successfully
+     */
+    200: boolean;
+};
+export type McpConnectResponse = McpConnectResponses[keyof McpConnectResponses];
+export type McpDisconnectData = {
+    body?: never;
+    path: {
+        name: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/mcp/{name}/disconnect';
+};
+export type McpDisconnectResponses = {
+    /**
+     * MCP server disconnected successfully
+     */
+    200: boolean;
+};
+export type McpDisconnectResponse = McpDisconnectResponses[keyof McpDisconnectResponses];
+export type ExperimentalResourceListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/experimental/resource';
+};
+export type ExperimentalResourceListResponses = {
+    /**
+     * MCP resources
+     */
+    200: {
+        [key: string]: McpResource;
+    };
+};
+export type ExperimentalResourceListResponse = ExperimentalResourceListResponses[keyof ExperimentalResourceListResponses];
+export type LspStatusData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/lsp';
+};
+export type LspStatusResponses = {
+    /**
+     * LSP server status
+     */
+    200: Array<LspStatus>;
+};
+export type LspStatusResponse = LspStatusResponses[keyof LspStatusResponses];
+export type FormatterStatusData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/formatter';
+};
+export type FormatterStatusResponses = {
+    /**
+     * Formatter status
+     */
+    200: Array<FormatterStatus>;
+};
+export type FormatterStatusResponse = FormatterStatusResponses[keyof FormatterStatusResponses];
+export type TuiAppendPromptData = {
+    body?: {
+        text: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/append-prompt';
+};
+export type TuiAppendPromptErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type TuiAppendPromptError = TuiAppendPromptErrors[keyof TuiAppendPromptErrors];
+export type TuiAppendPromptResponses = {
+    /**
+     * Prompt processed successfully
+     */
+    200: boolean;
+};
+export type TuiAppendPromptResponse = TuiAppendPromptResponses[keyof TuiAppendPromptResponses];
+export type TuiOpenHelpData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/open-help';
+};
+export type TuiOpenHelpResponses = {
+    /**
+     * Help dialog opened successfully
+     */
+    200: boolean;
+};
+export type TuiOpenHelpResponse = TuiOpenHelpResponses[keyof TuiOpenHelpResponses];
+export type TuiOpenSessionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/open-sessions';
+};
+export type TuiOpenSessionsResponses = {
+    /**
+     * Session dialog opened successfully
+     */
+    200: boolean;
+};
+export type TuiOpenSessionsResponse = TuiOpenSessionsResponses[keyof TuiOpenSessionsResponses];
+export type TuiOpenThemesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/open-themes';
+};
+export type TuiOpenThemesResponses = {
+    /**
+     * Theme dialog opened successfully
+     */
+    200: boolean;
+};
+export type TuiOpenThemesResponse = TuiOpenThemesResponses[keyof TuiOpenThemesResponses];
+export type TuiOpenModelsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/open-models';
+};
+export type TuiOpenModelsResponses = {
+    /**
+     * Model dialog opened successfully
+     */
+    200: boolean;
+};
+export type TuiOpenModelsResponse = TuiOpenModelsResponses[keyof TuiOpenModelsResponses];
+export type TuiSubmitPromptData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/submit-prompt';
+};
+export type TuiSubmitPromptResponses = {
+    /**
+     * Prompt submitted successfully
+     */
+    200: boolean;
+};
+export type TuiSubmitPromptResponse = TuiSubmitPromptResponses[keyof TuiSubmitPromptResponses];
+export type TuiClearPromptData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/clear-prompt';
+};
+export type TuiClearPromptResponses = {
+    /**
+     * Prompt cleared successfully
+     */
+    200: boolean;
+};
+export type TuiClearPromptResponse = TuiClearPromptResponses[keyof TuiClearPromptResponses];
+export type TuiExecuteCommandData = {
+    body?: {
+        command: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/execute-command';
+};
+export type TuiExecuteCommandErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type TuiExecuteCommandError = TuiExecuteCommandErrors[keyof TuiExecuteCommandErrors];
+export type TuiExecuteCommandResponses = {
+    /**
+     * Command executed successfully
+     */
+    200: boolean;
+};
+export type TuiExecuteCommandResponse = TuiExecuteCommandResponses[keyof TuiExecuteCommandResponses];
+export type TuiShowToastData = {
+    body?: {
+        title?: string;
+        message: string;
+        variant: 'info' | 'success' | 'warning' | 'error';
+        /**
+         * Duration in milliseconds
+         */
+        duration?: number;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/show-toast';
+};
+export type TuiShowToastResponses = {
+    /**
+     * Toast notification shown successfully
+     */
+    200: boolean;
+};
+export type TuiShowToastResponse = TuiShowToastResponses[keyof TuiShowToastResponses];
+export type TuiPublishData = {
+    body?: EventTuiPromptAppend | EventTuiCommandExecute | EventTuiToastShow | EventTuiSessionSelect;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/publish';
+};
+export type TuiPublishErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type TuiPublishError = TuiPublishErrors[keyof TuiPublishErrors];
+export type TuiPublishResponses = {
+    /**
+     * Event published successfully
+     */
+    200: boolean;
+};
+export type TuiPublishResponse = TuiPublishResponses[keyof TuiPublishResponses];
+export type TuiSelectSessionData = {
+    body?: {
+        /**
+         * Session ID to navigate to
+         */
+        sessionID: string;
+    };
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/select-session';
+};
+export type TuiSelectSessionErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+    /**
+     * Not found
+     */
+    404: NotFoundError;
+};
+export type TuiSelectSessionError = TuiSelectSessionErrors[keyof TuiSelectSessionErrors];
+export type TuiSelectSessionResponses = {
+    /**
+     * Session selected successfully
+     */
+    200: boolean;
+};
+export type TuiSelectSessionResponse = TuiSelectSessionResponses[keyof TuiSelectSessionResponses];
+export type TuiControlNextData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/control/next';
+};
+export type TuiControlNextResponses = {
+    /**
+     * Next TUI request
+     */
+    200: {
+        path: string;
+        body: unknown;
+    };
+};
+export type TuiControlNextResponse = TuiControlNextResponses[keyof TuiControlNextResponses];
+export type TuiControlResponseData = {
+    body?: unknown;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/tui/control/response';
+};
+export type TuiControlResponseResponses = {
+    /**
+     * Response submitted successfully
+     */
+    200: boolean;
+};
+export type TuiControlResponseResponse = TuiControlResponseResponses[keyof TuiControlResponseResponses];
+export type AuthSetData = {
+    body?: Auth;
+    path: {
+        providerID: string;
+    };
+    query?: {
+        directory?: string;
+    };
+    url: '/auth/{providerID}';
+};
+export type AuthSetErrors = {
+    /**
+     * Bad request
+     */
+    400: BadRequestError;
+};
+export type AuthSetError = AuthSetErrors[keyof AuthSetErrors];
+export type AuthSetResponses = {
+    /**
+     * Successfully set authentication credentials
+     */
+    200: boolean;
+};
+export type AuthSetResponse = AuthSetResponses[keyof AuthSetResponses];
+export type EventSubscribeData = {
+    body?: never;
+    path?: never;
+    query?: {
+        directory?: string;
+    };
+    url: '/event';
+};
+export type EventSubscribeResponses = {
+    /**
+     * Event stream
+     */
+    200: Event;
+};
+export type EventSubscribeResponse = EventSubscribeResponses[keyof EventSubscribeResponses];
