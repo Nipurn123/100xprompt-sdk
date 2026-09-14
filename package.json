@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "@100xprompt/sdk",
-  "version": "0.1.90",
+  "version": "0.1.110",
   "private": false,
   "type": "module",
   "license": "UNLICENSED",
@@ -63,6 +63,6 @@
   },
   "dependencies": {},
   "publishConfig": {
-    "directory": "dist"
+    "access": "public"
   }
 }
