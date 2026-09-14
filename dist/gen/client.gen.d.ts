@@ -1,5 +1,5 @@
-import { type ClientOptions, type Config } from './client/index.js';
-import type { ClientOptions as ClientOptions2 } from './types.gen.js';
+import { type ClientOptions, type Config } from "./client/index.js";
+import type { ClientOptions as ClientOptions2 } from "./types.gen.js";
 /**
  * The `createClientConfig()` function will be called on client initialization
  * and the returned object will become the client's initial configuration.

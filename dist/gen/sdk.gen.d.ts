@@ -1,5 +1,5 @@
-import { type Client, type Options as Options2, type TDataShape } from './client/index.js';
-import type { AgentPartInput, AppAgentsResponses, AppLogErrors, AppLogResponses, Auth as Auth2, AuthSetErrors, AuthSetResponses, CommandListResponses, Config as Config2, ConfigGetResponses, ConfigProvidersResponses, ConfigUpdateErrors, ConfigUpdateResponses, EventSubscribeResponses, EventTuiCommandExecute, EventTuiPromptAppend, EventTuiSessionSelect, EventTuiToastShow, ExperimentalResourceListResponses, FileListResponses, FilePartInput, FilePartSource, FileReadResponses, FileStatusResponses, FindFilesResponses, FindSymbolsResponses, FindTextResponses, FormatterStatusResponses, GlobalDisposeResponses, GlobalEventResponses, GlobalHealthResponses, InstanceDisposeResponses, LspStatusResponses, McpAddErrors, McpAddResponses, McpAuthAuthenticateErrors, McpAuthAuthenticateResponses, McpAuthCallbackErrors, McpAuthCallbackResponses, McpAuthRemoveErrors, McpAuthRemoveResponses, McpAuthStartErrors, McpAuthStartResponses, McpConnectErrors, McpConnectResponses, McpDisconnectResponses, McpLocalConfig, McpRemoteConfig, McpStatusResponses, Part as Part2, PartDeleteErrors, PartDeleteResponses, PartUpdateErrors, PartUpdateResponses, PathGetResponses, PermissionListResponses, PermissionMode, PermissionReplyErrors, PermissionReplyResponses, PermissionRespondErrors, PermissionRespondResponses, PermissionRuleset, PluginDiscoverResponses, PluginErrorsResponses, PluginInstalledResponses, PluginInstallErrors, PluginInstallNamedErrors, PluginInstallNamedResponses, PluginInstallResponses, PluginMarketplaceAddResponses, PluginMarketplaceRemoveResponses, PluginMarketplacesResponses, PluginReloadResponses, PluginRemoveResponses, PluginSetEnabledResponses, ProjectCurrentResponses, ProjectListResponses, ProjectUpdateErrors, ProjectUpdateResponses, ProviderAuthResponses, ProviderListResponses, ProviderOauthAuthorizeErrors, ProviderOauthAuthorizeResponses, ProviderOauthCallbackErrors, ProviderOauthCallbackResponses, PtyConnectErrors, PtyConnectResponses, PtyCreateErrors, PtyCreateResponses, PtyGetErrors, PtyGetResponses, PtyListResponses, PtyRemoveErrors, PtyRemoveResponses, PtyUpdateErrors, PtyUpdateResponses, QuestionAnswer, QuestionListResponses, QuestionRejectErrors, QuestionRejectResponses, QuestionReplyErrors, QuestionReplyResponses, RemoteBridgeConnectResponses, RemoteBridgeDevicesResponses, RemoteBridgeEnrollResponses, RemoteBridgeRevokeResponses, SessionAbortErrors, SessionAbortResponses, SessionChildrenErrors, SessionChildrenResponses, SessionCommandErrors, SessionCommandResponses, SessionCreateErrors, SessionCreateResponses, SessionDeleteErrors, SessionDeleteResponses, SessionDiffErrors, SessionDiffResponses, SessionFeedbackErrors, SessionFeedbackResponses, SessionForkResponses, SessionGetErrors, SessionGetResponses, SessionInitErrors, SessionInitResponses, SessionListResponses, SessionMessageErrors, SessionMessageResponses, SessionMessagesErrors, SessionMessagesResponses, SessionPromptAsyncErrors, SessionPromptAsyncResponses, SessionPromptErrors, SessionPromptResponses, SessionRevertErrors, SessionRevertPreviewErrors, SessionRevertPreviewResponses, SessionRevertResponses, SessionShareErrors, SessionShareResponses, SessionShellErrors, SessionShellResponses, SessionStatusErrors, SessionStatusResponses, SessionSummarizeErrors, SessionSummarizeResponses, SessionTodoErrors, SessionTodoResponses, SessionUnrevertErrors, SessionUnrevertResponses, SessionUnshareErrors, SessionUnshareResponses, SessionUpdateErrors, SessionUpdateResponses, SubtaskPartInput, TextPartInput, ToolIdsErrors, ToolIdsResponses, ToolListErrors, ToolListResponses, TrustAlwaysResponses, TrustOnceResponses, TrustStatusResponses, TuiAppendPromptErrors, TuiAppendPromptResponses, TuiClearPromptResponses, TuiControlNextResponses, TuiControlResponseResponses, TuiExecuteCommandErrors, TuiExecuteCommandResponses, TuiOpenHelpResponses, TuiOpenModelsResponses, TuiOpenSessionsResponses, TuiOpenThemesResponses, TuiPublishErrors, TuiPublishResponses, TuiSelectSessionErrors, TuiSelectSessionResponses, TuiShowToastResponses, TuiSubmitPromptResponses, VcsGetResponses, WorktreeCreateErrors, WorktreeCreateInput, WorktreeCreateResponses, WorktreeListResponses } from './types.gen.js';
+import { type Client, type Options as Options2, type TDataShape } from "./client/index.js";
+import type { AgentPartInput, AppAgentsResponses, AppLogErrors, AppLogResponses, Auth as Auth2, AuthSetErrors, AuthSetResponses, CommandListResponses, Config as Config2, ConfigGetResponses, ConfigProvidersResponses, ConfigUpdateErrors, ConfigUpdateResponses, EventSubscribeResponses, EventTuiCommandExecute, EventTuiPromptAppend, EventTuiSessionSelect, EventTuiToastShow, ExperimentalResourceListResponses, FileListResponses, FilePartInput, FilePartSource, FileReadResponses, FileStatusResponses, FindFilesResponses, FindSymbolsResponses, FindTextResponses, FormatterStatusResponses, GlobalDisposeResponses, GlobalEventResponses, GlobalHealthResponses, InstanceDisposeResponses, LspStatusResponses, McpAddErrors, McpAddResponses, McpAuthAuthenticateErrors, McpAuthAuthenticateResponses, McpAuthCallbackErrors, McpAuthCallbackResponses, McpAuthRemoveErrors, McpAuthRemoveResponses, McpAuthStartErrors, McpAuthStartResponses, McpConnectErrors, McpConnectResponses, McpDisconnectResponses, McpLocalConfig, McpRemoteConfig, McpStatusResponses, Part as Part2, PartDeleteErrors, PartDeleteResponses, PartUpdateErrors, PartUpdateResponses, PathGetResponses, PermissionListResponses, PermissionMode, PermissionReplyErrors, PermissionReplyResponses, PermissionRespondErrors, PermissionRespondResponses, PermissionRuleset, PluginDiscoverResponses, PluginErrorsResponses, PluginInstalledResponses, PluginInstallErrors, PluginInstallNamedErrors, PluginInstallNamedResponses, PluginInstallResponses, PluginMarketplaceAddResponses, PluginMarketplaceRemoveResponses, PluginMarketplacesResponses, PluginReloadResponses, PluginRemoveResponses, PluginSetEnabledResponses, ProjectCurrentResponses, ProjectListResponses, ProjectUpdateErrors, ProjectUpdateResponses, ProviderAuthResponses, ProviderListResponses, ProviderOauthAuthorizeErrors, ProviderOauthAuthorizeResponses, ProviderOauthCallbackErrors, ProviderOauthCallbackResponses, PtyConnectErrors, PtyConnectResponses, PtyCreateErrors, PtyCreateResponses, PtyGetErrors, PtyGetResponses, PtyListResponses, PtyRemoveErrors, PtyRemoveResponses, PtyUpdateErrors, PtyUpdateResponses, QuestionAnswer, QuestionListResponses, QuestionRejectErrors, QuestionRejectResponses, QuestionReplyErrors, QuestionReplyResponses, RemoteBridgeConnectResponses, RemoteBridgeDevicesResponses, RemoteBridgeEnrollResponses, RemoteBridgeRevokeResponses, SessionAbortErrors, SessionAbortResponses, SessionChildrenErrors, SessionChildrenResponses, SessionCommandErrors, SessionCommandResponses, SessionCreateErrors, SessionCreateResponses, SessionDeleteErrors, SessionDeleteResponses, SessionDiffErrors, SessionDiffResponses, SessionFeedbackErrors, SessionFeedbackResponses, SessionForkResponses, SessionGetErrors, SessionGetResponses, SessionInitErrors, SessionInitResponses, SessionListResponses, SessionMessageErrors, SessionMessageResponses, SessionMessagesErrors, SessionMessagesResponses, SessionPromptAsyncErrors, SessionPromptAsyncResponses, SessionPromptErrors, SessionPromptResponses, SessionRevertErrors, SessionRevertPreviewErrors, SessionRevertPreviewResponses, SessionRevertResponses, SessionShareErrors, SessionShareResponses, SessionShellErrors, SessionShellResponses, SessionStatusErrors, SessionStatusResponses, SessionSummarizeErrors, SessionSummarizeResponses, SessionTodoErrors, SessionTodoResponses, SessionUnrevertErrors, SessionUnrevertResponses, SessionUnshareErrors, SessionUnshareResponses, SessionUpdateErrors, SessionUpdateResponses, SubtaskPartInput, TextPartInput, ToolIdsErrors, ToolIdsResponses, ToolListErrors, ToolListResponses, TrustAlwaysResponses, TrustOnceResponses, TrustStatusResponses, TuiAppendPromptErrors, TuiAppendPromptResponses, TuiClearPromptResponses, TuiControlNextResponses, TuiControlResponseResponses, TuiExecuteCommandErrors, TuiExecuteCommandResponses, TuiOpenHelpResponses, TuiOpenModelsResponses, TuiOpenSessionsResponses, TuiOpenThemesResponses, TuiPublishErrors, TuiPublishResponses, TuiSelectSessionErrors, TuiSelectSessionResponses, TuiShowToastResponses, TuiSubmitPromptResponses, VcsGetResponses, WorktreeCreateErrors, WorktreeCreateInput, WorktreeCreateResponses, WorktreeListResponses } from "./types.gen.js";
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
@@ -381,7 +381,7 @@ export declare class Revert extends HeyApiClient {
         directory?: string;
         messageID?: string;
         partID?: string;
-        mode?: 'both' | 'conversation' | 'files';
+        mode?: "both" | "conversation" | "files";
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<SessionRevertPreviewResponses, SessionRevertPreviewErrors, ThrowOnError, "fields">;
 }
 export declare class Session extends HeyApiClient {
@@ -626,7 +626,7 @@ export declare class Session extends HeyApiClient {
         variant?: string;
         parts?: Array<{
             id?: string;
-            type: 'file';
+            type: "file";
             mime: string;
             filename?: string;
             url: string;
@@ -658,7 +658,7 @@ export declare class Session extends HeyApiClient {
         directory?: string;
         messageID?: string;
         partID?: string;
-        mode?: 'both' | 'conversation' | 'files';
+        mode?: "both" | "conversation" | "files";
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<SessionRevertResponses, SessionRevertErrors, ThrowOnError, "fields">;
     /**
      * Restore reverted messages
@@ -677,7 +677,7 @@ export declare class Session extends HeyApiClient {
     feedback<ThrowOnError extends boolean = false>(parameters: {
         sessionID: string;
         directory?: string;
-        explicit?: 'up' | 'down';
+        explicit?: "up" | "down";
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<SessionFeedbackResponses, SessionFeedbackErrors, ThrowOnError, "fields">;
     revert2: Revert;
 }
@@ -714,7 +714,7 @@ export declare class Permission extends HeyApiClient {
         sessionID: string;
         permissionID: string;
         directory?: string;
-        response?: 'once' | 'always' | 'reject';
+        response?: "once" | "always" | "reject";
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<PermissionRespondResponses, PermissionRespondErrors, ThrowOnError, "fields">;
     /**
      * Respond to permission request
@@ -724,7 +724,7 @@ export declare class Permission extends HeyApiClient {
     reply<ThrowOnError extends boolean = false>(parameters: {
         requestID: string;
         directory?: string;
-        reply?: 'once' | 'always' | 'reject';
+        reply?: "once" | "always" | "reject";
         message?: string;
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<PermissionReplyResponses, PermissionReplyErrors, ThrowOnError, "fields">;
     /**
@@ -835,8 +835,8 @@ export declare class Find extends HeyApiClient {
     files<ThrowOnError extends boolean = false>(parameters: {
         directory?: string;
         query: string;
-        dirs?: 'true' | 'false';
-        type?: 'file' | 'directory';
+        dirs?: "true" | "false";
+        type?: "file" | "directory";
         limit?: number;
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<FindFilesResponses, unknown, ThrowOnError, "fields">;
     /**
@@ -886,7 +886,7 @@ export declare class App extends HeyApiClient {
     log<ThrowOnError extends boolean = false>(parameters?: {
         directory?: string;
         service?: string;
-        level?: 'debug' | 'info' | 'error' | 'warn';
+        level?: "debug" | "info" | "error" | "warn";
         message?: string;
         extra?: {
             [key: string]: unknown;
@@ -1113,7 +1113,7 @@ export declare class Tui extends HeyApiClient {
         directory?: string;
         title?: string;
         message?: string;
-        variant?: 'info' | 'success' | 'warning' | 'error';
+        variant?: "info" | "success" | "warning" | "error";
         duration?: number;
     }, options?: Options<never, ThrowOnError>): import("./client/types.gen.js").RequestResult<TuiShowToastResponses, unknown, ThrowOnError, "fields">;
     /**

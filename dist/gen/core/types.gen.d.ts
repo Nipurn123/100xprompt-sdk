@@ -1,6 +1,6 @@
-import type { Auth, AuthToken } from './auth.gen.js';
-import type { BodySerializer, QuerySerializer, QuerySerializerOptions } from './bodySerializer.gen.js';
-export type HttpMethod = 'connect' | 'delete' | 'get' | 'head' | 'options' | 'patch' | 'post' | 'put' | 'trace';
+import type { Auth, AuthToken } from "./auth.gen.js";
+import type { BodySerializer, QuerySerializer, QuerySerializerOptions } from "./bodySerializer.gen.js";
+export type HttpMethod = "connect" | "delete" | "get" | "head" | "options" | "patch" | "post" | "put" | "trace";
 export type Client<RequestFn = never, Config = unknown, MethodFn = never, BuildUrlFn = never, SseFn = never> = {
     /**
      * Returns the final request URL.
@@ -35,7 +35,7 @@ export interface Config {
      *
      * {@link https://developer.mozilla.org/docs/Web/API/Headers/Headers#init See more}
      */
-    headers?: RequestInit['headers'] | Record<string, string | number | boolean | (string | number | boolean)[] | null | undefined | unknown>;
+    headers?: RequestInit["headers"] | Record<string, string | number | boolean | (string | number | boolean)[] | null | undefined | unknown>;
     /**
      * The request method.
      *

@@ -3,12 +3,10 @@
  * Replacer that converts non-JSON values (bigint, Date, etc.) to safe substitutes.
  */
 export const queryKeyJsonReplacer = (_key, value) => {
-    if (value === undefined ||
-        typeof value === 'function' ||
-        typeof value === 'symbol') {
+    if (value === undefined || typeof value === "function" || typeof value === "symbol") {
         return undefined;
     }
-    if (typeof value === 'bigint') {
+    if (typeof value === "bigint") {
         return value.toString();
     }
     if (value instanceof Date) {
@@ -35,7 +33,7 @@ export const stringifyToJsonValue = (input) => {
  * Detects plain objects (including objects with a null prototype).
  */
 const isPlainObject = (value) => {
-    if (value === null || typeof value !== 'object') {
+    if (value === null || typeof value !== "object") {
         return false;
     }
     const prototype = Object.getPrototypeOf(value);
@@ -54,6 +52,7 @@ const serializeSearchParams = (params) => {
             continue;
         }
         if (Array.isArray(existing)) {
+            ;
             existing.push(value);
         }
         else {
@@ -69,17 +68,13 @@ export const serializeQueryKeyValue = (value) => {
     if (value === null) {
         return null;
     }
-    if (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean') {
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
         return value;
     }
-    if (value === undefined ||
-        typeof value === 'function' ||
-        typeof value === 'symbol') {
+    if (value === undefined || typeof value === "function" || typeof value === "symbol") {
         return undefined;
     }
-    if (typeof value === 'bigint') {
+    if (typeof value === "bigint") {
         return value.toString();
     }
     if (value instanceof Date) {
@@ -88,8 +83,7 @@ export const serializeQueryKeyValue = (value) => {
     if (Array.isArray(value)) {
         return stringifyToJsonValue(value);
     }
-    if (typeof URLSearchParams !== 'undefined' &&
-        value instanceof URLSearchParams) {
+    if (typeof URLSearchParams !== "undefined" && value instanceof URLSearchParams) {
         return serializeSearchParams(value);
     }
     if (isPlainObject(value)) {

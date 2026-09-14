@@ -1,6 +1,6 @@
-type Slot = 'body' | 'headers' | 'path' | 'query';
+type Slot = "body" | "headers" | "path" | "query";
 export type Field = {
-    in: Exclude<Slot, 'body'>;
+    in: Exclude<Slot, "body">;
     /**
      * Field name. This is the name we want the user to see and use.
      */
@@ -11,7 +11,7 @@ export type Field = {
      */
     map?: string;
 } | {
-    in: Extract<Slot, 'body'>;
+    in: Extract<Slot, "body">;
     /**
      * Key isn't required for bodies.
      */

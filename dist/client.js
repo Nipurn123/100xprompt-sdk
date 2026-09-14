@@ -1,7 +1,23 @@
 export * from "./gen/types.gen.js";
 import { createClient } from "./gen/client/client.gen.js";
-import { X100PromptClient as _X100PromptClient } from "./gen/sdk.gen.js";
-export { _X100PromptClient as X100PromptClient };
+import { X100PromptClient as _X100PromptClient, Revert, Oauth, Resource, Control, } from "./gen/sdk.gen.js";
+export class X100PromptClient extends _X100PromptClient {
+    revert;
+    oauth;
+    resource;
+    control;
+    constructor(args) {
+        super(args);
+        this.revert = new Revert(args);
+        this.oauth = new Oauth(args);
+        this.resource = new Resource(args);
+        this.control = new Control(args);
+        this.provider.oauth = this.oauth;
+        this.tui.control = this.control;
+        this.experimental.resource = this.resource;
+    }
+}
+export { Revert, Oauth, Resource, Control };
 let defaultDiagnosticHandler;
 /**
  * Install the process-wide sink for client diagnostics, for hosts that build
@@ -113,5 +129,5 @@ export function create100XPromptClient(config) {
         };
     }
     const client = createClient(config);
-    return new _X100PromptClient({ client });
+    return new X100PromptClient({ client });
 }

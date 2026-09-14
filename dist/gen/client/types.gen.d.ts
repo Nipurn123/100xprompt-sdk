@@ -1,13 +1,13 @@
-import type { Auth } from '../core/auth.gen.js';
-import type { ServerSentEventsOptions, ServerSentEventsResult } from '../core/serverSentEvents.gen.js';
-import type { Client as CoreClient, Config as CoreConfig } from '../core/types.gen.js';
-import type { Middleware } from './utils.gen.js';
-export type ResponseStyle = 'data' | 'fields';
-export interface Config<T extends ClientOptions = ClientOptions> extends Omit<RequestInit, 'body' | 'headers' | 'method'>, CoreConfig {
+import type { Auth } from "../core/auth.gen.js";
+import type { ServerSentEventsOptions, ServerSentEventsResult } from "../core/serverSentEvents.gen.js";
+import type { Client as CoreClient, Config as CoreConfig } from "../core/types.gen.js";
+import type { Middleware } from "./utils.gen.js";
+export type ResponseStyle = "data" | "fields";
+export interface Config<T extends ClientOptions = ClientOptions> extends Omit<RequestInit, "body" | "headers" | "method">, CoreConfig {
     /**
      * Base URL for all requests made by this client.
      */
-    baseUrl?: T['baseUrl'];
+    baseUrl?: T["baseUrl"];
     /**
      * Fetch API implementation. You can use this option to provide a custom
      * fetch instance.
@@ -30,7 +30,7 @@ export interface Config<T extends ClientOptions = ClientOptions> extends Omit<Re
      *
      * @default 'auto'
      */
-    parseAs?: 'arrayBuffer' | 'auto' | 'blob' | 'formData' | 'json' | 'stream' | 'text';
+    parseAs?: "arrayBuffer" | "auto" | "blob" | "formData" | "json" | "stream" | "text";
     /**
      * Should we return only data or multiple fields (data, error, response, etc.)?
      *
@@ -42,12 +42,12 @@ export interface Config<T extends ClientOptions = ClientOptions> extends Omit<Re
      *
      * @default false
      */
-    throwOnError?: T['throwOnError'];
+    throwOnError?: T["throwOnError"];
 }
-export interface RequestOptions<TData = unknown, TResponseStyle extends ResponseStyle = 'fields', ThrowOnError extends boolean = boolean, Url extends string = string> extends Config<{
+export interface RequestOptions<TData = unknown, TResponseStyle extends ResponseStyle = "fields", ThrowOnError extends boolean = boolean, Url extends string = string> extends Config<{
     responseStyle: TResponseStyle;
     throwOnError: ThrowOnError;
-}>, Pick<ServerSentEventsOptions<TData>, 'onSseError' | 'onSseEvent' | 'sseDefaultRetryDelay' | 'sseMaxRetryAttempts' | 'sseMaxRetryDelay'> {
+}>, Pick<ServerSentEventsOptions<TData>, "onSseError" | "onSseEvent" | "sseDefaultRetryDelay" | "sseMaxRetryAttempts" | "sseMaxRetryDelay"> {
     /**
      * Any body that you want to add to your request.
      *
@@ -62,14 +62,14 @@ export interface RequestOptions<TData = unknown, TResponseStyle extends Response
     security?: ReadonlyArray<Auth>;
     url: Url;
 }
-export interface ResolvedRequestOptions<TResponseStyle extends ResponseStyle = 'fields', ThrowOnError extends boolean = boolean, Url extends string = string> extends RequestOptions<unknown, TResponseStyle, ThrowOnError, Url> {
+export interface ResolvedRequestOptions<TResponseStyle extends ResponseStyle = "fields", ThrowOnError extends boolean = boolean, Url extends string = string> extends RequestOptions<unknown, TResponseStyle, ThrowOnError, Url> {
     serializedBody?: string;
 }
-export type RequestResult<TData = unknown, TError = unknown, ThrowOnError extends boolean = boolean, TResponseStyle extends ResponseStyle = 'fields'> = ThrowOnError extends true ? Promise<TResponseStyle extends 'data' ? TData extends Record<string, unknown> ? TData[keyof TData] : TData : {
+export type RequestResult<TData = unknown, TError = unknown, ThrowOnError extends boolean = boolean, TResponseStyle extends ResponseStyle = "fields"> = ThrowOnError extends true ? Promise<TResponseStyle extends "data" ? TData extends Record<string, unknown> ? TData[keyof TData] : TData : {
     data: TData extends Record<string, unknown> ? TData[keyof TData] : TData;
     request: Request;
     response: Response;
-}> : Promise<TResponseStyle extends 'data' ? (TData extends Record<string, unknown> ? TData[keyof TData] : TData) | undefined : ({
+}> : Promise<TResponseStyle extends "data" ? (TData extends Record<string, unknown> ? TData[keyof TData] : TData) | undefined : ({
     data: TData extends Record<string, unknown> ? TData[keyof TData] : TData;
     error: undefined;
 } | {
@@ -84,9 +84,9 @@ export interface ClientOptions {
     responseStyle?: ResponseStyle;
     throwOnError?: boolean;
 }
-type MethodFn = <TData = unknown, TError = unknown, ThrowOnError extends boolean = false, TResponseStyle extends ResponseStyle = 'fields'>(options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'>) => RequestResult<TData, TError, ThrowOnError, TResponseStyle>;
-type SseFn = <TData = unknown, TError = unknown, ThrowOnError extends boolean = false, TResponseStyle extends ResponseStyle = 'fields'>(options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'>) => Promise<ServerSentEventsResult<TData, TError>>;
-type RequestFn = <TData = unknown, TError = unknown, ThrowOnError extends boolean = false, TResponseStyle extends ResponseStyle = 'fields'>(options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'> & Pick<Required<RequestOptions<TData, TResponseStyle, ThrowOnError>>, 'method'>) => RequestResult<TData, TError, ThrowOnError, TResponseStyle>;
+type MethodFn = <TData = unknown, TError = unknown, ThrowOnError extends boolean = false, TResponseStyle extends ResponseStyle = "fields">(options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, "method">) => RequestResult<TData, TError, ThrowOnError, TResponseStyle>;
+type SseFn = <TData = unknown, TError = unknown, ThrowOnError extends boolean = false, TResponseStyle extends ResponseStyle = "fields">(options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, "method">) => Promise<ServerSentEventsResult<TData, TError>>;
+type RequestFn = <TData = unknown, TError = unknown, ThrowOnError extends boolean = false, TResponseStyle extends ResponseStyle = "fields">(options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, "method"> & Pick<Required<RequestOptions<TData, TResponseStyle, ThrowOnError>>, "method">) => RequestResult<TData, TError, ThrowOnError, TResponseStyle>;
 type BuildUrlFn = <TData extends {
     body?: unknown;
     path?: Record<string, unknown>;
@@ -113,5 +113,5 @@ export interface TDataShape {
     url: string;
 }
 type OmitKeys<T, K> = Pick<T, Exclude<keyof T, K>>;
-export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown, TResponseStyle extends ResponseStyle = 'fields'> = OmitKeys<RequestOptions<TResponse, TResponseStyle, ThrowOnError>, 'body' | 'path' | 'query' | 'url'> & ([TData] extends [never] ? unknown : Omit<TData, 'url'>);
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown, TResponseStyle extends ResponseStyle = "fields"> = OmitKeys<RequestOptions<TResponse, TResponseStyle, ThrowOnError>, "body" | "path" | "query" | "url"> & ([TData] extends [never] ? unknown : Omit<TData, "url">);
 export {};

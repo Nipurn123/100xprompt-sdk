@@ -7,20 +7,20 @@ export type ClientOptions = {
  * @deprecated
  */
 export type EventFlagRefreshed = {
-    type: 'flag.refreshed';
+    type: "flag.refreshed";
     properties: {
         source: string;
         count: number;
     };
 };
 export type EventInstallationUpdated = {
-    type: 'installation.updated';
+    type: "installation.updated";
     properties: {
         version: string;
     };
 };
 export type EventInstallationUpdateAvailable = {
-    type: 'installation.update-available';
+    type: "installation.update-available";
     properties: {
         version: string;
         command?: string;
@@ -29,7 +29,7 @@ export type EventInstallationUpdateAvailable = {
 export type Project = {
     id: string;
     worktree: string;
-    vcs?: 'git';
+    vcs?: "git";
     name?: string;
     icon?: {
         url?: string;
@@ -49,7 +49,7 @@ export type Project = {
  * @deprecated
  */
 export type EventProjectUpdated = {
-    type: 'project.updated';
+    type: "project.updated";
     properties: Project;
 };
 /**
@@ -58,7 +58,7 @@ export type EventProjectUpdated = {
  * @deprecated
  */
 export type EventConfigManagedPolicyChanged = {
-    type: 'config.managed.policy_changed';
+    type: "config.managed.policy_changed";
     properties: {
         url: string;
         changedKeys: Array<string>;
@@ -66,14 +66,14 @@ export type EventConfigManagedPolicyChanged = {
     };
 };
 export type EventFileWatcherUpdated = {
-    type: 'file.watcher.updated';
+    type: "file.watcher.updated";
     properties: {
         file: string;
-        event: 'add' | 'change' | 'unlink';
+        event: "add" | "change" | "unlink";
     };
 };
 export type EventConfigChanged = {
-    type: 'config.changed';
+    type: "config.changed";
     properties: {
         file: string;
         source: string;
@@ -120,12 +120,12 @@ export type QuestionRequest = {
     };
 };
 export type EventQuestionAsked = {
-    type: 'question.asked';
+    type: "question.asked";
     properties: QuestionRequest;
 };
 export type QuestionAnswer = Array<string>;
 export type EventQuestionReplied = {
-    type: 'question.replied';
+    type: "question.replied";
     properties: {
         sessionID: string;
         requestID: string;
@@ -133,31 +133,31 @@ export type EventQuestionReplied = {
     };
 };
 export type EventQuestionRejected = {
-    type: 'question.rejected';
+    type: "question.rejected";
     properties: {
         sessionID: string;
         requestID: string;
     };
 };
 export type SessionStatus = {
-    type: 'idle';
+    type: "idle";
 } | {
-    type: 'retry';
+    type: "retry";
     attempt: number;
     message: string;
     next: number;
 } | {
-    type: 'busy';
+    type: "busy";
 };
 export type EventSessionStatus = {
-    type: 'session.status';
+    type: "session.status";
     properties: {
         sessionID: string;
         status: SessionStatus;
     };
 };
 export type EventSessionIdle = {
-    type: 'session.idle';
+    type: "session.idle";
     properties: {
         sessionID: string;
     };
@@ -168,7 +168,7 @@ export type EventSessionIdle = {
  * @deprecated
  */
 export type EventMemoryExtractionCompleted = {
-    type: 'memory.extraction.completed';
+    type: "memory.extraction.completed";
     properties: {
         sessionID: string;
         facts: number;
@@ -183,7 +183,7 @@ export type EventMemoryExtractionCompleted = {
  * @deprecated
  */
 export type EventMemoryConsolidationCompleted = {
-    type: 'memory.consolidation.completed';
+    type: "memory.consolidation.completed";
     properties: {
         factsBefore: number;
         factsAfter: number;
@@ -198,7 +198,7 @@ export type EventMemoryConsolidationCompleted = {
  * @deprecated
  */
 export type EventMemoryRecallCompleted = {
-    type: 'memory.recall.completed';
+    type: "memory.recall.completed";
     properties: {
         sessionID: string;
         candidates: number;
@@ -222,15 +222,15 @@ export type PermissionRequest = {
     };
 };
 export type EventPermissionAsked = {
-    type: 'permission.asked';
+    type: "permission.asked";
     properties: PermissionRequest;
 };
 export type EventPermissionReplied = {
-    type: 'permission.replied';
+    type: "permission.replied";
     properties: {
         sessionID: string;
         requestID: string;
-        reply: 'once' | 'always' | 'reject';
+        reply: "once" | "always" | "reject";
     };
 };
 /**
@@ -239,38 +239,38 @@ export type EventPermissionReplied = {
  * @deprecated
  */
 export type EventMcpToolsChanged = {
-    type: 'mcp.tools.changed';
+    type: "mcp.tools.changed";
     properties: {
         server: string;
     };
 };
 export type McpStatusConnected = {
-    status: 'connected';
+    status: "connected";
 };
 export type McpStatusDisabled = {
-    status: 'disabled';
+    status: "disabled";
 };
 export type McpStatusFailed = {
-    status: 'failed';
+    status: "failed";
     error: string;
 };
 export type McpStatusNeedsAuth = {
-    status: 'needs_auth';
+    status: "needs_auth";
 };
 export type McpStatusNeedsApproval = {
-    status: 'needs_approval';
+    status: "needs_approval";
 };
 export type McpStatusNeedsClientRegistration = {
-    status: 'needs_client_registration';
+    status: "needs_client_registration";
     error: string;
 };
 export type McpStatusPending = {
-    status: 'pending';
+    status: "pending";
     attempt: number;
 };
 export type McpStatus = McpStatusConnected | McpStatusDisabled | McpStatusFailed | McpStatusNeedsAuth | McpStatusNeedsApproval | McpStatusNeedsClientRegistration | McpStatusPending;
 export type EventMcpStatusChanged = {
-    type: 'mcp.status.changed';
+    type: "mcp.status.changed";
     properties: {
         status: {
             [key: string]: McpStatus;
@@ -283,7 +283,7 @@ export type EventMcpStatusChanged = {
  * @deprecated
  */
 export type EventScheduleCreated = {
-    type: 'schedule.created';
+    type: "schedule.created";
     properties: {
         info: {
             id: string;
@@ -295,19 +295,19 @@ export type EventScheduleCreated = {
             directory: string;
             agent?: string;
             spec: {
-                type: 'once';
+                type: "once";
                 /**
                  * epoch ms to run once
                  */
                 at: number;
             } | {
-                type: 'every';
+                type: "every";
                 /**
                  * interval in ms
                  */
                 ms: number;
             } | {
-                type: 'cron';
+                type: "cron";
                 /**
                  * 5-field cron expression
                  */
@@ -328,7 +328,7 @@ export type EventScheduleCreated = {
  * @deprecated
  */
 export type EventScheduleUpdated = {
-    type: 'schedule.updated';
+    type: "schedule.updated";
     properties: {
         info: {
             id: string;
@@ -340,19 +340,19 @@ export type EventScheduleUpdated = {
             directory: string;
             agent?: string;
             spec: {
-                type: 'once';
+                type: "once";
                 /**
                  * epoch ms to run once
                  */
                 at: number;
             } | {
-                type: 'every';
+                type: "every";
                 /**
                  * interval in ms
                  */
                 ms: number;
             } | {
-                type: 'cron';
+                type: "cron";
                 /**
                  * 5-field cron expression
                  */
@@ -373,7 +373,7 @@ export type EventScheduleUpdated = {
  * @deprecated
  */
 export type EventScheduleRemoved = {
-    type: 'schedule.removed';
+    type: "schedule.removed";
     properties: {
         id: string;
     };
@@ -384,21 +384,21 @@ export type EventScheduleRemoved = {
  * @deprecated
  */
 export type EventScheduleFired = {
-    type: 'schedule.fired';
+    type: "schedule.fired";
     properties: {
         id: string;
         sessionID: string;
     };
 };
 export type EventLspClientDiagnostics = {
-    type: 'lsp.client.diagnostics';
+    type: "lsp.client.diagnostics";
     properties: {
         serverID: string;
         path: string;
     };
 };
 export type EventLspUpdated = {
-    type: 'lsp.updated';
+    type: "lsp.updated";
     properties: {
         [key: string]: unknown;
     };
@@ -413,7 +413,7 @@ export type FileDiff = {
 export type UserMessage = {
     id: string;
     sessionID: string;
-    role: 'user';
+    role: "user";
     time: {
         created: number;
     };
@@ -435,32 +435,32 @@ export type UserMessage = {
     variant?: string;
 };
 export type ProviderAuthError = {
-    name: 'ProviderAuthError';
+    name: "ProviderAuthError";
     data: {
         providerID: string;
         message: string;
     };
 };
 export type UnknownError = {
-    name: 'UnknownError';
+    name: "UnknownError";
     data: {
         message: string;
     };
 };
 export type MessageOutputLengthError = {
-    name: 'MessageOutputLengthError';
+    name: "MessageOutputLengthError";
     data: {
         message?: string;
     };
 };
 export type MessageAbortedError = {
-    name: 'MessageAbortedError';
+    name: "MessageAbortedError";
     data: {
         message: string;
     };
 };
 export type ApiError = {
-    name: 'APIError';
+    name: "APIError";
     data: {
         message: string;
         statusCode?: number;
@@ -477,7 +477,7 @@ export type ApiError = {
 export type AssistantMessage = {
     id: string;
     sessionID: string;
-    role: 'assistant';
+    role: "assistant";
     time: {
         created: number;
         completed?: number;
@@ -507,13 +507,13 @@ export type AssistantMessage = {
 };
 export type Message = UserMessage | AssistantMessage;
 export type EventMessageUpdated = {
-    type: 'message.updated';
+    type: "message.updated";
     properties: {
         info: Message;
     };
 };
 export type EventMessageRemoved = {
-    type: 'message.removed';
+    type: "message.removed";
     properties: {
         sessionID: string;
         messageID: string;
@@ -523,7 +523,7 @@ export type TextPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'text';
+    type: "text";
     text: string;
     synthetic?: boolean;
     ignored?: boolean;
@@ -539,7 +539,7 @@ export type ReasoningPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'reasoning';
+    type: "reasoning";
     text: string;
     metadata?: {
         [key: string]: unknown;
@@ -556,7 +556,7 @@ export type FilePartSourceText = {
 };
 export type FileSource = {
     text: FilePartSourceText;
-    type: 'file';
+    type: "file";
     path: string;
 };
 export type Range = {
@@ -571,7 +571,7 @@ export type Range = {
 };
 export type SymbolSource = {
     text: FilePartSourceText;
-    type: 'symbol';
+    type: "symbol";
     path: string;
     range: Range;
     name: string;
@@ -579,7 +579,7 @@ export type SymbolSource = {
 };
 export type ResourceSource = {
     text: FilePartSourceText;
-    type: 'resource';
+    type: "resource";
     clientName: string;
     uri: string;
 };
@@ -588,21 +588,21 @@ export type FilePart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'file';
+    type: "file";
     mime: string;
     filename?: string;
     url: string;
     source?: FilePartSource;
 };
 export type ToolStatePending = {
-    status: 'pending';
+    status: "pending";
     input: {
         [key: string]: unknown;
     };
     raw: string;
 };
 export type ToolStateRunning = {
-    status: 'running';
+    status: "running";
     input: {
         [key: string]: unknown;
     };
@@ -615,7 +615,7 @@ export type ToolStateRunning = {
     };
 };
 export type ToolStateCompleted = {
-    status: 'completed';
+    status: "completed";
     input: {
         [key: string]: unknown;
     };
@@ -633,7 +633,7 @@ export type ToolStateCompleted = {
     attachments?: Array<FilePart>;
 };
 export type ToolStateError = {
-    status: 'error';
+    status: "error";
     input: {
         [key: string]: unknown;
     };
@@ -651,7 +651,7 @@ export type ToolPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'tool';
+    type: "tool";
     callID: string;
     tool: string;
     state: ToolState;
@@ -663,14 +663,14 @@ export type StepStartPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'step-start';
+    type: "step-start";
     snapshot?: string;
 };
 export type StepFinishPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'step-finish';
+    type: "step-finish";
     reason: string;
     snapshot?: string;
     cost: number;
@@ -688,14 +688,14 @@ export type SnapshotPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'snapshot';
+    type: "snapshot";
     snapshot: string;
 };
 export type PatchPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'patch';
+    type: "patch";
     hash: string;
     files: Array<string>;
 };
@@ -703,7 +703,7 @@ export type AgentPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'agent';
+    type: "agent";
     name: string;
     source?: {
         value: string;
@@ -715,7 +715,7 @@ export type RetryPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'retry';
+    type: "retry";
     attempt: number;
     error: ApiError;
     time: {
@@ -726,16 +726,16 @@ export type CompactionPart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'compaction';
+    type: "compaction";
     auto: boolean;
     customInstructions?: string;
 };
-export type TombstoneReason = 'compacted' | 'superseded' | 'expired' | 'budget' | 'orphaned' | 'reverted' | 'cleared';
+export type TombstoneReason = "compacted" | "superseded" | "expired" | "budget" | "orphaned" | "reverted" | "cleared";
 export type TombstonePart = {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'tombstone';
+    type: "tombstone";
     original: string;
     kind: string;
     tool?: string;
@@ -751,21 +751,21 @@ export type Part = TextPart | {
     id: string;
     sessionID: string;
     messageID: string;
-    type: 'subtask';
+    type: "subtask";
     prompt: string;
     description: string;
     agent: string;
     command?: string;
 } | ReasoningPart | FilePart | ToolPart | StepStartPart | StepFinishPart | SnapshotPart | PatchPart | AgentPart | RetryPart | CompactionPart | TombstonePart;
 export type EventMessagePartUpdated = {
-    type: 'message.part.updated';
+    type: "message.part.updated";
     properties: {
         part: Part;
         delta?: string;
     };
 };
 export type EventMessagePartRemoved = {
-    type: 'message.part.removed';
+    type: "message.part.removed";
     properties: {
         sessionID: string;
         messageID: string;
@@ -803,14 +803,14 @@ export type Todo = {
     blocked_by?: Array<string>;
 };
 export type EventTodoUpdated = {
-    type: 'todo.updated';
+    type: "todo.updated";
     properties: {
         sessionID: string;
         todos: Array<Todo>;
     };
 };
 export type EventSessionCompacted = {
-    type: 'session.compacted';
+    type: "session.compacted";
     properties: {
         sessionID: string;
         layer: string;
@@ -824,7 +824,7 @@ export type EventSessionCompacted = {
     };
 };
 export type EventSessionCompactionFailed = {
-    type: 'session.compaction.failed';
+    type: "session.compaction.failed";
     properties: {
         sessionID: string;
         layer: string;
@@ -833,7 +833,7 @@ export type EventSessionCompactionFailed = {
     };
 };
 export type EventCommandExecuted = {
-    type: 'command.executed';
+    type: "command.executed";
     properties: {
         name: string;
         sessionID: string;
@@ -847,13 +847,13 @@ export type EventCommandExecuted = {
  * @deprecated
  */
 export type EventAgentThreadCreated = {
-    type: 'agent.thread.created';
+    type: "agent.thread.created";
     properties: {
         id: string;
         parentID?: string;
         nickname: string;
         role?: string;
-        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        status: "pending" | "running" | "completed" | "error" | "interrupted" | "shutdown";
         depth: number;
         created: number;
         completed?: number;
@@ -861,13 +861,13 @@ export type EventAgentThreadCreated = {
     };
 };
 export type EventAgentThreadCompleted = {
-    type: 'agent.thread.completed';
+    type: "agent.thread.completed";
     properties: {
         id: string;
         parentID?: string;
         nickname: string;
         role?: string;
-        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        status: "pending" | "running" | "completed" | "error" | "interrupted" | "shutdown";
         depth: number;
         created: number;
         completed?: number;
@@ -880,13 +880,13 @@ export type EventAgentThreadCompleted = {
  * @deprecated
  */
 export type EventAgentThreadInterrupted = {
-    type: 'agent.thread.interrupted';
+    type: "agent.thread.interrupted";
     properties: {
         id: string;
         parentID?: string;
         nickname: string;
         role?: string;
-        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        status: "pending" | "running" | "completed" | "error" | "interrupted" | "shutdown";
         depth: number;
         created: number;
         completed?: number;
@@ -894,13 +894,13 @@ export type EventAgentThreadInterrupted = {
     };
 };
 export type EventAgentThreadError = {
-    type: 'agent.thread.error';
+    type: "agent.thread.error";
     properties: {
         id: string;
         parentID?: string;
         nickname: string;
         role?: string;
-        status: 'pending' | 'running' | 'completed' | 'error' | 'interrupted' | 'shutdown';
+        status: "pending" | "running" | "completed" | "error" | "interrupted" | "shutdown";
         depth: number;
         created: number;
         completed?: number;
@@ -913,21 +913,21 @@ export type EventAgentThreadError = {
  * @deprecated
  */
 export type EventAgentLimitReached = {
-    type: 'agent.limit.reached';
+    type: "agent.limit.reached";
     properties: {
         maxThreads: number;
         activeThreads: number;
     };
 };
 export type EventTaskCreated = {
-    type: 'task.created';
+    type: "task.created";
     properties: {
         id: string;
         sessionID: string;
         messageID: string;
         partID: string;
         command: string;
-        status: 'running' | 'completed' | 'failed' | 'aborted';
+        status: "running" | "completed" | "failed" | "aborted";
         pid?: number;
         exitCode?: number;
         outputFilePath?: string;
@@ -938,14 +938,14 @@ export type EventTaskCreated = {
     };
 };
 export type EventTaskUpdated = {
-    type: 'task.updated';
+    type: "task.updated";
     properties: {
         id: string;
         sessionID: string;
         messageID: string;
         partID: string;
         command: string;
-        status: 'running' | 'completed' | 'failed' | 'aborted';
+        status: "running" | "completed" | "failed" | "aborted";
         pid?: number;
         exitCode?: number;
         outputFilePath?: string;
@@ -956,7 +956,7 @@ export type EventTaskUpdated = {
     };
 };
 export type EventTaskRemoved = {
-    type: 'task.removed';
+    type: "task.removed";
     properties: {
         id: string;
     };
@@ -967,7 +967,7 @@ export type EventTaskRemoved = {
  * @deprecated
  */
 export type EventTaskActivated = {
-    type: 'task.activated';
+    type: "task.activated";
     properties: {
         id: string;
     };
@@ -978,7 +978,7 @@ export type EventTaskActivated = {
  * @deprecated
  */
 export type EventTaskBackgrounded = {
-    type: 'task.backgrounded';
+    type: "task.backgrounded";
     properties: {
         id: string;
     };
@@ -989,7 +989,7 @@ export type EventTaskBackgrounded = {
  * @deprecated
  */
 export type EventTaskDeactivated = {
-    type: 'task.deactivated';
+    type: "task.deactivated";
     properties: {
         id: string;
     };
@@ -1011,7 +1011,7 @@ export type Workitem = {
      * Present-continuous form shown while in_progress (e.g. 'Running tests')
      */
     activeForm?: string;
-    status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+    status: "pending" | "in_progress" | "completed" | "cancelled";
     /**
      * Session id of the agent that claimed this item
      */
@@ -1034,7 +1034,7 @@ export type Workitem = {
     updated: number;
 };
 export type EventAgentWorkitemUpdated = {
-    type: 'agent.workitem.updated';
+    type: "agent.workitem.updated";
     properties: {
         items: Array<Workitem>;
     };
@@ -1045,7 +1045,7 @@ export type EventAgentWorkitemUpdated = {
  * @deprecated
  */
 export type EventAgentCoordinatorEnabled = {
-    type: 'agent.coordinator.enabled';
+    type: "agent.coordinator.enabled";
     properties: {
         sessionID: string;
     };
@@ -1056,7 +1056,7 @@ export type EventAgentCoordinatorEnabled = {
  * @deprecated
  */
 export type EventAgentCoordinatorDisabled = {
-    type: 'agent.coordinator.disabled';
+    type: "agent.coordinator.disabled";
     properties: {
         sessionID: string;
     };
@@ -1067,7 +1067,7 @@ export type EventAgentCoordinatorDisabled = {
  * @deprecated
  */
 export type EventAgentCoordinatorDispatched = {
-    type: 'agent.coordinator.dispatched';
+    type: "agent.coordinator.dispatched";
     properties: {
         sessionID: string;
         taskID: string;
@@ -1082,11 +1082,11 @@ export type EventAgentCoordinatorDispatched = {
  * @deprecated
  */
 export type EventAgentCoordinatorDispatchUpdated = {
-    type: 'agent.coordinator.dispatch_updated';
+    type: "agent.coordinator.dispatch_updated";
     properties: {
         sessionID: string;
         taskID: string;
-        status: 'running' | 'completed' | 'failed' | 'stopped';
+        status: "running" | "completed" | "failed" | "stopped";
     };
 };
 /**
@@ -1095,11 +1095,11 @@ export type EventAgentCoordinatorDispatchUpdated = {
  * @deprecated
  */
 export type EventSessionNotificationQueued = {
-    type: 'session.notification.queued';
+    type: "session.notification.queued";
     properties: {
         sessionID: string;
         taskID: string;
-        priority: 'now' | 'next' | 'later';
+        priority: "now" | "next" | "later";
     };
 };
 /**
@@ -1108,7 +1108,7 @@ export type EventSessionNotificationQueued = {
  * @deprecated
  */
 export type EventSessionNotificationDrained = {
-    type: 'session.notification.drained';
+    type: "session.notification.drained";
     properties: {
         sessionID: string;
         count: number;
@@ -1120,7 +1120,7 @@ export type EventSessionNotificationDrained = {
  * @deprecated
  */
 export type EventSessionToolSummary = {
-    type: 'session.tool_summary';
+    type: "session.tool_summary";
     properties: {
         sessionID: string;
         summary: string;
@@ -1128,7 +1128,7 @@ export type EventSessionToolSummary = {
     };
 };
 export type EventSessionBudgetCompleted = {
-    type: 'session.budget.completed';
+    type: "session.budget.completed";
     properties: {
         sessionID: string;
         continuationCount: number;
@@ -1140,15 +1140,15 @@ export type EventSessionBudgetCompleted = {
     };
 };
 export type EventSessionPromptSuggestion = {
-    type: 'session.prompt_suggestion';
+    type: "session.prompt_suggestion";
     properties: {
         sessionID: string;
         suggestion: string;
-        variant: 'user_intent' | 'stated_intent';
+        variant: "user_intent" | "stated_intent";
     };
 };
 export type EventFileEdited = {
-    type: 'file.edited';
+    type: "file.edited";
     properties: {
         file: string;
     };
@@ -1159,7 +1159,7 @@ export type EventFileEdited = {
  * @deprecated
  */
 export type EventAgentTeamCreated = {
-    type: 'agent.team.created';
+    type: "agent.team.created";
     properties: {
         name: string;
         members: Array<string>;
@@ -1171,19 +1171,19 @@ export type EventAgentTeamCreated = {
  * @deprecated
  */
 export type EventAgentTeamDeleted = {
-    type: 'agent.team.deleted';
+    type: "agent.team.deleted";
     properties: {
         name: string;
     };
 };
-export type PermissionAction = 'allow' | 'deny' | 'ask';
+export type PermissionAction = "allow" | "deny" | "ask";
 export type PermissionRule = {
     permission: string;
     pattern: string;
     action: PermissionAction;
 };
 export type PermissionRuleset = Array<PermissionRule>;
-export type PermissionMode = 'default' | 'acceptEdits' | 'plan' | 'auto' | 'bypassPermissions';
+export type PermissionMode = "default" | "acceptEdits" | "plan" | "auto" | "bypassPermissions";
 export type Session = {
     id: string;
     projectID: string;
@@ -1210,7 +1210,7 @@ export type Session = {
     permission?: PermissionRuleset;
     permissionMode?: PermissionMode;
     contentReplacements?: Array<{
-        kind: 'tool-result' | 'tool-input';
+        kind: "tool-result" | "tool-input";
         toolUseId: string;
         replacement: string;
     }>;
@@ -1222,69 +1222,69 @@ export type Session = {
     };
 };
 export type EventSessionCreated = {
-    type: 'session.created';
+    type: "session.created";
     properties: {
         info: Session;
     };
 };
 export type EventSessionUpdated = {
-    type: 'session.updated';
+    type: "session.updated";
     properties: {
         info: Session;
     };
 };
 export type EventSessionDeleted = {
-    type: 'session.deleted';
+    type: "session.deleted";
     properties: {
         info: Session;
     };
 };
 export type EventSessionDiff = {
-    type: 'session.diff';
+    type: "session.diff";
     properties: {
         sessionID: string;
         diff: Array<FileDiff>;
     };
 };
 export type EventSessionError = {
-    type: 'session.error';
+    type: "session.error";
     properties: {
         sessionID?: string;
         error?: ProviderAuthError | UnknownError | MessageOutputLengthError | MessageAbortedError | ApiError;
     };
 };
 export type EventSessionVerificationVerdict = {
-    type: 'session.verification_verdict';
+    type: "session.verification_verdict";
     properties: {
         sessionID: string;
-        verdict: 'pass' | 'fail';
+        verdict: "pass" | "fail";
         source?: string;
     };
 };
 export type EventVcsBranchUpdated = {
-    type: 'vcs.branch.updated';
+    type: "vcs.branch.updated";
     properties: {
         branch?: string;
     };
 };
 export type EventTuiPromptAppend = {
-    type: 'tui.prompt.append';
+    type: "tui.prompt.append";
     properties: {
         text: string;
     };
 };
 export type EventTuiCommandExecute = {
-    type: 'tui.command.execute';
+    type: "tui.command.execute";
     properties: {
-        command: 'session.list' | 'session.new' | 'session.share' | 'session.interrupt' | 'session.compact' | 'session.page.up' | 'session.page.down' | 'session.half.page.up' | 'session.half.page.down' | 'session.first' | 'session.last' | 'prompt.clear' | 'prompt.submit' | 'agent.cycle' | string;
+        command: "session.list" | "session.new" | "session.share" | "session.interrupt" | "session.compact" | "session.page.up" | "session.page.down" | "session.half.page.up" | "session.half.page.down" | "session.first" | "session.last" | "prompt.clear" | "prompt.submit" | "agent.cycle" | string;
     };
 };
 export type EventTuiToastShow = {
-    type: 'tui.toast.show';
+    type: "tui.toast.show";
     properties: {
         title?: string;
         message: string;
-        variant: 'info' | 'success' | 'warning' | 'error';
+        variant: "info" | "success" | "warning" | "error";
         /**
          * Duration in milliseconds
          */
@@ -1292,7 +1292,7 @@ export type EventTuiToastShow = {
     };
 };
 export type EventTuiSessionSelect = {
-    type: 'tui.session.select';
+    type: "tui.session.select";
     properties: {
         /**
          * Session ID to navigate to
@@ -1306,7 +1306,7 @@ export type Pty = {
     command: string;
     args: Array<string>;
     cwd: string;
-    status: 'running' | 'exited';
+    status: "running" | "exited";
     pid: number;
 };
 /**
@@ -1315,7 +1315,7 @@ export type Pty = {
  * @deprecated
  */
 export type EventPtyCreated = {
-    type: 'pty.created';
+    type: "pty.created";
     properties: {
         info: Pty;
     };
@@ -1326,7 +1326,7 @@ export type EventPtyCreated = {
  * @deprecated
  */
 export type EventPtyUpdated = {
-    type: 'pty.updated';
+    type: "pty.updated";
     properties: {
         info: Pty;
     };
@@ -1337,7 +1337,7 @@ export type EventPtyUpdated = {
  * @deprecated
  */
 export type EventPtyExited = {
-    type: 'pty.exited';
+    type: "pty.exited";
     properties: {
         id: string;
         exitCode: number;
@@ -1349,19 +1349,19 @@ export type EventPtyExited = {
  * @deprecated
  */
 export type EventPtyDeleted = {
-    type: 'pty.deleted';
+    type: "pty.deleted";
     properties: {
         id: string;
     };
 };
 export type EventServerConnected = {
-    type: 'server.connected';
+    type: "server.connected";
     properties: {
         [key: string]: unknown;
     };
 };
 export type EventServerInstanceDisposed = {
-    type: 'server.instance.disposed';
+    type: "server.instance.disposed";
     properties: {
         [key: string]: unknown;
     };
@@ -1372,13 +1372,13 @@ export type EventServerInstanceDisposed = {
  * @deprecated
  */
 export type EventGlobalDisposed = {
-    type: 'global.disposed';
+    type: "global.disposed";
     properties: {
         [key: string]: unknown;
     };
 };
 export type EventSwarmMessageReceived = {
-    type: 'swarm.message.received';
+    type: "swarm.message.received";
     properties: {
         id: string;
         from: string;
@@ -1389,7 +1389,7 @@ export type EventSwarmMessageReceived = {
     };
 };
 export type EventSwarmMailboxMessage = {
-    type: 'swarm.mailbox.message';
+    type: "swarm.mailbox.message";
     properties: {
         id: string;
         from: string;
@@ -1412,7 +1412,7 @@ export type BadRequestError = {
     success: false;
 };
 export type NotFoundError = {
-    name: 'NotFoundError';
+    name: "NotFoundError";
     data: {
         message: string;
     };
@@ -1849,7 +1849,7 @@ export type KeybindsConfig = {
 /**
  * Lowest severity written to the log file. DEBUG is the most detailed and ERROR the least.
  */
-export type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
+export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 /**
  * Where the HTTP server binds and who may talk to it. Applies to `100xprompt serve` and anything else that starts the server.
  */
@@ -1871,7 +1871,7 @@ export type ServerConfig = {
      */
     cors?: Array<string>;
 };
-export type PermissionActionConfig = 'ask' | 'allow' | 'deny';
+export type PermissionActionConfig = "ask" | "allow" | "deny";
 export type PermissionObjectConfig = {
     [key: string]: PermissionActionConfig;
 };
@@ -1923,7 +1923,7 @@ export type AgentConfig = {
      * Description of when to use the agent
      */
     description?: string;
-    mode?: 'subagent' | 'primary' | 'all';
+    mode?: "subagent" | "primary" | "all";
     /**
      * Hide this subagent from the @ autocomplete menu (default: false, only applies to mode: subagent)
      */
@@ -1950,7 +1950,7 @@ export type AgentConfig = {
     permission?: PermissionConfig;
     [key: string]: unknown | string | number | {
         [key: string]: boolean;
-    } | boolean | 'subagent' | 'primary' | 'all' | {
+    } | boolean | "subagent" | "primary" | "all" | {
         [key: string]: unknown;
     } | string | number | PermissionConfig | undefined;
 };
@@ -1971,7 +1971,7 @@ export type ProviderConfig = {
             temperature?: boolean;
             tool_call?: boolean;
             interleaved?: true | {
-                field: 'reasoning_content' | 'reasoning_details';
+                field: "reasoning_content" | "reasoning_details";
             };
             cost?: {
                 input: number;
@@ -1990,11 +1990,11 @@ export type ProviderConfig = {
                 output: number;
             };
             modalities?: {
-                input: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
-                output: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
+                input: Array<"text" | "audio" | "image" | "video" | "pdf">;
+                output: Array<"text" | "audio" | "image" | "video" | "pdf">;
             };
             experimental?: boolean;
-            status?: 'alpha' | 'beta' | 'deprecated';
+            status?: "alpha" | "beta" | "deprecated";
             options?: {
                 [key: string]: unknown;
             };
@@ -2042,7 +2042,7 @@ export type McpLocalConfig = {
     /**
      * Type of MCP server connection
      */
-    type: 'local';
+    type: "local";
     /**
      * Command and arguments to run the MCP server
      */
@@ -2080,7 +2080,7 @@ export type McpRemoteConfig = {
     /**
      * Type of MCP server connection
      */
-    type: 'remote';
+    type: "remote";
     /**
      * URL of the remote MCP server
      */
@@ -2109,11 +2109,11 @@ export type McpRemoteConfig = {
  *
  * @deprecated
  */
-export type LayoutConfig = 'auto' | 'stretch';
+export type LayoutConfig = "auto" | "stretch";
 /**
  * Permission mode new sessions start in. --permission-mode and mid-session toggles still override it.
  */
-export type PermissionModeConfig = 'default' | 'acceptEdits' | 'plan' | 'auto' | 'bypassPermissions';
+export type PermissionModeConfig = "default" | "acceptEdits" | "plan" | "auto" | "bypassPermissions";
 /**
  * Claude Code-style structured permissions: allow/deny/ask rule strings plus defaultMode and disableBypassPermissionsMode. Merged with `permission` (structured rules take precedence). See https://100xprompt.com/docs/permissions
  */
@@ -2134,7 +2134,7 @@ export type PermissionsConfig = {
     /**
      * When "disable", removes bypassPermissions from the settable modes for this project.
      */
-    disableBypassPermissionsMode?: 'disable';
+    disableBypassPermissionsMode?: "disable";
 };
 export type Config = {
     /**
@@ -2158,7 +2158,7 @@ export type Config = {
     /**
      * Which sandbox backend confines untrusted bash commands. Default: seatbelt on macOS, landlock on Linux (unset = platform default, unchanged behavior). "microvm" runs each command in a VM-isolated environment with its own kernel — detected via HUNDREDXPROMPT_MICROVM_RUNNER or a `msb` (microsandbox), `docker`, `podman`, or apple `container` CLI on PATH (image: HUNDREDXPROMPT_MICROVM_IMAGE, default alpine). If no runner is present it degrades gracefully to the platform sandbox. "seatbelt"/"landlock" pin that backend (honored only on the matching OS); "none" disables the sandbox like sandbox: false.
      */
-    sandboxBackend?: 'microvm' | 'seatbelt' | 'landlock' | 'none';
+    sandboxBackend?: "microvm" | "seatbelt" | "landlock" | "none";
     /**
      * Behaviour of the terminal UI itself — scrolling feel and how diffs are laid out.
      */
@@ -2179,7 +2179,7 @@ export type Config = {
         /**
          * How file diffs are laid out. "auto" (the default) shows them side by side once the terminal is wider than 120 columns and stacks them below that; "stacked" always keeps the single-column unified view.
          */
-        diff_style?: 'auto' | 'stacked';
+        diff_style?: "auto" | "stacked";
     };
     server?: ServerConfig;
     /**
@@ -2193,8 +2193,8 @@ export type Config = {
             model?: string;
             subtask?: boolean;
             plugin?: string;
-            'allowed-tools'?: string | Array<string>;
-            'argument-hint'?: string;
+            "allowed-tools"?: string | Array<string>;
+            "argument-hint"?: string;
             aliases?: Array<string>;
         };
     };
@@ -2224,7 +2224,7 @@ export type Config = {
                 /**
                  * Shell hook (default type)
                  */
-                type?: 'command';
+                type?: "command";
                 /**
                  * Shell command. Receives the event JSON on stdin
                  */
@@ -2237,7 +2237,7 @@ export type Config = {
                 /**
                  * Single non-streaming LLM validation call
                  */
-                type: 'prompt';
+                type: "prompt";
                 /**
                  * Validation instructions for the model
                  */
@@ -2254,7 +2254,7 @@ export type Config = {
                 /**
                  * Read-only verifier subagent
                  */
-                type: 'agent';
+                type: "agent";
                 /**
                  * Verification instructions for the subagent
                  */
@@ -2279,7 +2279,7 @@ export type Config = {
                 /**
                  * Webhook (SSRF-guarded; private addresses refused)
                  */
-                type: 'http';
+                type: "http";
                 /**
                  * Webhook URL (http/https)
                  */
@@ -2287,7 +2287,7 @@ export type Config = {
                 /**
                  * HTTP method (default POST)
                  */
-                method?: 'POST' | 'PUT';
+                method?: "POST" | "PUT";
                 /**
                  * Extra headers; ${ENV_VAR} is interpolated
                  */
@@ -2354,7 +2354,7 @@ export type Config = {
     /**
      * Who can be given a link to a session. 'manual' (the default) shares only when you ask for it; 'auto' publishes every new session as it starts; 'disabled' refuses to share at all and hides the share command.
      */
-    share?: 'manual' | 'auto' | 'disabled';
+    share?: "manual" | "auto" | "disabled";
     /**
      * Superseded by `share`. Setting this to true is rewritten to `share: "auto"` when the config loads, and only when `share` is not set — so if you set both, `share` wins. Nothing else reads this key.
      */
@@ -2362,7 +2362,7 @@ export type Config = {
     /**
      * What to do when a newer release exists: true installs it in the background, 'notify' only mentions it and leaves the upgrade to you, false stops checking altogether.
      */
-    autoupdate?: boolean | 'notify';
+    autoupdate?: boolean | "notify";
     /**
      * Provider ids to leave out even though credentials for them were found. Use this to stop a provider you have keys for from being offered.
      */
@@ -2442,7 +2442,7 @@ export type Config = {
             /**
              * Visibility applied to new memories written while team mode is on (default 'private'). Reads always merge the user's private memories with team-visible ones.
              */
-            default_visibility?: 'private' | 'team';
+            default_visibility?: "private" | "team";
         };
     };
     /**
@@ -2578,7 +2578,7 @@ export type Config = {
         /**
          * Prompt-cache lifetime for Anthropic-family models. "1h" (default) keeps the cached prefix alive across long pauses — writes cost 2x base but the prefix is reused instead of re-written every turn, a net win for long interactive/agentic sessions. "5m" writes cheapest (1.25x base input). No effect on non-Anthropic providers.
          */
-        ttl?: '5m' | '1h';
+        ttl?: "5m" | "1h";
     };
     experimental?: {
         /**
@@ -2600,7 +2600,7 @@ export type Config = {
             /**
              * 'deny' (default) fails closed when no channel accepted the prompt; 'degrade' falls back to the local dialog. Neither can produce an allow.
              */
-            unreachable?: 'deny' | 'degrade';
+            unreachable?: "deny" | "degrade";
         };
         hook?: {
             file_edited?: {
@@ -2642,7 +2642,7 @@ export type Config = {
             /**
              * Gate comparison metric. 'hard' (default) = binary failure-mode coverage; 'soft' = partial-credit (sensitive to incremental edits); 'mixed' = weighted blend of both (see mixedWeight).
              */
-            gateMetric?: 'hard' | 'soft' | 'mixed';
+            gateMetric?: "hard" | "soft" | "mixed";
             /**
              * For gateMetric 'mixed': weight given to soft coverage in [0,1]. Default 0.5.
              */
@@ -2680,7 +2680,7 @@ export type Config = {
             /**
              * Suggestion prompt variant. 'user_intent' (default) predicts what the user would naturally type next; 'stated_intent' currently shares the same prompt.
              */
-            variant?: 'user_intent' | 'stated_intent';
+            variant?: "user_intent" | "stated_intent";
         };
         /**
          * Enable the batch tool
@@ -2728,7 +2728,7 @@ export type Config = {
         /**
          * Telemetry wire format: generic JSON batch ('json') or OTLP-compatible logs ('otlp').
          */
-        telemetryMode?: 'json' | 'otlp';
+        telemetryMode?: "json" | "otlp";
         /**
          * Global telemetry sampling rate (0..1, default 1 = keep all). Multiplies each sink's own sampleRate to form its effective keep-probability.
          */
@@ -2750,11 +2750,11 @@ export type Config = {
             /**
              * Wire format for this sink: generic JSON batch ('json') or OTLP-compatible logs ('otlp').
              */
-            mode?: 'json' | 'otlp';
+            mode?: "json" | "otlp";
             /**
              * 'general' (default) receives the sanitized payload with PII-tagged _PROTO_* fields stripped; 'privileged' receives the full payload including _PROTO_* — point only at a trusted first-party store.
              */
-            access?: 'general' | 'privileged';
+            access?: "general" | "privileged";
             /**
              * Per-sink killswitch. Default true; set false to skip this sink entirely (no payload built).
              */
@@ -2838,7 +2838,7 @@ export type VcsInfo = {
 };
 export type TextPartInput = {
     id?: string;
-    type: 'text';
+    type: "text";
     text: string;
     synthetic?: boolean;
     ignored?: boolean;
@@ -2852,7 +2852,7 @@ export type TextPartInput = {
 };
 export type FilePartInput = {
     id?: string;
-    type: 'file';
+    type: "file";
     mime: string;
     filename?: string;
     url: string;
@@ -2860,7 +2860,7 @@ export type FilePartInput = {
 };
 export type AgentPartInput = {
     id?: string;
-    type: 'agent';
+    type: "agent";
     name: string;
     source?: {
         value: string;
@@ -2870,7 +2870,7 @@ export type AgentPartInput = {
 };
 export type SubtaskPartInput = {
     id?: string;
-    type: 'subtask';
+    type: "subtask";
     prompt: string;
     description: string;
     agent: string;
@@ -2878,7 +2878,7 @@ export type SubtaskPartInput = {
 };
 export type RevertFilePreview = {
     file: string;
-    action: 'restore' | 'delete' | 'none';
+    action: "restore" | "delete" | "none";
     additions: number;
     deletions: number;
     dirty: boolean;
@@ -2932,7 +2932,7 @@ export type Model = {
             pdf: boolean;
         };
         interleaved: boolean | {
-            field: 'reasoning_content' | 'reasoning_details';
+            field: "reasoning_content" | "reasoning_details";
         };
     };
     cost: {
@@ -2955,7 +2955,7 @@ export type Model = {
         context: number;
         output: number;
     };
-    status: 'alpha' | 'beta' | 'deprecated' | 'active';
+    status: "alpha" | "beta" | "deprecated" | "active";
     options: {
         [key: string]: unknown;
     };
@@ -2972,7 +2972,7 @@ export type Model = {
 export type Provider = {
     id: string;
     name: string;
-    source: 'env' | 'config' | 'custom' | 'api';
+    source: "env" | "config" | "custom" | "api";
     env: Array<string>;
     key?: string;
     options: {
@@ -2983,12 +2983,12 @@ export type Provider = {
     };
 };
 export type ProviderAuthMethod = {
-    type: 'oauth' | 'api';
+    type: "oauth" | "api";
     label: string;
 };
 export type ProviderAuthAuthorization = {
     url: string;
-    method: 'auto' | 'code';
+    method: "auto" | "code";
     instructions: string;
 };
 export type Symbol = {
@@ -3003,11 +3003,11 @@ export type FileNode = {
     name: string;
     path: string;
     absolute: string;
-    type: 'file' | 'directory';
+    type: "file" | "directory";
     ignored: boolean;
 };
 export type FileContent = {
-    type: 'text';
+    type: "text";
     content: string;
     diff?: string;
     patch?: {
@@ -3024,19 +3024,19 @@ export type FileContent = {
         }>;
         index?: string;
     };
-    encoding?: 'base64';
+    encoding?: "base64";
     mimeType?: string;
 };
 export type File = {
     path: string;
     added: number;
     removed: number;
-    status: 'added' | 'deleted' | 'modified';
+    status: "added" | "deleted" | "modified";
 };
 export type Agent = {
     name: string;
     description?: string;
-    mode: 'subagent' | 'primary' | 'all';
+    mode: "subagent" | "primary" | "all";
     native?: boolean;
     hidden?: boolean;
     slim?: boolean;
@@ -3065,7 +3065,7 @@ export type LspStatus = {
     id: string;
     name: string;
     root: string;
-    status: 'connected' | 'error';
+    status: "connected" | "error";
 };
 export type FormatterStatus = {
     name: string;
@@ -3073,7 +3073,7 @@ export type FormatterStatus = {
     enabled: boolean;
 };
 export type OAuth = {
-    type: 'oauth';
+    type: "oauth";
     refresh: string;
     access: string;
     expires: number;
@@ -3081,11 +3081,11 @@ export type OAuth = {
     enterpriseUrl?: string;
 };
 export type ApiAuth = {
-    type: 'api';
+    type: "api";
     key: string;
 };
 export type WellKnownAuth = {
-    type: 'wellknown';
+    type: "wellknown";
     key: string;
     token: string;
 };
@@ -3094,7 +3094,7 @@ export type GlobalHealthData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/global/health';
+    url: "/global/health";
 };
 export type GlobalHealthResponses = {
     /**
@@ -3110,7 +3110,7 @@ export type GlobalEventData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/global/event';
+    url: "/global/event";
 };
 export type GlobalEventResponses = {
     /**
@@ -3123,7 +3123,7 @@ export type GlobalDisposeData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/global/dispose';
+    url: "/global/dispose";
 };
 export type GlobalDisposeResponses = {
     /**
@@ -3138,7 +3138,7 @@ export type ProjectListData = {
     query?: {
         directory?: string;
     };
-    url: '/project';
+    url: "/project";
 };
 export type ProjectListResponses = {
     /**
@@ -3153,7 +3153,7 @@ export type ProjectCurrentData = {
     query?: {
         directory?: string;
     };
-    url: '/project/current';
+    url: "/project/current";
 };
 export type ProjectCurrentResponses = {
     /**
@@ -3176,7 +3176,7 @@ export type ProjectUpdateData = {
     query?: {
         directory?: string;
     };
-    url: '/project/{projectID}';
+    url: "/project/{projectID}";
 };
 export type ProjectUpdateErrors = {
     /**
@@ -3202,7 +3202,7 @@ export type PluginInstalledData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/installed';
+    url: "/plugin/installed";
 };
 export type PluginInstalledResponses = {
     /**
@@ -3217,7 +3217,7 @@ export type PluginDiscoverData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/discover';
+    url: "/plugin/discover";
 };
 export type PluginDiscoverResponses = {
     /**
@@ -3232,7 +3232,7 @@ export type PluginMarketplacesData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/marketplaces';
+    url: "/plugin/marketplaces";
 };
 export type PluginMarketplacesResponses = {
     /**
@@ -3247,7 +3247,7 @@ export type PluginErrorsData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/errors';
+    url: "/plugin/errors";
 };
 export type PluginErrorsResponses = {
     /**
@@ -3262,7 +3262,7 @@ export type PluginReloadData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/reload';
+    url: "/plugin/reload";
 };
 export type PluginReloadResponses = {
     /**
@@ -3279,7 +3279,7 @@ export type PluginInstallData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/install';
+    url: "/plugin/install";
 };
 export type PluginInstallErrors = {
     /**
@@ -3303,7 +3303,7 @@ export type PluginInstallNamedData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/install-named';
+    url: "/plugin/install-named";
 };
 export type PluginInstallNamedErrors = {
     /**
@@ -3328,7 +3328,7 @@ export type PluginSetEnabledData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/enable';
+    url: "/plugin/enable";
 };
 export type PluginSetEnabledResponses = {
     /**
@@ -3347,7 +3347,7 @@ export type PluginRemoveData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/remove';
+    url: "/plugin/remove";
 };
 export type PluginRemoveResponses = {
     /**
@@ -3366,7 +3366,7 @@ export type PluginMarketplaceAddData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/marketplace/add';
+    url: "/plugin/marketplace/add";
 };
 export type PluginMarketplaceAddResponses = {
     /**
@@ -3385,7 +3385,7 @@ export type PluginMarketplaceRemoveData = {
     query?: {
         directory?: string;
     };
-    url: '/plugin/marketplace/remove';
+    url: "/plugin/marketplace/remove";
 };
 export type PluginMarketplaceRemoveResponses = {
     /**
@@ -3402,7 +3402,7 @@ export type TrustStatusData = {
     query?: {
         directory?: string;
     };
-    url: '/trust';
+    url: "/trust";
 };
 export type TrustStatusResponses = {
     /**
@@ -3417,7 +3417,7 @@ export type TrustOnceData = {
     query?: {
         directory?: string;
     };
-    url: '/trust/once';
+    url: "/trust/once";
 };
 export type TrustOnceResponses = {
     /**
@@ -3432,7 +3432,7 @@ export type TrustAlwaysData = {
     query?: {
         directory?: string;
     };
-    url: '/trust/always';
+    url: "/trust/always";
 };
 export type TrustAlwaysResponses = {
     /**
@@ -3453,7 +3453,7 @@ export type RemoteBridgeEnrollData = {
     query?: {
         directory?: string;
     };
-    url: '/remote-bridge/enroll';
+    url: "/remote-bridge/enroll";
 };
 export type RemoteBridgeEnrollResponses = {
     /**
@@ -3468,7 +3468,7 @@ export type RemoteBridgeDevicesData = {
     query?: {
         directory?: string;
     };
-    url: '/remote-bridge/devices';
+    url: "/remote-bridge/devices";
 };
 export type RemoteBridgeDevicesResponses = {
     /**
@@ -3485,7 +3485,7 @@ export type RemoteBridgeRevokeData = {
     query?: {
         directory?: string;
     };
-    url: '/remote-bridge/devices/{deviceID}/revoke';
+    url: "/remote-bridge/devices/{deviceID}/revoke";
 };
 export type RemoteBridgeRevokeResponses = {
     /**
@@ -3502,7 +3502,7 @@ export type RemoteBridgeConnectData = {
     query?: {
         directory?: string;
     };
-    url: '/remote-bridge/ws';
+    url: "/remote-bridge/ws";
 };
 export type RemoteBridgeConnectResponses = {
     /**
@@ -3517,7 +3517,7 @@ export type PtyListData = {
     query?: {
         directory?: string;
     };
-    url: '/pty';
+    url: "/pty";
 };
 export type PtyListResponses = {
     /**
@@ -3540,7 +3540,7 @@ export type PtyCreateData = {
     query?: {
         directory?: string;
     };
-    url: '/pty';
+    url: "/pty";
 };
 export type PtyCreateErrors = {
     /**
@@ -3564,7 +3564,7 @@ export type PtyRemoveData = {
     query?: {
         directory?: string;
     };
-    url: '/pty/{ptyID}';
+    url: "/pty/{ptyID}";
 };
 export type PtyRemoveErrors = {
     /**
@@ -3588,7 +3588,7 @@ export type PtyGetData = {
     query?: {
         directory?: string;
     };
-    url: '/pty/{ptyID}';
+    url: "/pty/{ptyID}";
 };
 export type PtyGetErrors = {
     /**
@@ -3618,7 +3618,7 @@ export type PtyUpdateData = {
     query?: {
         directory?: string;
     };
-    url: '/pty/{ptyID}';
+    url: "/pty/{ptyID}";
 };
 export type PtyUpdateErrors = {
     /**
@@ -3642,7 +3642,7 @@ export type PtyConnectData = {
     query?: {
         directory?: string;
     };
-    url: '/pty/{ptyID}/connect';
+    url: "/pty/{ptyID}/connect";
 };
 export type PtyConnectErrors = {
     /**
@@ -3664,7 +3664,7 @@ export type ConfigGetData = {
     query?: {
         directory?: string;
     };
-    url: '/config';
+    url: "/config";
 };
 export type ConfigGetResponses = {
     /**
@@ -3679,7 +3679,7 @@ export type ConfigUpdateData = {
     query?: {
         directory?: string;
     };
-    url: '/config';
+    url: "/config";
 };
 export type ConfigUpdateErrors = {
     /**
@@ -3701,7 +3701,7 @@ export type ToolIdsData = {
     query?: {
         directory?: string;
     };
-    url: '/experimental/tool/ids';
+    url: "/experimental/tool/ids";
 };
 export type ToolIdsErrors = {
     /**
@@ -3725,7 +3725,7 @@ export type ToolListData = {
         provider: string;
         model: string;
     };
-    url: '/experimental/tool';
+    url: "/experimental/tool";
 };
 export type ToolListErrors = {
     /**
@@ -3747,7 +3747,7 @@ export type InstanceDisposeData = {
     query?: {
         directory?: string;
     };
-    url: '/instance/dispose';
+    url: "/instance/dispose";
 };
 export type InstanceDisposeResponses = {
     /**
@@ -3762,7 +3762,7 @@ export type PathGetData = {
     query?: {
         directory?: string;
     };
-    url: '/path';
+    url: "/path";
 };
 export type PathGetResponses = {
     /**
@@ -3777,7 +3777,7 @@ export type WorktreeListData = {
     query?: {
         directory?: string;
     };
-    url: '/experimental/worktree';
+    url: "/experimental/worktree";
 };
 export type WorktreeListResponses = {
     /**
@@ -3792,7 +3792,7 @@ export type WorktreeCreateData = {
     query?: {
         directory?: string;
     };
-    url: '/experimental/worktree';
+    url: "/experimental/worktree";
 };
 export type WorktreeCreateErrors = {
     /**
@@ -3814,7 +3814,7 @@ export type VcsGetData = {
     query?: {
         directory?: string;
     };
-    url: '/vcs';
+    url: "/vcs";
 };
 export type VcsGetResponses = {
     /**
@@ -3849,7 +3849,7 @@ export type SessionListData = {
          */
         search_content?: boolean;
     };
-    url: '/session';
+    url: "/session";
 };
 export type SessionListResponses = {
     /**
@@ -3869,7 +3869,7 @@ export type SessionCreateData = {
     query?: {
         directory?: string;
     };
-    url: '/session';
+    url: "/session";
 };
 export type SessionCreateErrors = {
     /**
@@ -3891,7 +3891,7 @@ export type SessionStatusData = {
     query?: {
         directory?: string;
     };
-    url: '/session/status';
+    url: "/session/status";
 };
 export type SessionStatusErrors = {
     /**
@@ -3917,7 +3917,7 @@ export type SessionDeleteData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}';
+    url: "/session/{sessionID}";
 };
 export type SessionDeleteErrors = {
     /**
@@ -3945,7 +3945,7 @@ export type SessionGetData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}';
+    url: "/session/{sessionID}";
 };
 export type SessionGetErrors = {
     /**
@@ -3979,7 +3979,7 @@ export type SessionUpdateData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}';
+    url: "/session/{sessionID}";
 };
 export type SessionUpdateErrors = {
     /**
@@ -4007,7 +4007,7 @@ export type SessionChildrenData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/children';
+    url: "/session/{sessionID}/children";
 };
 export type SessionChildrenErrors = {
     /**
@@ -4038,7 +4038,7 @@ export type SessionTodoData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/todo';
+    url: "/session/{sessionID}/todo";
 };
 export type SessionTodoErrors = {
     /**
@@ -4073,7 +4073,7 @@ export type SessionInitData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/init';
+    url: "/session/{sessionID}/init";
 };
 export type SessionInitErrors = {
     /**
@@ -4103,7 +4103,7 @@ export type SessionForkData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/fork';
+    url: "/session/{sessionID}/fork";
 };
 export type SessionForkResponses = {
     /**
@@ -4120,7 +4120,7 @@ export type SessionAbortData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/abort';
+    url: "/session/{sessionID}/abort";
 };
 export type SessionAbortErrors = {
     /**
@@ -4148,7 +4148,7 @@ export type SessionUnshareData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/share';
+    url: "/session/{sessionID}/share";
 };
 export type SessionUnshareErrors = {
     /**
@@ -4176,7 +4176,7 @@ export type SessionShareData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/share';
+    url: "/session/{sessionID}/share";
 };
 export type SessionShareErrors = {
     /**
@@ -4205,7 +4205,7 @@ export type SessionDiffData = {
         directory?: string;
         messageID?: string;
     };
-    url: '/session/{sessionID}/diff';
+    url: "/session/{sessionID}/diff";
 };
 export type SessionDiffErrors = {
     /**
@@ -4244,7 +4244,7 @@ export type SessionSummarizeData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/summarize';
+    url: "/session/{sessionID}/summarize";
 };
 export type SessionSummarizeErrors = {
     /**
@@ -4276,7 +4276,7 @@ export type SessionMessagesData = {
         directory?: string;
         limit?: number;
     };
-    url: '/session/{sessionID}/message';
+    url: "/session/{sessionID}/message";
 };
 export type SessionMessagesErrors = {
     /**
@@ -4339,7 +4339,7 @@ export type SessionPromptData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/message';
+    url: "/session/{sessionID}/message";
 };
 export type SessionPromptErrors = {
     /**
@@ -4377,7 +4377,7 @@ export type SessionMessageData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/message/{messageID}';
+    url: "/session/{sessionID}/message/{messageID}";
 };
 export type SessionMessageErrors = {
     /**
@@ -4419,7 +4419,7 @@ export type PartDeleteData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/message/{messageID}/part/{partID}';
+    url: "/session/{sessionID}/message/{messageID}/part/{partID}";
 };
 export type PartDeleteErrors = {
     /**
@@ -4458,7 +4458,7 @@ export type PartUpdateData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/message/{messageID}/part/{partID}';
+    url: "/session/{sessionID}/message/{messageID}/part/{partID}";
 };
 export type PartUpdateErrors = {
     /**
@@ -4518,7 +4518,7 @@ export type SessionPromptAsyncData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/prompt_async';
+    url: "/session/{sessionID}/prompt_async";
 };
 export type SessionPromptAsyncErrors = {
     /**
@@ -4548,7 +4548,7 @@ export type SessionCommandData = {
         variant?: string;
         parts?: Array<{
             id?: string;
-            type: 'file';
+            type: "file";
             mime: string;
             filename?: string;
             url: string;
@@ -4564,7 +4564,7 @@ export type SessionCommandData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/command';
+    url: "/session/{sessionID}/command";
 };
 export type SessionCommandErrors = {
     /**
@@ -4605,7 +4605,7 @@ export type SessionShellData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/shell';
+    url: "/session/{sessionID}/shell";
 };
 export type SessionShellErrors = {
     /**
@@ -4629,7 +4629,7 @@ export type SessionRevertData = {
     body?: {
         messageID: string;
         partID?: string;
-        mode?: 'both' | 'conversation' | 'files';
+        mode?: "both" | "conversation" | "files";
     };
     path: {
         sessionID: string;
@@ -4637,7 +4637,7 @@ export type SessionRevertData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/revert';
+    url: "/session/{sessionID}/revert";
 };
 export type SessionRevertErrors = {
     /**
@@ -4661,7 +4661,7 @@ export type SessionRevertPreviewData = {
     body?: {
         messageID: string;
         partID?: string;
-        mode?: 'both' | 'conversation' | 'files';
+        mode?: "both" | "conversation" | "files";
     };
     path: {
         sessionID: string;
@@ -4669,7 +4669,7 @@ export type SessionRevertPreviewData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/revert/preview';
+    url: "/session/{sessionID}/revert/preview";
 };
 export type SessionRevertPreviewErrors = {
     /**
@@ -4697,7 +4697,7 @@ export type SessionUnrevertData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/unrevert';
+    url: "/session/{sessionID}/unrevert";
 };
 export type SessionUnrevertErrors = {
     /**
@@ -4719,7 +4719,7 @@ export type SessionUnrevertResponses = {
 export type SessionUnrevertResponse = SessionUnrevertResponses[keyof SessionUnrevertResponses];
 export type SessionFeedbackData = {
     body?: {
-        explicit: 'up' | 'down';
+        explicit: "up" | "down";
     };
     path: {
         sessionID: string;
@@ -4727,7 +4727,7 @@ export type SessionFeedbackData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/feedback';
+    url: "/session/{sessionID}/feedback";
 };
 export type SessionFeedbackErrors = {
     /**
@@ -4752,7 +4752,7 @@ export type SessionFeedbackResponses = {
 export type SessionFeedbackResponse = SessionFeedbackResponses[keyof SessionFeedbackResponses];
 export type PermissionRespondData = {
     body?: {
-        response: 'once' | 'always' | 'reject';
+        response: "once" | "always" | "reject";
     };
     path: {
         sessionID: string;
@@ -4761,7 +4761,7 @@ export type PermissionRespondData = {
     query?: {
         directory?: string;
     };
-    url: '/session/{sessionID}/permissions/{permissionID}';
+    url: "/session/{sessionID}/permissions/{permissionID}";
 };
 export type PermissionRespondErrors = {
     /**
@@ -4783,7 +4783,7 @@ export type PermissionRespondResponses = {
 export type PermissionRespondResponse = PermissionRespondResponses[keyof PermissionRespondResponses];
 export type PermissionReplyData = {
     body?: {
-        reply: 'once' | 'always' | 'reject';
+        reply: "once" | "always" | "reject";
         message?: string;
     };
     path: {
@@ -4792,7 +4792,7 @@ export type PermissionReplyData = {
     query?: {
         directory?: string;
     };
-    url: '/permission/{requestID}/reply';
+    url: "/permission/{requestID}/reply";
 };
 export type PermissionReplyErrors = {
     /**
@@ -4818,7 +4818,7 @@ export type PermissionListData = {
     query?: {
         directory?: string;
     };
-    url: '/permission';
+    url: "/permission";
 };
 export type PermissionListResponses = {
     /**
@@ -4833,7 +4833,7 @@ export type QuestionListData = {
     query?: {
         directory?: string;
     };
-    url: '/question';
+    url: "/question";
 };
 export type QuestionListResponses = {
     /**
@@ -4855,7 +4855,7 @@ export type QuestionReplyData = {
     query?: {
         directory?: string;
     };
-    url: '/question/{requestID}/reply';
+    url: "/question/{requestID}/reply";
 };
 export type QuestionReplyErrors = {
     /**
@@ -4883,7 +4883,7 @@ export type QuestionRejectData = {
     query?: {
         directory?: string;
     };
-    url: '/question/{requestID}/reject';
+    url: "/question/{requestID}/reject";
 };
 export type QuestionRejectErrors = {
     /**
@@ -4909,7 +4909,7 @@ export type CommandListData = {
     query?: {
         directory?: string;
     };
-    url: '/command';
+    url: "/command";
 };
 export type CommandListResponses = {
     /**
@@ -4924,7 +4924,7 @@ export type ConfigProvidersData = {
     query?: {
         directory?: string;
     };
-    url: '/config/providers';
+    url: "/config/providers";
 };
 export type ConfigProvidersResponses = {
     /**
@@ -4944,7 +4944,7 @@ export type ProviderListData = {
     query?: {
         directory?: string;
     };
-    url: '/provider';
+    url: "/provider";
 };
 export type ProviderListResponses = {
     /**
@@ -4968,7 +4968,7 @@ export type ProviderListResponses = {
                     temperature: boolean;
                     tool_call: boolean;
                     interleaved?: true | {
-                        field: 'reasoning_content' | 'reasoning_details';
+                        field: "reasoning_content" | "reasoning_details";
                     };
                     cost?: {
                         input: number;
@@ -4987,11 +4987,11 @@ export type ProviderListResponses = {
                         output: number;
                     };
                     modalities?: {
-                        input: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
-                        output: Array<'text' | 'audio' | 'image' | 'video' | 'pdf'>;
+                        input: Array<"text" | "audio" | "image" | "video" | "pdf">;
+                        output: Array<"text" | "audio" | "image" | "video" | "pdf">;
                     };
                     experimental?: boolean;
-                    status?: 'alpha' | 'beta' | 'deprecated';
+                    status?: "alpha" | "beta" | "deprecated";
                     options: {
                         [key: string]: unknown;
                     };
@@ -5022,7 +5022,7 @@ export type ProviderAuthData = {
     query?: {
         directory?: string;
     };
-    url: '/provider/auth';
+    url: "/provider/auth";
 };
 export type ProviderAuthResponses = {
     /**
@@ -5049,7 +5049,7 @@ export type ProviderOauthAuthorizeData = {
     query?: {
         directory?: string;
     };
-    url: '/provider/{providerID}/oauth/authorize';
+    url: "/provider/{providerID}/oauth/authorize";
 };
 export type ProviderOauthAuthorizeErrors = {
     /**
@@ -5085,7 +5085,7 @@ export type ProviderOauthCallbackData = {
     query?: {
         directory?: string;
     };
-    url: '/provider/{providerID}/oauth/callback';
+    url: "/provider/{providerID}/oauth/callback";
 };
 export type ProviderOauthCallbackErrors = {
     /**
@@ -5108,7 +5108,7 @@ export type FindTextData = {
         directory?: string;
         pattern: string;
     };
-    url: '/find';
+    url: "/find";
 };
 export type FindTextResponses = {
     /**
@@ -5139,11 +5139,11 @@ export type FindFilesData = {
     query: {
         directory?: string;
         query: string;
-        dirs?: 'true' | 'false';
-        type?: 'file' | 'directory';
+        dirs?: "true" | "false";
+        type?: "file" | "directory";
         limit?: number;
     };
-    url: '/find/file';
+    url: "/find/file";
 };
 export type FindFilesResponses = {
     /**
@@ -5159,7 +5159,7 @@ export type FindSymbolsData = {
         directory?: string;
         query: string;
     };
-    url: '/find/symbol';
+    url: "/find/symbol";
 };
 export type FindSymbolsResponses = {
     /**
@@ -5175,7 +5175,7 @@ export type FileListData = {
         directory?: string;
         path: string;
     };
-    url: '/file';
+    url: "/file";
 };
 export type FileListResponses = {
     /**
@@ -5191,7 +5191,7 @@ export type FileReadData = {
         directory?: string;
         path: string;
     };
-    url: '/file/content';
+    url: "/file/content";
 };
 export type FileReadResponses = {
     /**
@@ -5206,7 +5206,7 @@ export type FileStatusData = {
     query?: {
         directory?: string;
     };
-    url: '/file/status';
+    url: "/file/status";
 };
 export type FileStatusResponses = {
     /**
@@ -5224,7 +5224,7 @@ export type AppLogData = {
         /**
          * Log level
          */
-        level: 'debug' | 'info' | 'error' | 'warn';
+        level: "debug" | "info" | "error" | "warn";
         /**
          * Log message
          */
@@ -5240,7 +5240,7 @@ export type AppLogData = {
     query?: {
         directory?: string;
     };
-    url: '/log';
+    url: "/log";
 };
 export type AppLogErrors = {
     /**
@@ -5262,7 +5262,7 @@ export type AppAgentsData = {
     query?: {
         directory?: string;
     };
-    url: '/agent';
+    url: "/agent";
 };
 export type AppAgentsResponses = {
     /**
@@ -5277,7 +5277,7 @@ export type McpStatusData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp';
+    url: "/mcp";
 };
 export type McpStatusResponses = {
     /**
@@ -5297,7 +5297,7 @@ export type McpAddData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp';
+    url: "/mcp";
 };
 export type McpAddErrors = {
     /**
@@ -5323,7 +5323,7 @@ export type McpAuthRemoveData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp/{name}/auth';
+    url: "/mcp/{name}/auth";
 };
 export type McpAuthRemoveErrors = {
     /**
@@ -5349,7 +5349,7 @@ export type McpAuthStartData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp/{name}/auth';
+    url: "/mcp/{name}/auth";
 };
 export type McpAuthStartErrors = {
     /**
@@ -5387,7 +5387,7 @@ export type McpAuthCallbackData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp/{name}/auth/callback';
+    url: "/mcp/{name}/auth/callback";
 };
 export type McpAuthCallbackErrors = {
     /**
@@ -5415,7 +5415,7 @@ export type McpAuthAuthenticateData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp/{name}/auth/authenticate';
+    url: "/mcp/{name}/auth/authenticate";
 };
 export type McpAuthAuthenticateErrors = {
     /**
@@ -5443,7 +5443,7 @@ export type McpConnectData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp/{name}/connect';
+    url: "/mcp/{name}/connect";
 };
 export type McpConnectErrors = {
     /**
@@ -5467,7 +5467,7 @@ export type McpDisconnectData = {
     query?: {
         directory?: string;
     };
-    url: '/mcp/{name}/disconnect';
+    url: "/mcp/{name}/disconnect";
 };
 export type McpDisconnectResponses = {
     /**
@@ -5482,7 +5482,7 @@ export type ExperimentalResourceListData = {
     query?: {
         directory?: string;
     };
-    url: '/experimental/resource';
+    url: "/experimental/resource";
 };
 export type ExperimentalResourceListResponses = {
     /**
@@ -5499,7 +5499,7 @@ export type LspStatusData = {
     query?: {
         directory?: string;
     };
-    url: '/lsp';
+    url: "/lsp";
 };
 export type LspStatusResponses = {
     /**
@@ -5514,7 +5514,7 @@ export type FormatterStatusData = {
     query?: {
         directory?: string;
     };
-    url: '/formatter';
+    url: "/formatter";
 };
 export type FormatterStatusResponses = {
     /**
@@ -5531,7 +5531,7 @@ export type TuiAppendPromptData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/append-prompt';
+    url: "/tui/append-prompt";
 };
 export type TuiAppendPromptErrors = {
     /**
@@ -5553,7 +5553,7 @@ export type TuiOpenHelpData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/open-help';
+    url: "/tui/open-help";
 };
 export type TuiOpenHelpResponses = {
     /**
@@ -5568,7 +5568,7 @@ export type TuiOpenSessionsData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/open-sessions';
+    url: "/tui/open-sessions";
 };
 export type TuiOpenSessionsResponses = {
     /**
@@ -5583,7 +5583,7 @@ export type TuiOpenThemesData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/open-themes';
+    url: "/tui/open-themes";
 };
 export type TuiOpenThemesResponses = {
     /**
@@ -5598,7 +5598,7 @@ export type TuiOpenModelsData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/open-models';
+    url: "/tui/open-models";
 };
 export type TuiOpenModelsResponses = {
     /**
@@ -5613,7 +5613,7 @@ export type TuiSubmitPromptData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/submit-prompt';
+    url: "/tui/submit-prompt";
 };
 export type TuiSubmitPromptResponses = {
     /**
@@ -5628,7 +5628,7 @@ export type TuiClearPromptData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/clear-prompt';
+    url: "/tui/clear-prompt";
 };
 export type TuiClearPromptResponses = {
     /**
@@ -5645,7 +5645,7 @@ export type TuiExecuteCommandData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/execute-command';
+    url: "/tui/execute-command";
 };
 export type TuiExecuteCommandErrors = {
     /**
@@ -5665,7 +5665,7 @@ export type TuiShowToastData = {
     body?: {
         title?: string;
         message: string;
-        variant: 'info' | 'success' | 'warning' | 'error';
+        variant: "info" | "success" | "warning" | "error";
         /**
          * Duration in milliseconds
          */
@@ -5675,7 +5675,7 @@ export type TuiShowToastData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/show-toast';
+    url: "/tui/show-toast";
 };
 export type TuiShowToastResponses = {
     /**
@@ -5690,7 +5690,7 @@ export type TuiPublishData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/publish';
+    url: "/tui/publish";
 };
 export type TuiPublishErrors = {
     /**
@@ -5717,7 +5717,7 @@ export type TuiSelectSessionData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/select-session';
+    url: "/tui/select-session";
 };
 export type TuiSelectSessionErrors = {
     /**
@@ -5743,7 +5743,7 @@ export type TuiControlNextData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/control/next';
+    url: "/tui/control/next";
 };
 export type TuiControlNextResponses = {
     /**
@@ -5761,7 +5761,7 @@ export type TuiControlResponseData = {
     query?: {
         directory?: string;
     };
-    url: '/tui/control/response';
+    url: "/tui/control/response";
 };
 export type TuiControlResponseResponses = {
     /**
@@ -5778,7 +5778,7 @@ export type AuthSetData = {
     query?: {
         directory?: string;
     };
-    url: '/auth/{providerID}';
+    url: "/auth/{providerID}";
 };
 export type AuthSetErrors = {
     /**
@@ -5800,7 +5800,7 @@ export type EventSubscribeData = {
     query?: {
         directory?: string;
     };
-    url: '/event';
+    url: "/event";
 };
 export type EventSubscribeResponses = {
     /**

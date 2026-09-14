@@ -1,5 +1,5 @@
-import type { Config } from './types.gen.js';
-export type ServerSentEventsOptions<TData = unknown> = Omit<RequestInit, 'method'> & Pick<Config, 'method' | 'responseTransformer' | 'responseValidator'> & {
+import type { Config } from "./types.gen.js";
+export type ServerSentEventsOptions<TData = unknown> = Omit<RequestInit, "method"> & Pick<Config, "method" | "responseTransformer" | "responseValidator"> & {
     /**
      * Fetch API implementation. You can use this option to provide a custom
      * fetch instance.
@@ -28,7 +28,7 @@ export type ServerSentEventsOptions<TData = unknown> = Omit<RequestInit, 'method
      * @returns Nothing (void).
      */
     onSseEvent?: (event: StreamEvent<TData>) => void;
-    serializedBody?: RequestInit['body'];
+    serializedBody?: RequestInit["body"];
     /**
      * Default retry delay in milliseconds.
      *

@@ -1,7 +1,18 @@
 export * from "./gen/types.gen.js";
 import { type Config } from "./gen/client/types.gen.js";
-import { X100PromptClient as _X100PromptClient } from "./gen/sdk.gen.js";
-export { type Config as X100PromptClientConfig, _X100PromptClient as X100PromptClient };
+import { X100PromptClient as _X100PromptClient, Revert, Oauth, Resource, Control } from "./gen/sdk.gen.js";
+import { type Client } from "./gen/client/index.js";
+export declare class X100PromptClient extends _X100PromptClient {
+    revert: Revert;
+    oauth: Oauth;
+    resource: Resource;
+    control: Control;
+    constructor(args?: {
+        client?: Client;
+        key?: string;
+    });
+}
+export { type Config as X100PromptClientConfig, Revert, Oauth, Resource, Control };
 /**
  * A non-fatal condition the client recovered from. Reported through a hook
  * rather than the console: this is a library, and the host may own the
@@ -38,4 +49,4 @@ export type X100PromptClientOptions = Config & {
     /** Per-client diagnostic sink; overrides the process-wide handler. */
     onDiagnostic?: X100PromptClientDiagnosticHandler;
 };
-export declare function create100XPromptClient(config?: X100PromptClientOptions): _X100PromptClient;
+export declare function create100XPromptClient(config?: X100PromptClientOptions): X100PromptClient;
